@@ -14,23 +14,23 @@ router.post("/", async function(req, res) {
     if (exists) {
       res.status(409).send(); //Conflict with existing email
     } else {
-      bcrypt.hash(password, 10, (err, hashedPw) => {
+      bcrypt.hash(password, 10, async (err, hashedPw) => {
         if (err) {
           res.status(500).send()
         } else {
           const user = new User({name, email, password: hashedPw});
-          user.save().then((user) => {
-            const token = jwt.sign(
-                {id: user.id},
+          user.save(function (err, userDoc) {
+            if (err) {
+                res.status(500).send() //Not a problem with user info (already verified)
+            } else {
+              const token = jwt.sign(
+                { id: userDoc.id },
                 process.env.SECRET_KEY,
-                {
-                  expiresIn: "180d"
-                }
+                { expiresIn: "180d" },
               );
-            res.cookie("token", token, { httpOnly: true });
-            res.status(201).send()
-          }).catch(() => {
-            res.status(500).send() //Not a problem with user info
+              res.cookie("token", token, { httpOnly: true });
+              res.status(201).send()
+            }
           });
         }
       });
