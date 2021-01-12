@@ -14,7 +14,7 @@ router.post("/", async function(req, res) {
     if (exists) {
       res.status(409).send(); //Conflict with existing email
     } else {
-      bcrypt.hash(password, 10, async (err, hashedPw) => {
+      bcrypt.hash(password, 10, (err, hashedPw) => {
         if (err) {
           res.status(500).send()
         } else {
