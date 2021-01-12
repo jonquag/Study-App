@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const User = require("../models/user");
@@ -19,10 +20,17 @@ router.post("/", async function(req, res) {
         } else {
           const user = new User({name, email, password: hashedPw});
           user.save().then((user) => {
-            //Implement JWT token here 
+            const token = jwt.sign(
+                {id: user.id},
+                process.env.SECRET_KEY,
+                {
+                  expiresIn: "180d"
+                }
+              );
+            res.cookie("token", token, { httpOnly: true });
             res.status(201).send()
           }).catch(() => {
-            res.status(500).send() //User info will be good at this point so should just be connection error
+            res.status(500).send() //Not a problem with user info
           });
         }
       });
