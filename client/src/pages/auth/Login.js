@@ -11,7 +11,7 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 
 import logo from '../../images/logo.png';
-import { useStyles } from './LoginStyles';
+import { useStyles } from './Styles';
 
 const Login = () => {
     const classes = useStyles();
@@ -61,7 +61,7 @@ const Login = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={RouterLink}
-                                to="/login"
+                                to="/sign-up"
                             >
                                 <Button variant="outlined">Get started</Button>
                             </Link>

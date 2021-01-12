@@ -15,23 +15,23 @@ function App() {
             <CssBaseline>
                 <BrowserRouter>
                     <Switch>
-                        {/* Landing page temporarily redirects to login. */}
+                        {/* Landing page temporarily redirects to sign-up. */}
                         <Route
                             exact
                             path="/"
-                            render={() => <Redirect to="/login" />}
+                            render={() => <Redirect to="/sign-up" />}
                         />
 
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/sign-up" component={Signup} />
 
-                        {/* Any other unknown paths redirects to login. */}
+                        {/* Any other unknown paths redirects to sign-up. */}
                         <Route
                             path="*"
                             render={props => (
                                 <Redirect
                                     to={{
-                                        pathname: '/login',
+                                        pathname: '/sign-up',
                                         state: { from: props.location },
                                     }}
                                 />
