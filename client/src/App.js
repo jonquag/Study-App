@@ -16,11 +16,7 @@ function App() {
                 <BrowserRouter>
                     <Switch>
                         {/* Landing page temporarily redirects to sign-up. */}
-                        <Route
-                            exact
-                            path="/"
-                            render={() => <Redirect to="/sign-up" />}
-                        />
+                        <Route exact path="/" render={() => <Redirect to="/sign-up" />} />
 
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/sign-up" component={Signup} />

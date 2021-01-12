@@ -35,19 +35,14 @@ const Login = () => {
                     </Typography>
                     <form className={classes.form}>
                         <FormHelperText>Email address</FormHelperText>
-                        <TextField
-                            variant="outlined"
-                            className={classes.textInput}
-                        />
+                        <TextField variant="outlined" className={classes.textInput} />
                         <FormHelperText>Password</FormHelperText>
                         <TextField
                             variant="outlined"
                             type="password"
                             className={classes.textInput}
                         />
-                        <Typography variant="body2">
-                            Forget password?
-                        </Typography>
+                        <Typography variant="body2">Forget password?</Typography>
                         <Button variant="contained" className={classes.button}>
                             Login
                         </Button>
