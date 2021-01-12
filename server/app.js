@@ -3,6 +3,7 @@ const express = require("express");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const connectDB = require('./db');
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -10,6 +11,9 @@ const pingRouter = require("./routes/ping");
 const { json, urlencoded } = express;
 
 var app = express();
+
+//Connect to MongoDB
+connectDB();
 
 app.use(logger("dev"));
 app.use(json());
@@ -35,5 +39,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json({ error: err });
 });
+
 
 module.exports = app;
