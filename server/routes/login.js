@@ -5,7 +5,7 @@ const router = express.Router();
 
 const User = require("../models/user");
 
-router.get("/", async function(req, res) {
+router.post("/", async function(req, res) {
   const {email, password} = req.body;
   if (!email || !password) {
     res.status(400).send({ response: "Missing required field(s) "});
