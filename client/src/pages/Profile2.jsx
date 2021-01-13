@@ -48,14 +48,17 @@ const Profile2 = () => {
     return (
         <MuiThemeProvider>
                 <React.Fragment>
-                    {/* First Name  */}
-                    <Grid container spacing={4} className={classes.profileGrid}>
+                    {/* Profile Grid Parnent Container */}
+                    <Grid container spacing={2} sm={8} justify="space-between" className={classes.profileGrid}>
+                        
                         <Grid item sm={12}>
                             <Typography variant='h5' className={classes.headerStyles}>Profile</Typography>
                         </Grid>
+                        {/* First Name  */}
                         <Grid item xs={12} sm={4}>
                             <Typography variant='h6' className={classes.labelStyles}>First Name</Typography>{' '}
                             <TextField
+                                variant="outlined"
                                 hintText='Change First Name..'
                                 onChange={handleChange('firstName')}
                                 defaultValue={state.firstName}
@@ -85,16 +88,6 @@ const Profile2 = () => {
                             />
                         </Grid>
 
-                        {/* Location */}
-                        <Grid item xs={12} sm={6}>
-                            <Typography variant='h6' className={classes.labelStyles}>Location</Typography>{' '}
-                            <TextField
-                                hintText='Change Location..'
-                                onChange={handleChange('location')}
-                                defaultValue={state.location}
-                                className={classes.inputStyles}
-                            />
-                        </Grid>
                         {/* Phone */}
                         <Grid item  xs={12} sm={6}>
                             <Typography variant='h6' className={classes.labelStyles}>Phone</Typography>{' '}
@@ -105,6 +98,17 @@ const Profile2 = () => {
                                 className={classes.inputStyles}
                             />
                         </Grid>
+                        {/* Location */}
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant='h6' className={classes.labelStyles}>Location</Typography>{' '}
+                            <TextField
+                                hintText='Change Location..'
+                                onChange={handleChange('location')}
+                                defaultValue={state.location}
+                                className={classes.inputStyles}
+                            />
+                        </Grid>
+                        <TextField id="outlined-basic" label="test" variant="outlined" />
 
                     </Grid>
                 

@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-// Library imports
-// import { Typography } from "@material-ui/core";
-// import { withStyles } from "@material-ui/core/styles";
-// import { Route, Link } from "react-router-dom";
-// Component imports
+import TextField from '@material-ui/core/TextField';
+
 import Profile2 from './Profile2';
 
 class LandingPage extends Component {
     state = {};
 
     render() {
-        return <Profile2 />;
+        return (
+            <React.Fragment>
+                <Profile2 />
+                <TextField
+                    id='outlined-basic'
+                    label='From Landing Page'
+                    variant='outlined'
+                />
+            </React.Fragment>
+        );
     }
 }
 
