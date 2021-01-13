@@ -10,18 +10,18 @@ router.post("/", async function(req, res) {
   if (!email | !password || !isValidPassword(password)) {
     res.status(400).send({ response: "Missing or invalid field(s)"});
   } else {
-    const exists = await emailExists(email);
-    if (exists) {
-      res.status(409).send(); //Conflict with existing email
-    } else {
       bcrypt.hash(password, 10, (err, hashedPw) => {
         if (err) {
-          res.status(500).send()
+          res.status(500).send();
         } else {
           const user = new User({email, password: hashedPw});
           user.save(function (err, userDoc) {
             if (err) {
-                res.status(500).send() //Not a problem with user info (already verified)
+              if (!err.errors || err.errors.email && err.errors.email.reason) {
+                res.status(500).send() //Internal error connecting with MongoDB 
+              } else {
+                res.send(409).send() //Email conflict with existing user
+              }
             } else {
               const token = jwt.sign(
                 { id: userDoc.id },
@@ -35,14 +35,7 @@ router.post("/", async function(req, res) {
         }
       });
     }
-  }
 });
-
-//Check if user with email alrady exists
-async function emailExists(email) {
-  const existingUser = await User.findOne({email});
-  return existingUser != null;
-};
 
 function isValidPassword(pw) {
   return pw.length > 6;
