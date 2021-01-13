@@ -6,6 +6,10 @@ export const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: theme.palette.common.white,
     },
+    logoContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
     logo: {
         width: '4rem',
         height: 'auto',
