@@ -6,43 +6,36 @@ const router = express.Router();
 const User = require("../models/user");
 
 router.post("/", async function(req, res) {
-  const {name, email, password} = req.body;
-  if (!name || !email | !password || !isValidPassword(password)) {
-    res.status(400).send({ response: "Missing or invalid field(s)"});
+  const {email, password} = req.body;
+  if (!email | !password || !isValidPassword(password)) {
+    res.status(400).send({ response: "Missing or invalid field(s)" });
   } else {
-    const exists = await emailExists(email);
-    if (exists) {
-      res.status(409).send(); //Conflict with existing email
-    } else {
-      bcrypt.hash(password, 10, (err, hashedPw) => {
-        if (err) {
-          res.status(500).send()
-        } else {
-          const user = new User({name, email, password: hashedPw});
-          user.save().then((user) => {
-            const token = jwt.sign(
-                {id: user.id},
-                process.env.SECRET_KEY,
-                {
-                  expiresIn: "180d"
-                }
-              );
-            res.cookie("token", token, { httpOnly: true });
-            res.status(201).send()
-          }).catch(() => {
-            res.status(500).send() //Not a problem with user info
-          });
-        }
+      const hashedPw = await bcrypt.hash(password, 10)
+      .catch(() => {
+          res.status(500).send();
       });
+      if (hashedPw) {
+        const user = new User({ email, password: hashedPw });
+        const userDoc = await user.save()
+        .catch((err) => {
+          if (!err.errors || err.errors.email && err.errors.email.reason) {
+            res.status(500).send(); //Internal error connecting with MongoDB 
+          } else {
+            res.send(409).send(); //Email conflict with existing user
+          }
+        });
+        if (userDoc) {
+          const token = jwt.sign(
+            { id: userDoc.id },
+            process.env.SECRET_KEY,
+            { expiresIn: "180d" },
+          );
+          res.cookie("token", token, { httpOnly: true });
+          res.status(201).send();
+        }
+      }
     }
-  }
 });
-
-//Check if user with email alrady exists
-async function emailExists(email) {
-  const existingUser = await User.findOne({email});
-  return existingUser != null;
-};
 
 function isValidPassword(pw) {
   return pw.length > 6;

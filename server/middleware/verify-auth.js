@@ -2,9 +2,12 @@ const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   try {
-    jwt.verify(req.cookies.token, process.env.SECRET_KEY);
+    const token = req.cookies.token;
+    jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.decode(token);
+    req.body.userId = decoded.id;
     next();
   } catch (err) {
-    return res.status(401).json({ response: "Auth failed"})
+    return res.status(401).json({ response: "Auth failed" });
   }
 };
