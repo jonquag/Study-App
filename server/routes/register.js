@@ -10,30 +10,30 @@ router.post("/", async function(req, res) {
   if (!email | !password || !isValidPassword(password)) {
     res.status(400).send({ response: "Missing or invalid field(s)" });
   } else {
-      bcrypt.hash(password, 10, (err, hashedPw) => {
-        if (err) {
+      const hashedPw = await bcrypt.hash(password, 10)
+      .catch(() => {
           res.status(500).send();
-        } else {
-          const user = new User({email, password: hashedPw});
-          user.save(function (err, userDoc) {
-            if (err) {
-              if (!err.errors || err.errors.email && err.errors.email.reason) {
-                res.status(500).send(); //Internal error connecting with MongoDB 
-              } else {
-                res.send(409).send(); //Email conflict with existing user
-              }
-            } else {
-              const token = jwt.sign(
-                { id: userDoc.id },
-                process.env.SECRET_KEY,
-                { expiresIn: "180d" },
-              );
-              res.cookie("token", token, { httpOnly: true });
-              res.status(201).send();
-            }
-          });
-        }
       });
+      if (hashedPw) {
+        const user = new User({ email, password: hashedPw });
+        const userDoc = await user.save()
+        .catch((err) => {
+          if (!err.errors || err.errors.email && err.errors.email.reason) {
+            res.status(500).send(); //Internal error connecting with MongoDB 
+          } else {
+            res.send(409).send(); //Email conflict with existing user
+          }
+        });
+        if (userDoc) {
+          const token = jwt.sign(
+            { id: userDoc.id },
+            process.env.SECRET_KEY,
+            { expiresIn: "180d" },
+          );
+          res.cookie("token", token, { httpOnly: true });
+          res.status(201).send();
+        }
+      }
     }
 });
 

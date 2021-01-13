@@ -8,20 +8,18 @@ const userSchema = mongoose.Schema({
       validator: async function(email) {
         const self = this;
         return new Promise(async function(resolve, reject) {
-          await self.constructor.findOne({email})
-          .exec(function(err, user) {
-            if (err) {
-                reject('Internal Error');
-            } else if (user) {
-                if (self.id === user.id) {
-                    resolve(true);
-                }
-                reject(false);  
-            }
-            else {
-                resolve(true);
-            }
+          const user = await self.constructor.findOne({email}).exec()
+          .catch(() => {
+            reject('Internal Error');
           });
+          if (user) {
+            if (self.id === user.id) {
+              resolve(true);
+            }
+            reject(false);  
+          } else {
+            resolve(true);
+          }
         });
       },
       message: 'Email is taken',
