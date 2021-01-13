@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Grid,
     Typography,
@@ -21,6 +21,26 @@ const Signup = () => {
     const classes = useStyles();
     const [school, setSchool] = useState('');
     const [course, setCourse] = useState('');
+    const [schoolCourses, setSchoolCourses] = useState(courses);
+    // const [addedCourses, setAddedCourses] = useState([]);
+
+    // const addCourse = () => {
+    //     const newCourses = [...addedCourses];
+    //     newCourses.push(course);
+    //     setAddedCourses(newCourses);
+    //     setSchoolCourses(schoolCourses.filter(sc => sc.name !== course));
+    // };
+
+    useEffect(() => {
+        if (school) {
+            let filteredCourses = [];
+            schools.forEach(sch => {
+                if (sch.name === school) return (filteredCourses = [...sch.courses]);
+            });
+
+            setSchoolCourses(filteredCourses);
+        }
+    }, [school]);
 
     return (
         <div className={classes.root}>
@@ -46,10 +66,7 @@ const Signup = () => {
                             className={classes.textInput}
                         /> */}
                         <FormHelperText>Email address</FormHelperText>
-                        <TextField
-                            variant="outlined"
-                            className={classes.textInput}
-                        />
+                        <TextField variant="outlined" className={classes.textInput} />
                         <FormHelperText>Password</FormHelperText>
                         <TextField
                             variant="outlined"
@@ -64,36 +81,36 @@ const Signup = () => {
                         >
                             {schools.map(school => {
                                 return (
-                                    <MenuItem
-                                        key={school.id}
-                                        value={school.name}
-                                    >
+                                    <MenuItem key={school.id} value={school.name}>
                                         {school.name}
                                     </MenuItem>
                                 );
                             })}
                         </Select>
 
-                        {/* TODO: courses needs to be based on selected school */}
                         <FormHelperText>Select the course</FormHelperText>
                         <Select
                             value={course}
                             variant="outlined"
                             onChange={e => setCourse(e.target.value)}
                         >
-                            {courses.map(course => {
+                            <MenuItem value="Select">
+                                <em>None</em>
+                            </MenuItem>
+                            {schoolCourses.map(course => {
                                 return (
-                                    <MenuItem
-                                        key={course.id}
-                                        value={course.name}
-                                    >
+                                    <MenuItem key={course.id} value={course.name}>
                                         {course.name}
                                     </MenuItem>
                                 );
                             })}
                         </Select>
                         <Grid style={{ marginTop: 8 }}>
-                            <Button color="primary" startIcon={<AddIcon />}>
+                            <Button
+                                color="primary"
+                                startIcon={<AddIcon />}
+                                // onClick={addCourse}
+                            >
                                 Add course
                             </Button>
                         </Grid>
