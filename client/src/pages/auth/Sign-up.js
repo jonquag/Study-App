@@ -15,6 +15,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField as MikTextField } from 'formik-material-ui';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
@@ -33,9 +34,7 @@ const Signup = () => {
     // const [addedCourses, setAddedCourses] = useState([]);
 
     // const addCourse = () => {
-    //     const newCourses = [...addedCourses];
-    //     newCourses.push(course);
-    //     setAddedCourses(newCourses);
+    //     setAddedCourses([...addedCourses, course]);
     //     setSchoolCourses(schoolCourses.filter(sc => sc.name !== course));
     // };
 
@@ -94,8 +93,13 @@ const Signup = () => {
                             schoolSelect: '',
                         }}
                         validationSchema={SignupSchema}
-                        onSubmit={(values, { setSubmitting }) => {
-                            console.log('values: ', values);
+                        onSubmit={async (values, { setSubmitting }) => {
+                            try {
+                                // TODO: better to move it to a helper action.
+                                await axios.post('/register', values);
+                            } catch (err) {
+                                console.log(err.message);
+                            }
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);
@@ -158,7 +162,6 @@ const Signup = () => {
                                         Add course
                                     </Button>
                                 </Grid>
-
                                 <Button
                                     variant="contained"
                                     className={classes.button}

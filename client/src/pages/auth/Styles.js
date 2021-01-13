@@ -27,7 +27,7 @@ export const useStyles = makeStyles(theme => ({
         padding: 0,
         borderRadius: 0,
         backgroundImage: `url(${Background})`,
-        backgroundPosition: 'left top',
+        backgroundPosition: 'center center',
         backgroundSize: 'cover',
         '& button': {
             float: 'right',
@@ -37,7 +37,7 @@ export const useStyles = makeStyles(theme => ({
         },
     },
     dark_overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
         position: 'relative',
         height: '100%',
         width: '100%',

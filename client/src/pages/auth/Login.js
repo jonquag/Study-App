@@ -12,6 +12,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField as MikTextField } from 'formik-material-ui';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
@@ -66,13 +67,15 @@ const Login = () => {
                             password: '',
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={(values, { setSubmitting }) => {
-                            console.log('values: ', values);
-                            // const { email, password } = values;
+                        onSubmit={async (values, { setSubmitting }) => {
+                            try {
+                                // TODO: better to move it to a helper action.
+                                await axios.post('/login', values);
+                            } catch (err) {
+                                console.log(err.message);
+                            }
                             setTimeout(() => {
                                 setSubmitting(false);
-                                // const formData = { email, password };
-                                alert(JSON.stringify(values, null, 2));
                             }, 500);
                         }}
                     >
