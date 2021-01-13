@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 
 import Profile2 from './Profile2';
+import ProfileSidebar from './ProfileSidebar';
 
 class LandingPage extends Component {
     state = {};
@@ -9,6 +10,7 @@ class LandingPage extends Component {
     render() {
         return (
             <React.Fragment>
+                <ProfileSidebar />
                 <Profile2 />
                 <TextField
                     id='outlined-basic'
