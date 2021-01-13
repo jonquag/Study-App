@@ -17,9 +17,9 @@ router.post("/", async function(req, res) {
       try {
         if (await bcrypt.compare(password, user.password)) {
           const token = jwt.sign(
-            {id: user.id},
+            { id: user.id },
             process.env.SECRET_KEY,
-            {expiresIn: "180d"},
+            { expiresIn: "180d" },
           );
           res.cookie("token", token, { httpOnly: true });
           res.status(200).send();

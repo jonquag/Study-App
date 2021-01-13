@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
             if (err) {
                 reject('Internal Error');
             } else if (user) {
-                if(this.id === user.id) {
+                if (self.id === user.id) {
                     resolve(true);
                 }
                 reject(false);  

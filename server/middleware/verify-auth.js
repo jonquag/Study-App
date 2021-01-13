@@ -5,6 +5,6 @@ module.exports = (req, res, next) => {
     jwt.verify(req.cookies.token, process.env.SECRET_KEY);
     next();
   } catch (err) {
-    return res.status(401).json({ response: "Auth failed"})
+    return res.status(401).json({ response: "Auth failed" });
   }
 };

@@ -8,7 +8,7 @@ const User = require("../models/user");
 router.post("/", async function(req, res) {
   const {email, password} = req.body;
   if (!email | !password || !isValidPassword(password)) {
-    res.status(400).send({ response: "Missing or invalid field(s)"});
+    res.status(400).send({ response: "Missing or invalid field(s)" });
   } else {
       bcrypt.hash(password, 10, (err, hashedPw) => {
         if (err) {
@@ -18,9 +18,9 @@ router.post("/", async function(req, res) {
           user.save(function (err, userDoc) {
             if (err) {
               if (!err.errors || err.errors.email && err.errors.email.reason) {
-                res.status(500).send() //Internal error connecting with MongoDB 
+                res.status(500).send(); //Internal error connecting with MongoDB 
               } else {
-                res.send(409).send() //Email conflict with existing user
+                res.send(409).send(); //Email conflict with existing user
               }
             } else {
               const token = jwt.sign(
@@ -29,7 +29,7 @@ router.post("/", async function(req, res) {
                 { expiresIn: "180d" },
               );
               res.cookie("token", token, { httpOnly: true });
-              res.status(201).send()
+              res.status(201).send();
             }
           });
         }

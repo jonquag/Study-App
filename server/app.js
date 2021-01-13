@@ -4,7 +4,7 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const connectDB = require('./db');
-const verifyAuth = require('./middleware/verify-auth');
+const verifyAuth = require('./middleware/verify-auth'); //Add middleware to verify JWT tokens
 
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
@@ -26,7 +26,7 @@ app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
-app.use("/ping", verifyAuth, pingRouter);
+app.use("/ping", pingRouter);
 app.use("/register", registerRouter);
 
 // catch 404 and forward to error handler
