@@ -14,7 +14,7 @@ validate_entry = [
     .normalizeEmail(),
   body('password')
     .exists()
-    .isLength({ min: 7 }),
+    .isLength({ min: 6 }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
