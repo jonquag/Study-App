@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
                 reject(false);  
             }
             else {
-                resolve(false);
+                resolve(true);
             }
           });
         });
