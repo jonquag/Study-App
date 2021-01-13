@@ -2,7 +2,7 @@
 //Add validation to a route:
 //  1) Create a validation chain
 //  2) Include in module.exports
-//  3) Import into app.js and include as middleware in route
+//  3) Include as middleware in app.js
 
 const { body, validationResult } = require('express-validator/check');
 
