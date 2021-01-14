@@ -33,7 +33,7 @@ router.post("/", async function(req, res) {
           );
           res.cookie("token", token, { httpOnly: true });
           res.status(201).send();
-          const userProfile = await new Profile({ user: userDoc.id, firstName: "", lastName: "", phone: "", location: ""}).save()
+          const userProfile = await new Profile({ user: userDoc.id, firstName: "", lastName: "", phone: "", location: "", imageUrl: ""}).save()
           .catch((err) => {
             res.status(500).send({ response: "Error creating user profile." });
           })
