@@ -4,7 +4,7 @@
 //  2) Include in module.exports
 //  3) Include as middleware in app.js
 
-const { body, validationResult } = require('express-validator/check');
+const { body, validationResult } = require('express-validator');
 
 validate_entry = [
   body('email')
