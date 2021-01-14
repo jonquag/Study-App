@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Profile2 = (props) => {
+const ProfileUserInfo = (props) => {
     const [firstName, setFirstName] = useState('Ashly');
     const [lastName, setLastName] = useState('Sanford');
     const [email, setEmail] = useState('usermail@gmail.com');
@@ -32,9 +31,6 @@ const Profile2 = (props) => {
     const [phone, setPhone] = useState('');
 
     const classes = useStyles();
-
-    // Handles changed fields
-    // takes input and sets it to the value of the component
 
     return (
         <React.Fragment>
@@ -58,7 +54,6 @@ const Profile2 = (props) => {
                         variant='outlined'
                         hintText='Change First Name..'
                         onChange={(e) => setFirstName(e.target.value)}
-                        // setState({...state, name: "newName"})
                         defaultValue={firstName}
                         className={classes.inputStyles}
                     />
@@ -66,9 +61,7 @@ const Profile2 = (props) => {
 
                 {/* Last Name */}
                 <Grid item xs={12} sm={6}>
-                    <Typography variant='h6' className={classes.labelStyles}>
-                        Last Name
-                    </Typography>{' '}
+                    <FormHelperText variant='h6'>Last Name</FormHelperText>{' '}
                     <TextField
                         variant='outlined'
                         hintText='Change Last Name..'
@@ -79,9 +72,7 @@ const Profile2 = (props) => {
                 </Grid>
                 {/* Email */}
                 <Grid item xs={12} sm={6}>
-                    <Typography variant='h6' className={classes.labelStyles}>
-                        Email address
-                    </Typography>{' '}
+                    <FormHelperText variant='h6'>Email address</FormHelperText>{' '}
                     <TextField
                         variant='outlined'
                         hintText='Change Email...'
@@ -93,9 +84,7 @@ const Profile2 = (props) => {
 
                 {/* Phone */}
                 <Grid item xs={12} sm={6}>
-                    <Typography variant='h6' className={classes.labelStyles}>
-                        Phone
-                    </Typography>{' '}
+                    <FormHelperText variant='h6'>Phone</FormHelperText>{' '}
                     <TextField
                         variant='outlined'
                         hintText='Change Phone Number...'
@@ -106,9 +95,7 @@ const Profile2 = (props) => {
                 </Grid>
                 {/* Location */}
                 <Grid item xs={12} sm={6}>
-                    <Typography variant='h6' className={classes.labelStyles}>
-                        Location
-                    </Typography>{' '}
+                    <FormHelperText variant='h6'>Location</FormHelperText>{' '}
                     <TextField
                         variant='outlined'
                         hintText='Change Location..'
@@ -119,15 +106,15 @@ const Profile2 = (props) => {
                 </Grid>
             </Grid>
 
-            {/* Debug testing */}
+            {/* Debug testing
             <div>Debug:</div>
             <div>First Name: {firstName}</div>
             <div>Last Name: {lastName}</div>
             <div>Location: {location}</div>
             <div>Phone Number: {phone}</div>
-            <div>University: {email}</div>
+            <div>University: {email}</div> */}
         </React.Fragment>
     );
 };
 
-export default Profile2;
+export default ProfileUserInfo;
