@@ -20,9 +20,12 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
 import { useStyles } from './NavbarStyles';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const Navbar = () => {
     const classes = useStyles();
+    const { isLoading } = useGlobalContext();
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -30,9 +33,11 @@ const Navbar = () => {
         setAnchorEl(null);
     };
 
+    console.log('test context', isLoading);
+
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default">
+            <AppBar position="static" color="default" elevation={2}>
                 <Toolbar style={{ height: '100px', backgroundColor: '#FFF' }}>
                     <div className={classes.logo_study}>
                         <Link
