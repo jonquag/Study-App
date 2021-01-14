@@ -58,7 +58,7 @@ const Navbar = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={NavLink}
-                                to="#"
+                                to="/forum"
                             >
                                 <ListItem>
                                     <Typography variant="h6">Forum</Typography>
@@ -69,10 +69,10 @@ const Navbar = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={NavLink}
-                                to="#"
+                                to="/groups"
                             >
                                 <ListItem>
-                                    <Typography variant="h6">Group</Typography>
+                                    <Typography variant="h6">Groups</Typography>
                                 </ListItem>
                             </Link>
                             <Link
@@ -80,7 +80,7 @@ const Navbar = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={NavLink}
-                                to="#"
+                                to="/chat"
                             >
                                 <ListItem>
                                     <Typography variant="h6">Chats</Typography>

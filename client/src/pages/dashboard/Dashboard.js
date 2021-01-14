@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from '../layout/Navbar';
+import Sidebar from '../layout/Sidebar';
 
 const useStyles = makeStyles(theme => ({
     sidebar: {
@@ -29,6 +30,11 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = () => {
     const classes = useStyles();
+
+    useEffect(() => {
+        //TODO: Make an API call to get up to date logged in user information
+    }, []);
+
     return (
         <Grid>
             <Navbar />
@@ -40,9 +46,7 @@ const Dashboard = () => {
                     sm={3}
                     className={classes.sidebar}
                 >
-                    <div className={classes.profile}>Profile Pic and name</div>
-                    <div className={classes.list}>List</div>
-                    <div className={classes.logout}>Logout</div>
+                    <Sidebar />
                 </Grid>
                 <Grid item container sm={9} className={classes.content_page}>
                     content pages

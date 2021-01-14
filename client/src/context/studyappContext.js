@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 const AppContext = createContext({
     isLoading: true,
+    isAuth: false,
 });
 
 const initialState = {
