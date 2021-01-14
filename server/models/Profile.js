@@ -17,6 +17,9 @@ const ProfileSchema = new mongoose.Schema({
     },
     location: {
         type: String
+    },
+    imageUrl: {
+        type: String
     }
 });
 
