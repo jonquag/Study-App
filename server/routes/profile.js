@@ -9,8 +9,9 @@ const User = require('../models/user');
 // Returns current user profile based on ID
 router.get('/:user_id', auth, async (req, res) => {
     try {
+
     //find profile by user id and populate email
-    const profile = await Profile.findOne({ user: req.params.user_id }).populate('User', ['email']);
+    const profile = await Profile.findOne({ user: req.body.userId }).populate('User', ['email']);
 
     if(!profile) {
         return res.status(400).json({ msg: "No profile found." });
@@ -32,12 +33,12 @@ router.get('/:user_id', auth, async (req, res) => {
 router.post('/:user_id', auth, async (req, res) => {
     try {
         //find profile
-        let profile = await Profile.findOne({ user: req.params.user_id })
+        let profile = await Profile.findOne({ user: req.body.userId })
         const { firstName, lastName, phone, location } = req.body;
 
         //if profile found then update
         if(profile) {
-            const filter = { user: req.params.user_id };
+            const filter = { user: req.body.userId };
             const updatedProfile = {};
             if(firstName) updatedProfile.firstName = firstName;
             if(lastName) updatedProfile.lastName = lastName;
