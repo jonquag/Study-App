@@ -12,8 +12,11 @@ export const theme = createMuiTheme({
             fontFamily: 'Montserrat',
             fontSize: 26,
             fontWeight: 500,
-            lineHeight: 35,
             letterSpacing: -1,
+        },
+        h6: {
+            fontSize: 16,
+            fontWeight: 500,
         },
     },
     palette: {

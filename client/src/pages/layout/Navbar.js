@@ -1,50 +1,25 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
-import { Avatar, List, ListItem } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Avatar, List, ListItem, Badge, Menu, MenuItem } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    logo_study: {
-        flexGrow: 4,
-        display: 'flex',
-        alignItems: 'center',
-        marginLeft: '2.25rem',
-        '& img': {
-            width: '2.5rem',
-            height: 'auto',
-            marginRight: theme.spacing(2),
-        },
-    },
-    listContainer: {
-        flexGrow: 2,
-        display: 'flex',
-        '& > *': {
-            display: 'flex',
-            fontSize: 16,
-            fontWeight: 500,
-            lineHeight: 24,
-        },
-    },
-    profile: {
-        flexGrow: 1,
-        display: 'flex',
-    },
-}));
+import { useStyles } from './NavbarStyles';
 
 const Navbar = () => {
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <div className={classes.root}>
@@ -56,9 +31,16 @@ const Navbar = () => {
                     </div>
                     <div className={classes.listContainer}>
                         <List>
-                            <ListItem>Forum</ListItem>
-                            <ListItem>Group</ListItem>
-                            <ListItem>Chats</ListItem>
+                            <ListItem>
+                                <Typography variant="h6">Forum</Typography>
+                            </ListItem>
+                            <ListItem>
+                                <Typography variant="h6">Group</Typography>
+                            </ListItem>
+                            <ListItem>
+                                <Typography variant="h6">Chats</Typography>
+                                <Badge badgeContent={12} className={classes.badge} />
+                            </ListItem>
                         </List>
                     </div>
                     <div className={classes.profile}>
@@ -67,9 +49,36 @@ const Navbar = () => {
                             src={profileImg}
                             style={{ height: '60px', width: '60px' }}
                         />
-                        <Button endIcon={<ArrowDropDownIcon />} style={{ padding: 0 }}>
-                            Profile
+                        <Button
+                            endIcon={<ArrowDropDownIcon />}
+                            className={classes.profile_button}
+                            onClick={e => setAnchorEl(e.currentTarget)}
+                        >
+                            <Typography variant="h6">Profile</Typography>
                         </Button>
+                        <Menu
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            open={open}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>
+                                <ExitToAppIcon style={{ marginRight: 8 }} />
+                                <Typography>Logout</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <AccountCircleIcon style={{ marginRight: 8 }} />
+                                <Typography>My Profile</Typography>
+                            </MenuItem>
+                        </Menu>
                     </div>
                 </Toolbar>
             </AppBar>
