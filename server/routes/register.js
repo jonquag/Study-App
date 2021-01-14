@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const User = require("../models/user");
+const Profile = require("../models/profile")
 
 router.post("/", async function(req, res) {
   const {email, password} = req.body;
@@ -32,6 +33,10 @@ router.post("/", async function(req, res) {
           );
           res.cookie("token", token, { httpOnly: true });
           res.status(201).send();
+          const userProfile = await new Profile({ user: userDoc.id, firstName: "", lastName: "", phone: "", location: ""}).save()
+          .catch((err) => {
+            res.status(500).send({ response: "Error creating user profile." });
+          })
         }
       }
     }
