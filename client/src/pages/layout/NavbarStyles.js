@@ -10,9 +10,10 @@ export const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         marginLeft: '2.25rem',
         '& img': {
-            width: '2.5rem',
+            width: '2.75rem',
             height: 'auto',
             marginRight: theme.spacing(2),
+            cursor: 'pointer',
         },
     },
     listContainer: {
@@ -22,6 +23,7 @@ export const useStyles = makeStyles(theme => ({
             display: 'flex',
             fontSize: 16,
             fontWeight: 500,
+            cursor: 'pointer',
         },
     },
     profile: {

@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { Avatar, List, ListItem, Badge, Menu, MenuItem } from '@material-ui/core';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    Avatar,
+    List,
+    ListItem,
+    Badge,
+    Menu,
+    MenuItem,
+    Link,
+} from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+// import { Link as RouterLink} from 'react-router-dom';
 
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
@@ -26,21 +35,53 @@ const Navbar = () => {
             <AppBar position="static" color="default">
                 <Toolbar style={{ height: '100px', backgroundColor: '#FFF' }}>
                     <div className={classes.logo_study}>
-                        <img src={logo} alt="logo_study" />
+                        <Link
+                            color="inherit"
+                            variant="inherit"
+                            underline="none"
+                            // component={RouterLink}
+                            // to="/login"
+                        >
+                            <img src={logo} alt="logo_study" />
+                        </Link>
                         <Typography variant="h3">studyapp</Typography>
                     </div>
                     <div className={classes.listContainer}>
                         <List>
-                            <ListItem>
-                                <Typography variant="h6">Forum</Typography>
-                            </ListItem>
-                            <ListItem>
-                                <Typography variant="h6">Group</Typography>
-                            </ListItem>
-                            <ListItem>
-                                <Typography variant="h6">Chats</Typography>
-                                <Badge badgeContent={12} className={classes.badge} />
-                            </ListItem>
+                            <Link
+                                color="inherit"
+                                variant="inherit"
+                                underline="none"
+                                // component={RouterLink}
+                                // to="/login"
+                            >
+                                <ListItem>
+                                    <Typography variant="h6">Forum</Typography>
+                                </ListItem>
+                            </Link>
+                            <Link
+                                color="inherit"
+                                variant="inherit"
+                                underline="none"
+                                // component={RouterLink}
+                                // to="/login"
+                            >
+                                <ListItem>
+                                    <Typography variant="h6">Group</Typography>
+                                </ListItem>
+                            </Link>
+                            <Link
+                                color="inherit"
+                                variant="inherit"
+                                underline="none"
+                                // component={RouterLink}
+                                // to="/login"
+                            >
+                                <ListItem>
+                                    <Typography variant="h6">Chats</Typography>
+                                    <Badge badgeContent={12} className={classes.badge} />
+                                </ListItem>
+                            </Link>
                         </List>
                     </div>
                     <div className={classes.profile}>
