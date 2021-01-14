@@ -33,7 +33,7 @@ router.put('/:user_id', auth, async (req, res) => {
     try {
         //find profile
         let profile = await Profile.findOne({ user: req.body.userId })
-        const { firstName, lastName, phone, location } = req.body;
+        const { firstName, lastName, phone, location, imageUrl } = req.body;
 
         //if profile found then update
         if(profile) {
@@ -43,6 +43,7 @@ router.put('/:user_id', auth, async (req, res) => {
             if (lastName !== null) updatedProfile.lastName = lastName;
             if (phone !== null) updatedProfile.phone = phone;
             if (location !== null) updatedProfile.location = location;
+            if (imageUrl!== null) updatedProfile.imageUrl = imageUrl;
             
             //update profile and populate email
             profile = await Profile.findOneAndUpdate(filter, updatedProfile,  { new: true } ).populate('user', ['email'])
