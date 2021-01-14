@@ -30,7 +30,7 @@ router.get('/:user_id', auth, async (req, res) => {
 })
 
 //Updates user profile fields based on ID and populates email
-router.post('/:user_id', auth, async (req, res) => {
+router.put('/:user_id', auth, async (req, res) => {
     try {
         //find profile
         let profile = await Profile.findOne({ user: req.body.userId })
