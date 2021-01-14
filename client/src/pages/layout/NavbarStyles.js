@@ -4,6 +4,10 @@ export const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
+    toolbar: {
+        height: 100,
+        backgroundColor: theme.palette.common.white,
+    },
     logo_study: {
         flexGrow: 6,
         display: 'flex',
@@ -31,6 +35,10 @@ export const useStyles = makeStyles(theme => ({
         display: 'flex',
         marginLeft: theme.spacing(2),
     },
+    avatar: {
+        height: 60,
+        width: 60,
+    },
     badge: {
         color: theme.palette.common.white,
         paddingLeft: theme.spacing(3),
@@ -47,4 +55,5 @@ export const useStyles = makeStyles(theme => ({
             marginLeft: 0,
         },
     },
+    icons: { marginRight: 8 },
 }));

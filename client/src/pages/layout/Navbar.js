@@ -15,7 +15,7 @@ import {
     Link,
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-// import { Link as RouterLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
@@ -38,7 +38,7 @@ const Navbar = () => {
     return (
         <div className={classes.root}>
             <AppBar position="static" color="default" elevation={2}>
-                <Toolbar style={{ height: '100px', backgroundColor: '#FFF' }}>
+                <Toolbar className={classes.toolbar}>
                     <div className={classes.logo_study}>
                         <Link
                             color="inherit"
@@ -57,8 +57,8 @@ const Navbar = () => {
                                 color="inherit"
                                 variant="inherit"
                                 underline="none"
-                                // component={RouterLink}
-                                // to="/login"
+                                component={NavLink}
+                                to="#"
                             >
                                 <ListItem>
                                     <Typography variant="h6">Forum</Typography>
@@ -68,8 +68,8 @@ const Navbar = () => {
                                 color="inherit"
                                 variant="inherit"
                                 underline="none"
-                                // component={RouterLink}
-                                // to="/login"
+                                component={NavLink}
+                                to="#"
                             >
                                 <ListItem>
                                     <Typography variant="h6">Group</Typography>
@@ -79,8 +79,8 @@ const Navbar = () => {
                                 color="inherit"
                                 variant="inherit"
                                 underline="none"
-                                // component={RouterLink}
-                                // to="/login"
+                                component={NavLink}
+                                to="#"
                             >
                                 <ListItem>
                                     <Typography variant="h6">Chats</Typography>
@@ -93,7 +93,7 @@ const Navbar = () => {
                         <Avatar
                             alt="profiel_img"
                             src={profileImg}
-                            style={{ height: '60px', width: '60px' }}
+                            className={classes.avatar}
                         />
                         <Button
                             endIcon={<ArrowDropDownIcon />}
@@ -117,11 +117,11 @@ const Navbar = () => {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={handleClose}>
-                                <ExitToAppIcon style={{ marginRight: 8 }} />
+                                <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
-                                <AccountCircleIcon style={{ marginRight: 8 }} />
+                                <AccountCircleIcon className={classes.icons} />
                                 <Typography>My Profile</Typography>
                             </MenuItem>
                         </Menu>
