@@ -18,7 +18,7 @@ router.get('/:universityId/courses', function(req, res, next) {
     res.status(200).send();
 });
 
-router.put('/', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
     const university = new University(req.body);
     res.send(200).send();
 });
