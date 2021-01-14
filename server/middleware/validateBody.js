@@ -5,6 +5,7 @@
 //  3) Include as middleware in app.js
 
 const { body, validationResult } = require('express-validator');
+const { BadRequest } = require('../utils/errors');
 
 validate_entry = [
   body('email')
@@ -18,7 +19,7 @@ validate_entry = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).send({ response: "Missing or invalid field(s)" });
+      next(new BadRequest('Missing or invalid field(s)'));
     }
     next();
   }

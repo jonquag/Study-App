@@ -4,8 +4,9 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const connectDB = require('./db');
-const verifyAuth = require('./middleware/verify-auth'); //Middleware to verify JWT tokens
-const validateBody = require('./middleware/validate-body');
+const handleErrors = require('./middleware/handleErrors');
+const verifyAuth = require('./middleware/verifyAuth'); //Middleware to verify JWT tokens
+const validateBody = require('./middleware/validateBody');
 
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
@@ -30,6 +31,8 @@ app.use("/", indexRouter);
 app.use("/login", validateEntryReq, loginRouter);
 app.use("/ping", pingRouter);
 app.use("/register", validateEntryReq, registerRouter);
+
+app.use(handleErrors);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
