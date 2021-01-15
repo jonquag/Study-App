@@ -1,17 +1,15 @@
 const { GeneralError } = require('../utils/errors');
 
 const handleErrors = (err, req, res, next) => {
+    console.log(err)
     if (err instanceof GeneralError) {
-        return res.status(err.getCode()).json({
+        res.status(err.getCode()).send({
             status: 'error',
             response: err.response,
         });
-    }
-
-    return res.status(500).json({
-        status: 'error',
-        message: err.message,
-    });
+    } else {
+        next();
+    };
 }
 
 module.exports = handleErrors;
