@@ -19,11 +19,11 @@ const useStyles = makeStyles({
 const Profile = (props) => {
     const classes = useStyles();
     return (
-        <div>
-            <Drawer className={classes.container} />
+        <div className={classes.container}>
+            <Drawer />
             {/* Display current route container */}
 
-            <Grid container style={{ height: '100vh', background: 'grey' }}>
+            <Grid container style={{ height: '100vh' }}>
                 <Switch>
                     <Route path='/profile/' exact component={UserInfo} />
                     <Route path='/profile/courses' component={Courses} />

@@ -10,11 +10,11 @@ const useStyles = makeStyles({
         paddingLeft: '1em',
         minWidth: '12em',
     },
-    helperStyles: {
-        fontSize: 15,
-    },
     labelStyles: {
         paddingBottom: '.5em',
+    },
+    profileGrid: {
+        padding: '2em 0 0 2em',
     },
 });
 
@@ -29,7 +29,7 @@ const UserInfo = (props) => {
 
     return (
         //  User Info Grid Parent Container
-        <Grid container sm={12} justify='space-between' className={classes.profileGrid}>
+        <Grid container sm={12} className={classes.profileGrid}>
             <Grid item sm={12}>
                 <Typography variant='h1' className={classes.headerStyles}>
                     Profile
