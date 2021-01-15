@@ -68,11 +68,13 @@ router.post("/university/enroll", async function(req, res) {
           {university: universityId},
           opts,
         );
-        await University.findByIdAndUpdate(
-            universityId,
-            {$pull: { 'students': userId }},
-            opts,
-        );
+        if (userDoc.university) {
+            await University.findByIdAndUpdate(
+                userDoc.university,
+                {$pull: { 'students': userId }},
+                opts,
+            );
+        }
         await University.findByIdAndUpdate(
             universityId,
             {$addToSet: { 'students': userId }},

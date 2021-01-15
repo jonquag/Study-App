@@ -6,13 +6,13 @@ const router = express.Router();
 const User = require("../models/user");
 
 router.post("/", async function(req, res) {
-  const {email, password} = req.body;
+  const {email, password, courses, university} = req.body;
   const hashedPw = await bcrypt.hash(password, 10)
   .catch(() => {
         res.sendStatus(500).send();
   });
   if (hashedPw) {
-    const user = new User({ email, password: hashedPw });
+    const user = new User({ email, password: hashedPw, courses, university });
     const userDoc = await user.save()
     .catch((err) => {
       if (!err.errors || err.errors.email && err.errors.email.reason) {
