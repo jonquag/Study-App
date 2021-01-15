@@ -1,19 +1,26 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
+
 // Custom component imports
-// import Sidebar from '../components/Profile/Sidebar';
 import UserInfo from '../components/Profile/UserInfo';
 import Courses from '../components/Profile/Courses';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import Drawer from '../components/Profile/Drawer';
 
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+    },
+});
+
 const Profile = (props) => {
+    const classes = useStyles();
     return (
-        <React.Fragment>
-            <Drawer />
+        <div>
+            <Drawer className={classes.container} />
             {/* Display current route container */}
 
             <Grid container style={{ height: '100vh', background: 'grey' }}>
@@ -24,7 +31,7 @@ const Profile = (props) => {
                     <Route path='/profile/notifications' component={Notifications} />
                 </Switch>
             </Grid>
-        </React.Fragment>
+        </div>
     );
 };
 
