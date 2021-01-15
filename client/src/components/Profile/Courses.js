@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 
-const ProfileCourses = () => {
+const Courses = () => {
     return (
         // Courses container
         <Grid container>
@@ -10,4 +10,4 @@ const ProfileCourses = () => {
     );
 };
 
-export default ProfileCourses;
+export default Courses;

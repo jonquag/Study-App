@@ -1,60 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
-import TextField from '@material-ui/core/TextField';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import { Route, Switch } from 'react-router-dom';
+import { makeStyles } from '@material-ui/styles';
 // Custom component imports
-import ProfileSidebar from '../components/ProfileSidebar';
-import ProfileUserInfo from '../components/ProfileUserInfo';
-import ProfileCourses from '../components/ProfileCourses';
-import ProfileSettings from '../components/ProfileSettings';
-import ProfileNotifications from '../components/ProfileNotifications';
-
-const useStyles = makeStyles({
-    headerStyles: {
-        fontSize: '36',
-    },
-    labelStyles: {
-        opacity: '50%',
-    },
-    inputStyles: {
-        fontWeight: '600',
-        paddingLeft: '1em',
-    },
-    profileGrid: {
-        marginLeft: '2em',
-    },
-    bgColorTest: {
-        background: '#343466',
-    },
-});
+// import Sidebar from '../components/Profile/Sidebar';
+import UserInfo from '../components/Profile/UserInfo';
+import Courses from '../components/Profile/Courses';
+import Settings from '../components/Profile/Settings';
+import Notifications from '../components/Profile/Notifications';
+import Drawer from '../components/Profile/Drawer';
 
 const Profile = (props) => {
-    const classes = useStyles();
-
     return (
-        // Layout Container
-        <Grid container>
-            {/* Sidebar container */}
-            <Grid container item xs={0} sm={4} direction='column'>
-                <ProfileSidebar />
-            </Grid>
+        <React.Fragment>
+            <Drawer />
             {/* Display current route container */}
-            <Grid container item xs={8}>
+
+            <Grid container style={{ height: '100vh', background: 'grey' }}>
                 <Switch>
-                    <Route path='/profile/' exact component={ProfileUserInfo} />
-                    <Route path='/profile/courses' exact component={ProfileCourses} />
-                    <Route path='/profile/settings' exact component={ProfileSettings} />
-                    <Route
-                        path='/profile/notifications'
-                        exact
-                        component={ProfileNotifications}
-                    />
+                    <Route path='/profile/' exact component={UserInfo} />
+                    <Route path='/profile/courses' component={Courses} />
+                    <Route path='/profile/settings' component={Settings} />
+                    <Route path='/profile/notifications' component={Notifications} />
                 </Switch>
             </Grid>
-        </Grid>
+        </React.Fragment>
     );
 };
 
