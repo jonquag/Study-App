@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
     Grid,
     Typography,
@@ -20,6 +20,7 @@ import axios from 'axios';
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
 import { schools, courses } from '../../data/mockData';
+import CourseList from './CourseList';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -28,26 +29,24 @@ const SignupSchema = Yup.object().shape({
 
 const Signup = () => {
     const classes = useStyles();
-    const [school, setSchool] = useState('');
     const [course, setCourse] = useState('');
-    const [schoolCourses, setSchoolCourses] = useState(courses);
-    // const [addedCourses, setAddedCourses] = useState([]);
+    const [schoolCourses] = useState(courses);
+    const [addedCourses, setAddedCourses] = useState([]);
+    const [selectedId, setSelectedId] = useState([]);
 
-    // const addCourse = () => {
-    //     setAddedCourses([...addedCourses, course]);
-    //     setSchoolCourses(schoolCourses.filter(sc => sc.name !== course));
-    // };
+    const addCourse = () => {
+        if (addedCourses.some(ac => ac.id === course)) return;
+        setAddedCourses([...addedCourses, courses.find(c => c.id === course)]);
+        setSelectedId([...selectedId, course]);
+    };
 
-    useEffect(() => {
-        if (school) {
-            let filteredCourses = [];
-            schools.forEach(sch => {
-                if (sch.name === school) return (filteredCourses = [...sch.courses]);
-            });
-
-            setSchoolCourses(filteredCourses);
-        }
-    }, [school]);
+    const handleRemoveCourse = useCallback(
+        id => {
+            setAddedCourses(addedCourses.filter(c => c.id !== id));
+            setSelectedId(selectedId.filter(sId => sId !== id));
+        },
+        [addedCourses, selectedId]
+    );
 
     return (
         <div className={classes.root}>
@@ -90,11 +89,13 @@ const Signup = () => {
                         initialValues={{
                             email: '',
                             password: '',
-                            schoolSelect: '',
+                            university: '',
                         }}
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
+                            values.courses = addedCourses;
                             try {
+                                console.log(values);
                                 // TODO: better to move it to a helper action.
                                 await axios.post('/register', values);
                             } catch (err) {
@@ -122,42 +123,64 @@ const Signup = () => {
                                     variant="outlined"
                                 />
                                 <FormHelperText>Select your school</FormHelperText>
-                                <Select
-                                    value={school}
+                                <Field
+                                    component={MikTextField}
+                                    name="university"
+                                    type="text"
+                                    select
                                     variant="outlined"
-                                    onChange={e => setSchool(e.target.value)}
                                 >
                                     {schools.map(school => {
                                         return (
-                                            <MenuItem key={school.id} value={school.name}>
+                                            <MenuItem key={school.id} value={school.id}>
                                                 {school.name}
                                             </MenuItem>
                                         );
                                     })}
-                                </Select>
-
+                                </Field>
+                                {addedCourses.length > 0 && (
+                                    <CourseList
+                                        courses={addedCourses}
+                                        removeCourse={handleRemoveCourse}
+                                    />
+                                )}
                                 <FormHelperText>Select the course</FormHelperText>
                                 <Select
                                     value={course}
                                     variant="outlined"
                                     onChange={e => setCourse(e.target.value)}
                                 >
-                                    <MenuItem value="Select">
-                                        <em>None</em>
-                                    </MenuItem>
                                     {schoolCourses.map(course => {
-                                        return (
-                                            <MenuItem key={course.id} value={course.name}>
-                                                {course.name}
-                                            </MenuItem>
+                                        const isSelected = selectedId.some(
+                                            id => id === course.id
                                         );
+                                        if (isSelected) {
+                                            return (
+                                                <MenuItem
+                                                    key={course.id}
+                                                    value={course.id}
+                                                    disabled
+                                                >
+                                                    {course.name}
+                                                </MenuItem>
+                                            );
+                                        } else {
+                                            return (
+                                                <MenuItem
+                                                    key={course.id}
+                                                    value={course.id}
+                                                >
+                                                    {course.name}
+                                                </MenuItem>
+                                            );
+                                        }
                                     })}
                                 </Select>
                                 <Grid style={{ marginTop: 8 }}>
                                     <Button
                                         color="primary"
                                         startIcon={<AddIcon />}
-                                        // onClick={addCourse}
+                                        onClick={addCourse}
                                     >
                                         Add course
                                     </Button>
