@@ -24,7 +24,26 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.common.white,
         flexDirection: 'column',
         justify: 'flex-start',
-        paddingLeft: theme.spacing(11),
+        padding: theme.spacing(8, 0, 0, 11),
+    },
+    university: {
+        marginBottom: theme.spacing(3),
+    },
+    title: {
+        marginBottom: theme.spacing(2),
+    },
+    list_item: {
+        justifyContent: 'space-between',
+        maxWidth: '400px',
+        padding: '0 4px 0 8px',
+        '& button': {
+            padding: 8,
+        },
+    },
+    btn_group: {
+        width: '15%',
+        display: 'flex',
+        justifyContent: 'space-between',
     },
     form: {
         display: 'flex',
@@ -39,6 +58,12 @@ const useStyles = makeStyles(theme => ({
             fontSize: 12,
             margin: theme.spacing(2.5, 0, 0.5, 0),
         },
+    },
+    button: {
+        color: '#FFF',
+        background: theme.palette.primary.gradient,
+        marginTop: theme.spacing(4),
+        height: '3rem',
     },
 }));
 
@@ -85,15 +110,19 @@ const MyCourses = () => {
                 Sidebar
             </Grid>
             <Grid item container md={9} className={classes.container}>
-                <Typography variant="h1">Profile</Typography>
-                <Typography>Your school: {school}</Typography>
+                <Typography variant="h4" className={classes.university}>
+                    {school}
+                </Typography>
+                <Typography variant="h5" className={classes.title}>
+                    Your courses
+                </Typography>
                 {myCourses.length < 1 && <Typography>No course selected.</Typography>}
                 {myCourses.map(c => {
                     if (c.id === course) {
                         return (
-                            <List key={c.id}>
-                                <ListItem>
-                                    <Typography>{c.name}</Typography>
+                            <ListItem key={c.id} className={classes.list_item}>
+                                <Typography>{c.name}</Typography>
+                                <div className={classes.btn_group}>
                                     <IconButton
                                         edge="end"
                                         onClick={() => removeCourse(c.id)}
@@ -103,24 +132,22 @@ const MyCourses = () => {
                                     <IconButton edge="end" onClick={() => setCourse('')}>
                                         <HighlightOffIcon />
                                     </IconButton>
-                                </ListItem>
-                            </List>
+                                </div>
+                            </ListItem>
                         );
                     }
                     return (
-                        <List key={c.id}>
-                            <ListItem>
-                                <Typography>{c.name}</Typography>
-                                <IconButton edge="end" onClick={() => setCourse(c.id)}>
-                                    <EditOutlinedIcon />
-                                </IconButton>
-                            </ListItem>
-                        </List>
+                        <ListItem key={c.id} className={classes.list_item}>
+                            <Typography>{c.name}</Typography>
+                            <IconButton edge="end" onClick={() => setCourse(c.id)}>
+                                <EditOutlinedIcon />
+                            </IconButton>
+                        </ListItem>
                     );
                 })}
 
                 <form className={classes.form}>
-                    <FormHelperText>Select the course</FormHelperText>
+                    <FormHelperText>Select course</FormHelperText>
                     <Select
                         value={course}
                         variant="outlined"
