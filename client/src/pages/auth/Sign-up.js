@@ -93,7 +93,10 @@ const Signup = () => {
                         }}
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
-                            values.courses = addedCourses;
+                            values.courses = [...addedCourses].map(ac =>
+                                ac.id.toString()
+                            );
+
                             try {
                                 console.log(values);
                                 // TODO: better to move it to a helper action.
@@ -132,7 +135,10 @@ const Signup = () => {
                                 >
                                     {schools.map(school => {
                                         return (
-                                            <MenuItem key={school.id} value={school.id}>
+                                            <MenuItem
+                                                key={school.id}
+                                                value={school.id.toString()}
+                                            >
                                                 {school.name}
                                             </MenuItem>
                                         );
