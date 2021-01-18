@@ -29,31 +29,33 @@ router.get("/course", verifyAuth, async function(req, res) {
 })
 
 // Adds a user to a course, sends the updated user
-router.post("/course/add", [verifyAuth, validateCourseId], async function(req, res) {
-    const {courseId, userId} = req.body.userId;
+router.put("/course/add", [verifyAuth, validateCourseId], async function(req, res) {
+    const {courseId, userId} = req.body;
     const userDoc = await User.findByIdAndUpdate(
       userId, 
       {$addToSet: { 'courses': courseId }},
       {useFindAndModify: false, new: true}
-    ).catch(() => { return null });
+    ).populate({path: 'courses', model: 'Course'})
+    .catch(() => { return null });
     res.status(userDoc ? 201 : 500);
     res.send(userDoc);
 });
 
 //Remove a user from a course, sends the updated user
-router.post("/course/remove", [verifyAuth, validateCourseId], async function(req, res) {
-    const {courseId, userId} = req.body.userId;
+router.put("/course/remove", [verifyAuth, validateCourseId], async function(req, res) {
+    const {courseId, userId} = req.body;
     const userDoc = await User.findByIdAndUpdate(
       userId, 
       {$pull: { 'courses': courseId }},
       {useFindAndModify: false, new: true}
-    ).catch(() => { return null });
+    ).populate({path: 'courses', model: 'Course'})
+    .catch(() => { return null });
     res.status(userDoc ? 201 : 500);
     res.send(userDoc);
 });
 
 //Assign a user to a University, sends the updated user
-router.post("/university/enroll", verifyAuth, async function(req, res) {
+router.put("/university/enroll", verifyAuth, async function(req, res) {
     const {universityId, userId} = req.body;
     if (!universityId) res.sendStatus(400);
     const session = await User.startSession();
