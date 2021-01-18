@@ -7,19 +7,24 @@ const ProfileSchema = new mongoose.Schema({
         ref: 'User'
     },
     firstName: {
-        type: String
+        type: String,
+        default: ""
     },
     lastName: {
-        type: String
+        type: String,
+        default: ""
     },
     phone: {
-        type: String
+        type: String,
+        default: ""
     },
     location: {
-        type: String
+        type: String,
+        default: ""
     },
     imageUrl: {
-        type: String
+        type: String,
+        default: ""
     }
 });
 
