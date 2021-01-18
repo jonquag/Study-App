@@ -11,14 +11,17 @@ const useStyles = makeStyles(theme => ({
         textDecoration: 'none',
         color: 'black',
         padding: '1em 0 0 2em',
+        fontSize: 18,
+        opacity: '50%',
     },
     profilePic: {
         borderRadius: '50%',
         width: '130px',
-        marginTop: '2em',
+        marginTop: '4em',
     },
     drawer: {
         width: 400,
+        background: '#F9F9FC',
     },
     linkContainer: {
         paddingTop: '2em',
@@ -26,9 +29,6 @@ const useStyles = makeStyles(theme => ({
     profileName: {
         paddingTop: '1em',
         fontSize: 22,
-    },
-    test: {
-        background: '#F9F9FC',
     },
 }));
 
@@ -44,10 +44,10 @@ const Drawer = props => {
                 alignItems="center"
                 style={{ width: '400px' }}
                 sm={12}
-                className={classes.test}
+                className={classes.drawer}
             >
                 {/* Profile briefing container */}
-                <Grid container item direction="column" alignItems="center">
+                <Grid container item direction="column" alignItems="center" sm={4}>
                     <img
                         src={profilePic}
                         alt="Ashly Sanford"
@@ -62,10 +62,10 @@ const Drawer = props => {
                 {/* Profile Links container */}
                 <Grid container item direction="column" className={classes.linkContainer}>
                     <NavLink
-                        to="/userinfo/"
+                        to="/profile/"
                         exact
                         activeStyle={{
-                            fontWeight: 'bold',
+                            opacity: '100%',
                         }}
                         className={classes.linkStyles}
                     >
@@ -73,8 +73,9 @@ const Drawer = props => {
                     </NavLink>
                     <NavLink
                         to="/profile/courses"
+                        exact
                         activeStyle={{
-                            fontWeight: 'bold',
+                            opacity: '100%',
                         }}
                         className={classes.linkStyles}
                     >
@@ -82,8 +83,9 @@ const Drawer = props => {
                     </NavLink>
                     <NavLink
                         to="/profile/settings"
+                        exact
                         activeStyle={{
-                            fontWeight: 'bold',
+                            opacity: '100%',
                         }}
                         className={classes.linkStyles}
                     >
@@ -91,8 +93,9 @@ const Drawer = props => {
                     </NavLink>
                     <NavLink
                         to="/profile/notifications"
+                        exact
                         activeStyle={{
-                            fontWeight: 'bold',
+                            opacity: '100%',
                         }}
                         className={classes.linkStyles}
                     >
@@ -100,7 +103,9 @@ const Drawer = props => {
                     </NavLink>
                 </Grid>
                 <Grid container direction="column" item justify="flex-end" sm={4}>
-                    <Typography align="left">Logout</Typography>
+                    <Grid item>
+                        <Typography align="left">Logout</Typography>
+                    </Grid>
                 </Grid>
             </Grid>
         </MUIDrawer>

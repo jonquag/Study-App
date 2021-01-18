@@ -7,8 +7,7 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles({
     inputStyles: {
         fontWeight: '600',
-        paddingLeft: '1em',
-        minWidth: '12em',
+        width: 300,
     },
     labelStyles: {
         paddingBottom: '.5em',
@@ -18,7 +17,7 @@ const useStyles = makeStyles({
     },
 });
 
-const UserInfo = (props) => {
+const UserInfo = props => {
     const [firstName, setFirstName] = useState('Ashly');
     const [lastName, setLastName] = useState('Sanford');
     const [email, setEmail] = useState('usermail@gmail.com');
@@ -31,7 +30,7 @@ const UserInfo = (props) => {
         //  User Info Grid Parent Container
         <Grid container sm={12} className={classes.profileGrid}>
             <Grid item sm={12}>
-                <Typography variant='h1' className={classes.headerStyles}>
+                <Typography variant="h1" className={classes.headerStyles}>
                     Profile
                 </Typography>
             </Grid>
@@ -39,10 +38,11 @@ const UserInfo = (props) => {
             <Grid item xs={12} sm={6}>
                 <InputLabel className={classes.labelStyles}>First Name</InputLabel>{' '}
                 <TextField
-                    variant='outlined'
-                    hintText='Change First Name..'
-                    onChange={(e) => setFirstName(e.target.value)}
+                    variant="outlined"
+                    hintText="Change First Name.."
+                    onChange={e => setFirstName(e.target.value)}
                     defaultValue={firstName}
+                    className={classes.inputStyles}
                 />
             </Grid>
 
@@ -50,20 +50,22 @@ const UserInfo = (props) => {
             <Grid item xs={12} sm={6}>
                 <InputLabel className={classes.labelStyles}>Last Name</InputLabel>{' '}
                 <TextField
-                    variant='outlined'
-                    hintText='Change Last Name..'
-                    onChange={(e) => setLastName(e.target.value)}
+                    variant="outlined"
+                    hintText="Change Last Name.."
+                    onChange={e => setLastName(e.target.value)}
                     defaultValue={lastName}
+                    className={classes.inputStyles}
                 />
             </Grid>
             {/* Email */}
             <Grid item xs={12} sm={6}>
                 <InputLabel className={classes.labelStyles}>Email address</InputLabel>{' '}
                 <TextField
-                    variant='outlined'
-                    hintText='Change Email...'
-                    onChange={(e) => setEmail(e.target.value)}
+                    variant="outlined"
+                    hintText="Change Email..."
+                    onChange={e => setEmail(e.target.value)}
                     defaultValue={email}
+                    className={classes.inputStyles}
                 />
             </Grid>
 
@@ -71,20 +73,22 @@ const UserInfo = (props) => {
             <Grid item xs={12} sm={6}>
                 <InputLabel className={classes.labelStyles}>Phone</InputLabel>{' '}
                 <TextField
-                    variant='outlined'
-                    hintText='Change Phone Number...'
-                    onChange={(e) => setPhone(e.target.value)}
+                    variant="outlined"
+                    hintText="Change Phone Number..."
+                    onChange={e => setPhone(e.target.value)}
                     defaultValue={phone}
+                    className={classes.inputStyles}
                 />
             </Grid>
             {/* Location */}
             <Grid item xs={12} sm={6}>
                 <InputLabel className={classes.labelStyles}>Location</InputLabel>{' '}
                 <TextField
-                    variant='outlined'
-                    hintText='Change Location..'
-                    onChange={(e) => setLocation(e.target.value)}
+                    variant="outlined"
+                    hintText="Change Location.."
+                    onChange={e => setLocation(e.target.value)}
                     defaultValue={location}
+                    className={classes.inputStyles}
                 />
             </Grid>
         </Grid>
