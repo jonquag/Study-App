@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import {useDropzone} from 'react-dropzone'
+import React, { useState, useMemo, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone'
 import {
     Avatar,
-    Typography,
     Tooltip,
     Box
 } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
 import defaultImage from "../images/sign-up.png"
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center', 
-    border: 'solid',
     backgroundColor: '#f9f9fc'
   },
   small: {
@@ -43,34 +42,78 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const baseStyle = {
+  borderWidth: 2,
+  borderRadius: 65,
+  borderColor: '#eeeeee',
+  borderStyle: 'solid',
+  backgroundColor: '#fafafa',
+  color: '#bdbdbd',
+  outline: 'none',
+  transition: 'border .24s ease-in-out'
+};
 
-const ProfilePic = ({name}) => {
+const activeStyle = {
+  borderColor: '#2196f3'
+};
+
+const acceptStyle = {
+  borderColor: '#00e676'
+};
+
+const rejectStyle = {
+  borderColor: '#ff1744'
+};
+
+const ProfilePic = ({url}) => {
     const classes = useStyles();
-    const {getRootProps, getInputProps} = useDropzone({accept: 'image/*'});
-    const DragDropTip = withStyles({
-        tooltip: {
-          fontSize: '1rem'
-        }
-    })(Tooltip);
+
+    const onDrop = useCallback(async (droppedFiles) => {
+      if (droppedFiles.length) {
+        console.log(droppedFiles[0])
+        const form = new FormData()
+        form.append("image", droppedFiles[0]);
+        console.log(form);
+        const url = await axios.post('/upload', {image: form}).catch((err) => console.log(err));
+        //Todo add url to profile in context
+      }
+    }, [])
+
+    const {
+      getRootProps,
+      isDragActive,
+      isDragAccept,
+      isDragReject,
+    } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
+  
+    const style = useMemo(() => ({
+      ...baseStyle,
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {})
+    }), [
+      isDragActive,
+      isDragReject,
+      isDragAccept
+    ]);
+  
 
     return (
-        <Box 
-        className={classes.container}
-        >
+          <Box
+          className={classes.container}
+          >
             <Tooltip
-            title="Drag and Drop Profile Picture"
+            title="Drag and drop profile picture"
             arrow placement="right"
             >
             <Box
+            {...getRootProps({style})}
               className={classes.image_container}
-              {...getRootProps({borderColor: 'transparent'})}
             >
-                <input {...getInputProps()} />
-                <Avatar alt="Profile Pic" src={defaultImage} className={classes.large}/>
+                <Avatar alt="Profile Pic" src={url || defaultImage} className={classes.large}/>
             </Box>
             </Tooltip>
-            <Typography className={classes.name_text}>{name}</Typography>
-        </Box>
+          </Box>  
     )
 }
 
