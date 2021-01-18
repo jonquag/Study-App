@@ -1,35 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/verify-auth');
+const auth = require('../middleware/verifyAuth');
+const { NotFound } = require('../utils/errors');
 
 const Profile = require('../models/profile');
 const User = require('../models/user');
+const { NotExtended } = require('http-errors');
 
 // Returns current user profile based on ID
-router.get('/:user_id', auth, async (req, res) => {
+router.get('/:user_id', auth, async (req, res, next) => {
     try {
 
     //find profile by user id and populate email
     const profile = await Profile.findOne({ user: req.body.userId }).populate('user', ['email']);
 
     if(!profile) {
-        return res.status(400).json({ msg: "No profile found." });
+         throw new NotFound("No profile found.");
     }
 
     res.json(profile);
 
     } catch(err){
-    console.log(err.message);
-    if(err.kind == "ObjectId") {
-        return res.status(400).json({ msg: "Profile not found for this Id." });
-    }
-    res.status(500).send('Server Error');
+        next(err);
     }
 
 })
 
 //Updates user profile fields based on ID and populates email
-router.put('/:user_id', auth, async (req, res) => {
+router.put('/:user_id', auth, async (req, res, next) => {
     try {
         //find profile
         let profile = await Profile.findOne({ user: req.body.userId })
@@ -51,11 +49,10 @@ router.put('/:user_id', auth, async (req, res) => {
             return res.json(profile);
         }
         //return error message if no profile found
-        return res.status(400).json({ msg: "No profile found." });
+        throw new NotFound("No profile found.");
         
     } catch(err) {
-        console.log(err.message);
-        res.status(500).send("Server error!");
+        next(err);
     }
 })
 
