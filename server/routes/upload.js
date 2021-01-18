@@ -39,7 +39,7 @@ router.post("/", fileUpload.single("image"), auth, async function(req, res, next
   if(!result) {
     throw new GeneralError("Upload error.")
   }
-  res.send(result.url)
+  res.json({url: result.url})
 
   } catch(err) {
     next(err)
