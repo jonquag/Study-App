@@ -1,7 +1,10 @@
 const express = require('express');
+const { NotExtended } = require('http-errors');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier'); 
+const auth = require('../middleware/verifyAuth');
+const { GeneralError } = require('../utils/errors');
 const router = express.Router();
 const fileUpload = multer();
 
@@ -13,31 +16,34 @@ cloudinary.config({
 });
 
 //stream file upload
-router.post("/", fileUpload.single("image"), async function(req, res) {
+router.post("/", fileUpload.single("image"), auth, async function(req, res, next) {
+
+  try {
     let streamUpload = (req) => {
-        return new Promise((resolve, reject) => {
-            let stream = cloudinary.uploader.upload_stream(
-              (error, result) => {
-                if (result) {
-                  resolve(result);
-                } else {
-                  reject(error);
-                }
+      return new Promise((resolve, reject) => {
+          let stream = cloudinary.uploader.upload_stream(
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                reject(error);
               }
-            );
-    
-           streamifier.createReadStream(req.file.buffer).pipe(stream);
-        });
-    }
+            }
+          );
+  
+         streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+  }
 
-    //upload and get response
-    async function upload(req) {
-        let result = await streamUpload(req);
-        console.log(result.url);
-        res.send(result.url)
-    }
+  let result = await streamUpload(req);
+  if(!result) {
+    throw new GeneralError("Upload error.")
+  }
+  res.send(result.url)
 
-    upload(req);
+  } catch(err) {
+    next(err)
+  }
 
 })
 
