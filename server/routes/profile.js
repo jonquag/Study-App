@@ -8,7 +8,7 @@ const User = require('../models/user');
 const { NotExtended } = require('http-errors');
 
 // Returns current user profile based on ID
-router.get('/:user_id', auth, async (req, res) => {
+router.get('/:user_id', auth, async (req, res, next) => {
     try {
 
     //find profile by user id and populate email
@@ -21,13 +21,13 @@ router.get('/:user_id', auth, async (req, res) => {
     res.json(profile);
 
     } catch(err){
-        
+        next();
     }
 
 })
 
 //Updates user profile fields based on ID and populates email
-router.put('/:user_id', auth, async (req, res) => {
+router.put('/:user_id', auth, async (req, res, next) => {
     try {
         //find profile
         let profile = await Profile.findOne({ user: req.body.userId })
@@ -52,7 +52,7 @@ router.put('/:user_id', auth, async (req, res) => {
         throw new NotFound("No profile found.");
         
     } catch(err) {
-        throw new GeneralError(err.message)
+        next();
     }
 })
 
