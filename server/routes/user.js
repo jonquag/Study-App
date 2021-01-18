@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
-
+const verifyAuth = require('../middleware/verifyAuth');
 const User = require("../models/user");
 const University = require("../models/universities");
+const validateBody = require('../middleware/validateBody');
+const validateCourseId = validateBody.course;
 require("../models/courses");
 
+
 // Get the logged in user
-router.get("/", async function(req, res) {
+router.get("/", verifyAuth, async function(req, res) {
     const userId = req.body.userId;
     const userDoc = await User.findById(userId)
       .catch(() => { return null });
@@ -14,7 +17,7 @@ router.get("/", async function(req, res) {
 })
 
 // Gets all the current users courses
-router.get("/course", async function(req, res) {
+router.get("/course", verifyAuth, async function(req, res) {
     const userDoc = await User.findById({ _id: req.body.userId })
       .populate({path: 'courses', model: 'Course'})
       .catch(() => { return null });
@@ -26,11 +29,8 @@ router.get("/course", async function(req, res) {
 })
 
 // Adds a user to a course, sends the updated user
-router.post("/course/add", async function(req, res) {
+router.post("/course/add", [verifyAuth, validateCourseId], async function(req, res) {
     const {courseId, userId} = req.body.userId;
-    if (!courseId) {
-        return res.sendStatus(400);
-    }
     const userDoc = await User.findByIdAndUpdate(
       userId, 
       {$addToSet: { 'courses': courseId }},
@@ -41,11 +41,8 @@ router.post("/course/add", async function(req, res) {
 });
 
 //Remove a user from a course, sends the updated user
-router.post("/course/remove", async function(req, res) {
+router.post("/course/remove", [verifyAuth, validateCourseId], async function(req, res) {
     const {courseId, userId} = req.body.userId;
-    if (!courseId) {
-        return res.sendStatus(400);
-    }
     const userDoc = await User.findByIdAndUpdate(
       userId, 
       {$pull: { 'courses': courseId }},
@@ -56,7 +53,7 @@ router.post("/course/remove", async function(req, res) {
 });
 
 //Assign a user to a University, sends the updated user
-router.post("/university/enroll", async function(req, res) {
+router.post("/university/enroll", verifyAuth, async function(req, res) {
     const {universityId, userId} = req.body;
     if (!universityId) res.sendStatus(400);
     const session = await User.startSession();

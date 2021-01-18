@@ -5,8 +5,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const connectDB = require('./db');
 const handleErrors = require('./middleware/handleErrors');
-const verifyAuth = require('./middleware/verifyAuth'); //Middleware to verify JWT tokens
-const validateBody = require('./middleware/validateBody');
 
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
@@ -16,7 +14,6 @@ const universityRouter = require("./routes/universities");
 const userRouter = require("./routes/user");
 
 const { json, urlencoded } = express;
-const validateEntryReq = validateBody.entry;
 
 var app = express();
 
@@ -30,11 +27,11 @@ app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/login", validateEntryReq, loginRouter);
+app.use("/login", loginRouter);
 app.use("/ping", pingRouter);
-app.use("/register", validateEntryReq, registerRouter);
-app.use("/universities", verifyAuth, universityRouter);
-app.use("/user", verifyAuth, userRouter);
+app.use("/register", registerRouter);
+app.use("/universities", universityRouter);
+app.use("/user", userRouter);
 
 app.use(handleErrors);
 

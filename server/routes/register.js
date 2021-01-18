@@ -2,10 +2,11 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-
 const User = require("../models/user");
+const validateBody = require('../middleware/validateBody');
+const validateEntryReq = validateBody.entry;
 
-router.post("/", async function(req, res) {
+router.post("/", validateEntryReq, async function(req, res) {
   const {email, password, courses, university} = req.body;
   const hashedPw = await bcrypt.hash(password, 10)
   .catch(() => {

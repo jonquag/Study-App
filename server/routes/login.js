@@ -2,10 +2,11 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-
 const User = require("../models/user");
+const validateBody = require('../middleware/validateBody');
+const validateEntryReq = validateBody.entry;
 
-router.post("/", async function(req, res) {
+router.post("/", validateEntryReq, async function(req, res) {
   const {email, password} = req.body;
   const user = await User.findOne({email});
   if (!user) {
