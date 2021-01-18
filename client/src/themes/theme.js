@@ -5,7 +5,8 @@ export const theme = createMuiTheme({
         fontFamily: 'Poppins',
         fontSize: 12,
         h1: {
-            fontSize: 36,
+            // could customize the h1 variant as well
+            fontSize: '36px',
         },
     },
     palette: {
