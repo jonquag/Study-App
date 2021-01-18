@@ -34,7 +34,7 @@ router.post("/", async function(req, res) {
 
       const userProfile = await new Profile({ user: userDoc.id, firstName: "", lastName: "", phone: "", location: "", imageUrl: ""}).save()
           .catch((err) => {
-            res.status(500).send({ response: "Error creating user profile." });
+            throw new GeneralError("Error creating user profile on registration.");
           })
 
 
