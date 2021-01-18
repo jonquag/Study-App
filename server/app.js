@@ -12,6 +12,7 @@ const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
 const pingRouter = require("./routes/ping");
 const registerRouter = require("./routes/register");
+const profileRouter = require ("./routes/profile");
 
 const { json, urlencoded } = express;
 const validateEntryReq = validateBody.entry;
@@ -31,6 +32,7 @@ app.use("/", indexRouter);
 app.use("/login", validateEntryReq, loginRouter);
 app.use("/ping", pingRouter);
 app.use("/register", validateEntryReq, registerRouter);
+app.use("/profile", profileRouter);
 
 app.use(handleErrors);
 
