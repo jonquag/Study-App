@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import profilePic from '../../static/images/profilePicSample.png';
 // import Avatar from '@material-ui/core/Avatar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     linkStyles: {
         textDecoration: 'none',
         color: 'black',
@@ -32,37 +32,37 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Drawer = (props) => {
+const Drawer = props => {
     const classes = useStyles();
 
     return (
-        <MUIDrawer variant='permanent' anchor='left' className={classes.drawer}>
+        <MUIDrawer variant="permanent" anchor="left" className={classes.drawer}>
             {/* Drawer container */}
             <Grid
                 container
-                direction='column'
-                alignItems='center'
+                direction="column"
+                alignItems="center"
                 style={{ width: '400px' }}
                 sm={12}
                 className={classes.test}
             >
                 {/* Profile briefing container */}
-                <Grid container item direction='column' alignItems='center'>
+                <Grid container item direction="column" alignItems="center">
                     <img
                         src={profilePic}
-                        alt='Ashly Sanford'
+                        alt="Ashly Sanford"
                         className={classes.profilePic}
                     />
 
-                    <Typography className={classes.profileName} align='center'>
+                    <Typography className={classes.profileName} align="center">
                         Ashley Sanford
                     </Typography>
                 </Grid>
 
                 {/* Profile Links container */}
-                <Grid container item direction='column' className={classes.linkContainer}>
+                <Grid container item direction="column" className={classes.linkContainer}>
                     <NavLink
-                        to='/profile/'
+                        to="/userinfo/"
                         exact
                         activeStyle={{
                             fontWeight: 'bold',
@@ -72,7 +72,7 @@ const Drawer = (props) => {
                         User Info
                     </NavLink>
                     <NavLink
-                        to='/profile/courses'
+                        to="/profile/courses"
                         activeStyle={{
                             fontWeight: 'bold',
                         }}
@@ -81,7 +81,7 @@ const Drawer = (props) => {
                         My Courses
                     </NavLink>
                     <NavLink
-                        to='/profile/settings'
+                        to="/profile/settings"
                         activeStyle={{
                             fontWeight: 'bold',
                         }}
@@ -90,7 +90,7 @@ const Drawer = (props) => {
                         Settings
                     </NavLink>
                     <NavLink
-                        to='/profile/notifications'
+                        to="/profile/notifications"
                         activeStyle={{
                             fontWeight: 'bold',
                         }}
@@ -99,8 +99,8 @@ const Drawer = (props) => {
                         Notifications
                     </NavLink>
                 </Grid>
-                <Grid container direction='column' item justify='flex-end' sm={4}>
-                    <Typography align='left'>Logout</Typography>
+                <Grid container direction="column" item justify="flex-end" sm={4}>
+                    <Typography align="left">Logout</Typography>
                 </Grid>
             </Grid>
         </MUIDrawer>
