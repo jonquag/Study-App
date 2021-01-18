@@ -7,6 +7,8 @@ import { theme } from './themes/theme';
 import Signup from './pages/auth/Sign-up';
 import Login from './pages/auth/Login';
 
+import ProfilePicDemo from './pages/ProfilePicDemo';
+
 import './App.css';
 
 function App() {
@@ -16,8 +18,9 @@ function App() {
                 <BrowserRouter>
                     <Switch>
                         {/* Landing page temporarily redirects to sign-up. */}
-                        <Route exact path="/" render={() => <Redirect to="/sign-up" />} />
+                        <Route exact path="/" render={() => <Redirect to="/profile" />} />
 
+                        <Route exact path="/profile" component={ProfilePicDemo} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/sign-up" component={Signup} />
 
