@@ -8,7 +8,7 @@ import UserInfo from '../components/Profile/UserInfo';
 import Courses from '../components/Profile/Courses';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
-import Drawer from '../components/Profile/Drawer';
+import Drawer from '../components/Profile/Sidebar';
 
 const useStyles = makeStyles({
     container: {
@@ -18,6 +18,7 @@ const useStyles = makeStyles({
 
 const Profile = props => {
     const classes = useStyles();
+
     return (
         <div className={classes.container}>
             <Drawer />

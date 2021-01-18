@@ -6,6 +6,7 @@ import { theme } from './themes/theme';
 import Profile from './pages/Profile';
 import Signup from './pages/auth/Sign-up';
 import Login from './pages/auth/Login';
+
 // import UserInfo from './components/Profile/UserInfo';
 
 import './App.css';
