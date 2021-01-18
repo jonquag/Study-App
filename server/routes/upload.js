@@ -19,9 +19,9 @@ cloudinary.config({
 router.post("/", fileUpload.single("image"), auth, async function(req, res, next) {
 
   try {
-    let streamUpload = (req) => {
+    const streamUpload = (req) => {
       return new Promise((resolve, reject) => {
-          let stream = cloudinary.uploader.upload_stream(
+          const stream = cloudinary.uploader.upload_stream(
             (error, result) => {
               if (result) {
                 resolve(result);
@@ -31,11 +31,11 @@ router.post("/", fileUpload.single("image"), auth, async function(req, res, next
             }
           );
   
-         streamifier.createReadStream(req.file.buffer).pipe(stream);
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
       });
   }
 
-  let result = await streamUpload(req);
+  const result = await streamUpload(req);
   if(!result) {
     throw new GeneralError("Upload error.")
   }
