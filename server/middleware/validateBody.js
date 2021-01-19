@@ -35,25 +35,6 @@ validate_entry = [
   }
 ];
 
-validate_courseId = [
-  body('courseId')
-    .exists()
-    .isString(),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const err = new BadRequest('Missing or invalid field(s)');
-      return res.status(err.getCode()).send({
-        status: 'Error',
-        response: err.response,
-      });
-    }
-    next();
-  }
-];
-
-
 module.exports = {
   entry: validate_entry,
-  course: validate_courseId,
 };

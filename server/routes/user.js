@@ -3,8 +3,7 @@ const router = express.Router();
 const verifyAuth = require('../middleware/verifyAuth');
 const User = require("../models/user");
 const University = require("../models/universities");
-const validateBody = require('../middleware/validateBody');
-const validateCourseId = validateBody.course;
+const { BadRequest, GeneralError } = require("../utils/errors");
 require("../models/courses");
 
 
@@ -17,7 +16,7 @@ router.get("/", verifyAuth, async function(req, res) {
 })
 
 // Gets all the current users courses
-router.get("/course", verifyAuth, async function(req, res) {
+router.get("/courses", verifyAuth, async function(req, res) {
     const userDoc = await User.findById({ _id: req.body.userId })
       .populate({path: 'courses', model: 'Course'})
       .catch(() => { return null });
@@ -29,35 +28,55 @@ router.get("/course", verifyAuth, async function(req, res) {
 })
 
 // Adds a user to a course, sends the updated user
-router.put("/course/add", [verifyAuth, validateCourseId], async function(req, res) {
-    const {courseId, userId} = req.body;
-    const userDoc = await User.findByIdAndUpdate(
-      userId, 
-      {$addToSet: { 'courses': courseId }},
-      {useFindAndModify: false, new: true}
-    ).populate({path: 'courses', model: 'Course'})
-    .catch(() => { return null });
-    res.status(userDoc ? 201 : 500);
-    res.send(userDoc);
+router.put("/courses/:courseId", verifyAuth, async function(req, res, next) {
+    const courseId = req.params.courseId;
+    const userId = req.body.userId;
+    try {
+        const userDoc = await User.findByIdAndUpdate(
+            userId, 
+            {$addToSet: { 'courses': courseId }},
+            {useFindAndModify: false, new: true}
+          ).populate({path: 'courses', model: 'Course'})
+          .catch((err) => {
+              if (err.kind == "ObjectId") {
+                  throw new BadRequest('Invalid Course ID')
+              }
+              throw new GeneralError('Server Error')
+          });
+          res.status(201);
+          res.send(userDoc);
+    } catch (err) {
+        next(err)
+    }
 });
 
 //Remove a user from a course, sends the updated user
-router.put("/course/remove", [verifyAuth, validateCourseId], async function(req, res) {
-    const {courseId, userId} = req.body;
-    const userDoc = await User.findByIdAndUpdate(
-      userId, 
-      {$pull: { 'courses': courseId }},
-      {useFindAndModify: false, new: true}
-    ).populate({path: 'courses', model: 'Course'})
-    .catch(() => { return null });
-    res.status(userDoc ? 201 : 500);
-    res.send(userDoc);
+router.delete("/courses/:courseId", verifyAuth, async function(req, res) {
+    const courseId = req.params.courseId;
+    const userId = req.body.userId;
+    try {
+        const userDoc = await User.findByIdAndUpdate(
+            userId, 
+            {$pull: { 'courses': courseId }},
+            {useFindAndModify: false, new: true}
+          ).populate({path: 'courses', model: 'Course'})
+          .catch((err) => {
+              if (err.kind == "ObjectId") {
+                  throw new BadRequest('Invalid Course ID')
+              }
+              throw new GeneralError('Server Error')
+          });
+          res.status(201);
+          res.send(userDoc);
+    } catch (err) {
+        next(err)
+    }
 });
 
 //Assign a user to a University, sends the updated user
-router.put("/university/enroll", verifyAuth, async function(req, res) {
-    const {universityId, userId} = req.body;
-    if (!universityId) res.sendStatus(400);
+router.put("/universities/:universityId", verifyAuth, async function(req, res, next) {
+    const universityId = req.params.universityId;
+    const userId = req.body.userId;
     const session = await User.startSession();
     session.startTransaction();
     try {
@@ -66,7 +85,12 @@ router.put("/university/enroll", verifyAuth, async function(req, res) {
           userId, 
           {university: universityId},
           opts,
-        );
+        ).catch((err) => {
+            if (err.kind == "ObjectId") {
+                throw new BadRequest('Invalid University ID')
+            }
+            throw new GeneralError('Server Error')
+        });
         if (userDoc.university) {
             await University.findByIdAndUpdate(
                 userDoc.university,
@@ -81,12 +105,12 @@ router.put("/university/enroll", verifyAuth, async function(req, res) {
         );
         await session.commitTransaction();
         session.endSession();
-        res.status(userDoc ? 201 : 500);
+        res.status(201);
         return res.send(userDoc);
-    } catch (error) {
+    } catch (err) {
         await session.abortTransaction();
         session.endSession();
-        res.sendStatus(500);
+        next(err)
     }
 });
 
