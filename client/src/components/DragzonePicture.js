@@ -11,9 +11,9 @@ import {
   rejectStyle,
   useStyles,
 } from './DragzonePicture.styles';
-import { useDropzone } from 'react-dropzone'
+import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import defaultImage from "../images/profile_picture.png"
+import defaultImage from "../images/profile_picture.png";
 
 const ProfilePic = ({}) => {
     const classes = useStyles();
@@ -22,8 +22,8 @@ const ProfilePic = ({}) => {
 
     const onDrop = useCallback(async (droppedFiles) => {
       if (droppedFiles.length) {
-        let form = new FormData();
-        form.append('image', droppedFiles[0])
+        const form = new FormData();
+        form.append('image', droppedFiles[0]);
         setUploading(true);
         const url = await axios.post('/upload', form)
         .catch((err) => console.log(err));
@@ -67,7 +67,7 @@ const ProfilePic = ({}) => {
                 </Box>
             </Tooltip>
       </Box>
-    )
-}
+    );
+};
 
 export default ProfilePic;

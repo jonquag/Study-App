@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
     container: {
       flex: 1,
       display: 'flex',
@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme) => ({
       height: 130,
       width: 130
     },
-  }));
+}));
 
 export const baseStyle = {
     borderWidth: 3,
