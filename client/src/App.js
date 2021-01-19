@@ -23,7 +23,7 @@ function App() {
                     <Switch>
                         <Route exact path="/dashboard" component={Dashboard} />
                         <ProtectedRoute path="/forum" component={Forum} />
-                        <ProtectedRoute path="/groups" component={Groups} />
+                        {/*<ProtectedRoute path="/groups" component={Groups} />*/}
                         <ProtectedRoute path="/chat" component={Chat} />
 
                         {/* Landing page temporarily redirects to sign-up. */}
@@ -31,6 +31,7 @@ function App() {
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/profile" component={Profile} />
                         <Route exact path="/sign-up" component={Signup} />
+                        <Route path="/groups" component={Groups} />
 
                         {/* Any other unknown paths redirects to sign-up. */}
                         <Route
