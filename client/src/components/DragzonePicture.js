@@ -17,7 +17,7 @@ import defaultImage from "../images/profile_picture.png";
 
 const ProfilePic = ({}) => {
     const classes = useStyles();
-    const [picUrl, setPicUrl] = useState(null);
+    const [picUrl, setPicUrl] = useState(null); //TODO get the url from Profile in context
     const [uploading, setUploading] = useState(false);
 
     const onDrop = useCallback(async (droppedFiles) => {
@@ -29,7 +29,7 @@ const ProfilePic = ({}) => {
         .catch((err) => console.log(err));
         if (url) {
           setUploading(false);
-          setPicUrl(url.data);
+          setPicUrl(url.data); //TODO update Profile in context with new url
         }
       }
     }, [])
