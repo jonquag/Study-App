@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
     Avatar,
     Tooltip,
@@ -30,12 +30,15 @@ const ProfilePic = () => {
             const res = await axios.post('/upload', form)
             .catch((err) => console.log(err));
 
-            if (res && res.data && res.data.url) {
-                dispatch({type: 'updateProfilePicture', payload: res.data.url})
+            if (res && res.data) {
+                dispatch({type: 'updateProfile', payload: res.data})
             }
-            setUploading(false);
         }
-    }, [dispatch])
+    }, [dispatch]);
+
+    useEffect(() => {
+      setUploading(false);
+    }, [profile]);
 
     const {
       getRootProps,

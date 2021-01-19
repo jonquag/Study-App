@@ -15,8 +15,8 @@ const initialState = {
 const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
-        case 'updateProfilePicture':
-            state.profile.imageUrl = payload;
+        case 'updateProfile':
+            state.profile = payload;
             return {
                 ...state,
             };
