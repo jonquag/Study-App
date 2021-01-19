@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { Drawer as MUIDrawer } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import profilePic from '../../static/images/profilePicSample.png';
 
@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 const Drawer = props => {
     const classes = useStyles();
+    let { url } = useRouteMatch();
 
     return (
         <MUIDrawer variant="permanent" anchor="left" className={classes.drawer}>
@@ -42,6 +43,7 @@ const Drawer = props => {
                 direction="column"
                 alignItems="center"
                 style={{ width: '400px' }}
+                item
                 sm={12}
                 className={classes.drawer}
             >
@@ -54,14 +56,14 @@ const Drawer = props => {
                     />
 
                     <Typography className={classes.profileName} align="center">
-                        Ashley Sanford
+                        Ashly Sanford
                     </Typography>
                 </Grid>
 
                 {/* Profile Links container */}
                 <Grid container item direction="column" className={classes.linkContainer}>
                     <NavLink
-                        to="/profile"
+                        to={`${url}`}
                         exact
                         activeStyle={{
                             opacity: '100%',
@@ -71,7 +73,7 @@ const Drawer = props => {
                         User Info
                     </NavLink>
                     <NavLink
-                        to="profile/courses"
+                        to={`${url}/courses`}
                         exact
                         activeStyle={{
                             opacity: '100%',
@@ -81,7 +83,7 @@ const Drawer = props => {
                         My Courses
                     </NavLink>
                     <NavLink
-                        to="/profile/settings"
+                        to={`${url}/settings`}
                         exact
                         activeStyle={{
                             opacity: '100%',
@@ -91,7 +93,7 @@ const Drawer = props => {
                         Settings
                     </NavLink>
                     <NavLink
-                        to="/profile/notifications"
+                        to={`${url}/notifications`}
                         exact
                         activeStyle={{
                             opacity: '100%',
@@ -103,7 +105,7 @@ const Drawer = props => {
                 </Grid>
                 <Grid container direction="column" item justify="flex-end" sm={4}>
                     <Grid item>
-                        <Typography align="left">Logout</Typography>
+                        <Typography>Logout</Typography>
                     </Grid>
                 </Grid>
             </Grid>
