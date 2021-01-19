@@ -100,7 +100,7 @@ const MyCourses = () => {
         setMyCourses(myCourses.filter(c => c.id !== id));
     };
 
-    const hanldeCourseUpdate = () => {
+    const handleCourseUpdate = () => {
         const courses = [...myCourses].map(c => c.id);
         // axios.post('/', {courses});
     };
@@ -185,7 +185,7 @@ const MyCourses = () => {
                     <Button
                         variant="contained"
                         className={classes.button}
-                        onClick={hanldeCourseUpdate}
+                        onClick={handleCourseUpdate}
                     >
                         Update
                     </Button>
