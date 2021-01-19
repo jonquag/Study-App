@@ -7,6 +7,7 @@ const University = require('../models/universities');
 //GET all universities with populated courses
 router.get("/", async function(req, res, next) {
     const allUniversities = await University.find()
+    .populate({path: 'courses', model: 'Course'})
     .catch(() => {
         return res.status(500).send();
     });
