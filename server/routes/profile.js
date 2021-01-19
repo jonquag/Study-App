@@ -23,7 +23,6 @@ router.get('/:user_id', auth, async (req, res, next) => {
     } catch(err){
         next();
     }
-
 })
 
 //Updates user profile fields based on ID and populates email

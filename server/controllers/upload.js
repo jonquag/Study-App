@@ -32,9 +32,9 @@ async function streamUpload(req, res, next) {
       }
       req.body.imageUrl = result.url;
       next();
-      } catch(err) {
+    } catch(err) {
         next(err)
-      }
-}
+    }
+};
 
 module.exports = streamUpload;
