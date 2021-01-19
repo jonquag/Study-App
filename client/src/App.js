@@ -19,9 +19,9 @@ function App() {
                     <Switch>
                         {/* Landing page temporarily redirects to sign-up. */}
                         <Route exact path="/" render={() => <Redirect to="/sign-up" />} />
-                        <Route exact path="/login" component={Login} />
-                        <Route exact path="/profile" component={Profile} />
-                        <Route exact path="/sign-up" component={Signup} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/profile" component={Profile} />
+                        <Route path="/sign-up" component={Signup} />
 
                         {/* Any other unknown paths redirects to sign-up. */}
                         {/* <Route
