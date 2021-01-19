@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Grid, Typography, Card, CardContent, CardMedia, Container } from '@material-ui/core';
+import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import {groups} from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Groups = () => {
-    
+
     const classes = useStyles();
     
     const items = groups.map((group) => {
@@ -45,6 +46,13 @@ const Groups = () => {
                 <Typography variant="h6" color="textPrimary" style={{ fontWeight: 600 }}>
                 {group.title}
                 </Typography>
+                <Grid container direction="row" style={{ paddingTop: "5px"}}>
+                    <PeopleAltOutlinedIcon color="disabled" fontSize="small" className={classes.icon} />
+                    <Typography variant="p" color="textSecondary" style={{ paddingLeft: "5px"}} >
+                    {group.members} members
+                    </Typography>
+                </Grid>
+                
             </CardContent>
             </Card>
         </Grid>)
