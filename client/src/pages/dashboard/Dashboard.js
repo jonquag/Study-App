@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from '../layout/Navbar';
-import Sidebar from '../layout/Sidebar';
+// import Sidebar from '../layout/Sidebar';
 
 const useStyles = makeStyles(theme => ({
     sidebar: {
@@ -46,7 +46,7 @@ const Dashboard = () => {
                     sm={3}
                     className={classes.sidebar}
                 >
-                    <Sidebar />
+                    {/* <Sidebar /> */}
                 </Grid>
                 <Grid item container sm={9} className={classes.content_page}>
                     content pages
