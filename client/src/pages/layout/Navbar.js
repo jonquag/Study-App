@@ -24,7 +24,7 @@ import { useGlobalContext } from '../../context/studyappContext';
 
 const Navbar = () => {
     const classes = useStyles();
-    const { isLoading } = useGlobalContext();
+    const { profile, isLoading } = useGlobalContext();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -92,7 +92,7 @@ const Navbar = () => {
                     <div className={classes.profile}>
                         <Avatar
                             alt="profiel_img"
-                            src={profileImg}
+                            src={profile.imageUrl.length ? profile.imageUrl : profileImg}
                             className={classes.avatar}
                         />
                         <Button

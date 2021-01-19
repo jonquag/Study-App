@@ -1,18 +1,22 @@
 import React, { createContext, useContext, useReducer } from 'react';
+import Profile from '../models/Profile';
 
 const AppContext = createContext({
     isLoading: true,
     isAuth: false,
+    profile: {},
 });
 
 const initialState = {
     isLoading: true,
+    profile: Profile,
 };
 
 const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
-        case 'CASE_ONE':
+        case 'updateProfilePicture':
+            state.profile.imageUrl = payload;
             return {
                 ...state,
             };
