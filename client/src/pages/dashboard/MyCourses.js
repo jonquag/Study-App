@@ -106,91 +106,79 @@ const MyCourses = () => {
     };
 
     return (
-        <Grid container>
-            <Grid item md={3} style={{ height: '100vh', backgroundColor: '#f1f1f1' }}>
-                Sidebar
-            </Grid>
-            <Grid item container md={9} className={classes.container}>
-                <Typography variant="h4" className={classes.university}>
-                    {school}
-                </Typography>
-                <Typography variant="h5" className={classes.title}>
-                    Your courses
-                </Typography>
-                {myCourses.length < 1 && <Typography>No course selected.</Typography>}
-                {myCourses.map(c => {
-                    if (c.id === course) {
-                        return (
-                            <ListItem key={c.id} className={classes.list_item}>
-                                <Typography>{c.name}</Typography>
-                                <div className={classes.btn_group}>
-                                    <IconButton
-                                        edge="end"
-                                        onClick={() => removeCourse(c.id)}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                    <IconButton edge="end" onClick={() => setCourse('')}>
-                                        <HighlightOffIcon />
-                                    </IconButton>
-                                </div>
-                            </ListItem>
-                        );
-                    }
+        <Grid item container md={9} className={classes.container}>
+            <Typography variant="h4" className={classes.university}>
+                {school}
+            </Typography>
+            <Typography variant="h5" className={classes.title}>
+                Your courses
+            </Typography>
+            {myCourses.length < 1 && <Typography>No course selected.</Typography>}
+            {myCourses.map(c => {
+                if (c.id === course) {
                     return (
                         <ListItem key={c.id} className={classes.list_item}>
                             <Typography>{c.name}</Typography>
-                            <IconButton edge="end" onClick={() => setCourse(c.id)}>
-                                <EditOutlinedIcon />
-                            </IconButton>
+                            <div className={classes.btn_group}>
+                                <IconButton edge="end" onClick={() => removeCourse(c.id)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                                <IconButton edge="end" onClick={() => setCourse('')}>
+                                    <HighlightOffIcon />
+                                </IconButton>
+                            </div>
                         </ListItem>
                     );
-                })}
+                }
+                return (
+                    <ListItem key={c.id} className={classes.list_item}>
+                        <Typography>{c.name}</Typography>
+                        <IconButton edge="end" onClick={() => setCourse(c.id)}>
+                            <EditOutlinedIcon />
+                        </IconButton>
+                    </ListItem>
+                );
+            })}
 
-                <form className={classes.form}>
-                    <FormHelperText>Select course</FormHelperText>
-                    <Select
-                        value={selectId}
-                        variant="outlined"
-                        onChange={e => {
-                            setSelectId(e.target.value);
-                        }}
-                    >
-                        {schoolCourses.map(course => {
-                            const isSelected = myCourses.some(c => c.id === course.id);
-                            if (isSelected) {
-                                return (
-                                    <MenuItem key={course.id} value={course.id} disabled>
-                                        {course.name}
-                                    </MenuItem>
-                                );
-                            } else {
-                                return (
-                                    <MenuItem key={course.id} value={course.id}>
-                                        {course.name}
-                                    </MenuItem>
-                                );
-                            }
-                        })}
-                    </Select>
-                    <Grid style={{ marginTop: 8 }}>
-                        <Button
-                            color="primary"
-                            startIcon={<AddIcon />}
-                            onClick={addCourse}
-                        >
-                            Add course
-                        </Button>
-                    </Grid>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        onClick={handleCourseUpdate}
-                    >
-                        Update
+            <form className={classes.form}>
+                <FormHelperText>Select course</FormHelperText>
+                <Select
+                    value={selectId}
+                    variant="outlined"
+                    onChange={e => {
+                        setSelectId(e.target.value);
+                    }}
+                >
+                    {schoolCourses.map(course => {
+                        const isSelected = myCourses.some(c => c.id === course.id);
+                        if (isSelected) {
+                            return (
+                                <MenuItem key={course.id} value={course.id} disabled>
+                                    {course.name}
+                                </MenuItem>
+                            );
+                        } else {
+                            return (
+                                <MenuItem key={course.id} value={course.id}>
+                                    {course.name}
+                                </MenuItem>
+                            );
+                        }
+                    })}
+                </Select>
+                <Grid style={{ marginTop: 8 }}>
+                    <Button color="primary" startIcon={<AddIcon />} onClick={addCourse}>
+                        Add course
                     </Button>
-                </form>
-            </Grid>
+                </Grid>
+                <Button
+                    variant="contained"
+                    className={classes.button}
+                    onClick={handleCourseUpdate}
+                >
+                    Update
+                </Button>
+            </form>
         </Grid>
     );
 };

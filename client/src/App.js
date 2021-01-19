@@ -10,7 +10,6 @@ import { theme } from './themes/theme';
 import Profile from './pages/Profile';
 import Signup from './pages/auth/Sign-up';
 import Login from './pages/auth/Login';
-import MyCourses from './pages/dashboard/MyCourses';
 
 // import UserInfo from './components/Profile/UserInfo';
 
@@ -35,7 +34,7 @@ function App() {
                         <ProtectedRoute path="/chat" component={Chat} />
 
                         {/* Any other unknown paths redirects to sign-up. */}
-                        {/* <Route
+                        <Route
                             path="*"
                             render={props => (
                                 <Redirect
@@ -45,7 +44,7 @@ function App() {
                                     }}
                                 />
                             )}
-                        /> */}
+                        />
                     </Switch>
                 </BrowserRouter>
             </CssBaseline>

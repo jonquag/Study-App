@@ -10,6 +10,7 @@ import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import Sidebar from '../components/Profile/Sidebar';
 import Navbar from '../pages/layout/Navbar';
+import MyCourses from '../pages/dashboard/MyCourses';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -36,9 +37,9 @@ const Profile = () => {
                         <Route exact path="/profile">
                             <UserInfo />
                         </Route>
-                        {/* <Route path={`${path}/courses`}>
-                        <Courses />
-                    </Route */}
+                        <Route path="/profile/courses">
+                            <MyCourses />
+                        </Route>
                         <Route path="/profile/settings">
                             <Settings />
                         </Route>
