@@ -86,3 +86,32 @@ export const courses = [
         name: 'Political Science',
     },
 ];
+
+export const groups = [
+    {
+        id: 1,
+        title: 'University of Toronto Computer Science',
+        members: "2.5k"
+    },
+    {
+        id: 2,
+        title: 'Rotman Commerce Class of 2021',
+        members: "891"
+    },
+    {
+        id: 3,
+        title: 'Development Talks',
+        members: "4000"
+    },
+    {
+        id: 4,
+        title: 'Python and Data Science',
+        members: "455"
+    },
+    {
+        id: 5,
+        title: 'Food and Agriculture 2021',
+        members: "190"
+    },
+
+];
