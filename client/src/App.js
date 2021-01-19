@@ -24,7 +24,7 @@ function App() {
                         <Route exact path="/sign-up" component={Signup} />
 
                         {/* Any other unknown paths redirects to sign-up. */}
-                        <Route
+                        {/* <Route
                             path="*"
                             render={props => (
                                 <Redirect
@@ -34,7 +34,7 @@ function App() {
                                     }}
                                 />
                             )}
-                        />
+                        /> */}
                     </Switch>
                 </BrowserRouter>
             </CssBaseline>
