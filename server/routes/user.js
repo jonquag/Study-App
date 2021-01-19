@@ -1,0 +1,117 @@
+const express = require("express");
+const router = express.Router();
+const verifyAuth = require('../middleware/verifyAuth');
+const User = require("../models/user");
+const University = require("../models/universities");
+const { BadRequest, GeneralError } = require("../utils/errors");
+require("../models/courses");
+
+
+// Get the logged in user
+router.get("/", verifyAuth, async function(req, res) {
+    const userId = req.body.userId;
+    const userDoc = await User.findById(userId)
+      .catch(() => { return null });
+    return userDoc ? res.send(userDoc) : res.sendStatus(500);
+})
+
+// Gets all the current users courses
+router.get("/courses", verifyAuth, async function(req, res) {
+    const userDoc = await User.findById({ _id: req.body.userId })
+      .populate({path: 'courses', model: 'Course'})
+      .catch(() => { return null });
+    if (userDoc && userDoc.courses) {
+        res.send(userDoc.courses);
+    } else {
+        res.sendStatus(500);
+    }
+})
+
+// Adds a user to a course, sends the updated user
+router.put("/courses/:courseId", verifyAuth, async function(req, res, next) {
+    const courseId = req.params.courseId;
+    const userId = req.body.userId;
+    try {
+        const userDoc = await User.findByIdAndUpdate(
+            userId, 
+            {$addToSet: { 'courses': courseId }},
+            {useFindAndModify: false, new: true}
+          ).populate({path: 'courses', model: 'Course'})
+          .catch((err) => {
+              if (err.kind == "ObjectId") {
+                  throw new BadRequest('Invalid Course ID')
+              }
+              throw new GeneralError('Server Error')
+          });
+          res.status(201);
+          res.send(userDoc);
+    } catch (err) {
+        next(err)
+    }
+});
+
+//Remove a user from a course, sends the updated user
+router.delete("/courses/:courseId", verifyAuth, async function(req, res) {
+    const courseId = req.params.courseId;
+    const userId = req.body.userId;
+    try {
+        const userDoc = await User.findByIdAndUpdate(
+            userId, 
+            {$pull: { 'courses': courseId }},
+            {useFindAndModify: false, new: true}
+          ).populate({path: 'courses', model: 'Course'})
+          .catch((err) => {
+              if (err.kind == "ObjectId") {
+                  throw new BadRequest('Invalid Course ID')
+              }
+              throw new GeneralError('Server Error')
+          });
+          res.status(201);
+          res.send(userDoc);
+    } catch (err) {
+        next(err)
+    }
+});
+
+//Assign a user to a University, sends the updated user
+router.put("/universities/:universityId", verifyAuth, async function(req, res, next) {
+    const universityId = req.params.universityId;
+    const userId = req.body.userId;
+    const session = await User.startSession();
+    session.startTransaction();
+    try {
+        const opts = { session };
+        const userDoc = await User.findByIdAndUpdate(
+          userId, 
+          {university: universityId},
+          opts,
+        ).catch((err) => {
+            if (err.kind == "ObjectId") {
+                throw new BadRequest('Invalid University ID')
+            }
+            throw new GeneralError('Server Error')
+        });
+        if (userDoc.university) {
+            await University.findByIdAndUpdate(
+                userDoc.university,
+                {$pull: { 'students': userId }},
+                opts,
+            );
+        }
+        await University.findByIdAndUpdate(
+            universityId,
+            {$addToSet: { 'students': userId }},
+            opts
+        );
+        await session.commitTransaction();
+        session.endSession();
+        res.status(201);
+        return res.send(userDoc);
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        next(err)
+    }
+});
+
+module.exports = router;

@@ -16,10 +16,20 @@ validate_entry = [
   body('password')
     .exists()
     .isLength({ min: 6 }),
+  body('courses').custom(courses => {
+    if (courses) {
+      return Array.isArray(courses);
+    }
+    return true;
+  }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      next(new BadRequest('Missing or invalid field(s)'));
+      const err = new BadRequest('Missing or invalid field(s)');
+      return res.status(err.getCode()).send({
+        status: 'Error',
+        response: err.response,
+      });
     }
     next();
   }
