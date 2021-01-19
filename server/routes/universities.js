@@ -22,25 +22,4 @@ router.get('/:universityId/courses', async function(req, res, next) {
     res.status(200).send(university);
 });
 
-///////////////////////////////////////////////////////////////////////////
-//// Use these routes to add a university and a course
-///////////////////////////////////////////////////////////////////////////
-
-// router.post('/courses', async function(req, res, next) {
-//     const course = new Course(req.body);
-//     const courseDoc = await course.save();
-//     await University.findByIdAndUpdate(req.body.universityId, { "$push": { "courses": courseDoc.id } })
-//     res.sendStatus(201);
-// })
-
-// router.post('/', async function (req, res, next) {
-//     const university = new University(req.body);
-//     await university.save();
-//     res.sendStatus(200);
-// });
-
-///////////////////////////////////////////////////////////////////////////
-//// Done
-///////////////////////////////////////////////////////////////////////////
-
 module.exports = router;

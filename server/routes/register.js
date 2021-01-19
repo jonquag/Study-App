@@ -19,7 +19,7 @@ router.post("/", validateEntryReq, async function(req, res) {
       if (!err.errors || err.errors.email && err.errors.email.reason) {
         res.sendStatus(500); //Internal error connecting with MongoDB 
       } else {
-        res.sendStatus(409); //Email conflict with existing user
+        res.status(409).send({ response: 'Email conflicts with existing user.' }); //Email conflict with existing user
       }
     });
     if (userDoc) {
