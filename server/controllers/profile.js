@@ -3,7 +3,6 @@ const Profile = require('../models/profile');
 const User = require('../models/user');
 
 async function updateProfile(req, res, next) {
-    console.log(req.body)
     try {
         //find profile
         let profile = await Profile.findOne({ user: req.body.userId })
