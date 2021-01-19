@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
 
 const CourseList = React.memo(({ courses, removeCourse }) => {
     const classes = useStyles();
-    console.log('courses');
 
     return (
         <Grid className={classes.root}>

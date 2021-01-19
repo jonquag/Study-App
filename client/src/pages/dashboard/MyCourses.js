@@ -8,7 +8,6 @@ import {
     Select,
     MenuItem,
     ListItem,
-    List,
     IconButton,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -85,14 +84,16 @@ const mockMyCourses = [
 const MyCourses = () => {
     const classes = useStyles();
     const [school] = useState('University of Toronto');
+    const [selectId, setSelectId] = useState('');
     const [course, setCourse] = useState('');
     const [schoolCourses] = useState(courses);
     const [myCourses, setMyCourses] = useState(mockMyCourses);
 
     const addCourse = () => {
-        if (myCourses.some(c => c.id === course)) return;
-        setMyCourses([...myCourses, schoolCourses.find(c => c.id === course)]);
+        if (selectId === '' || myCourses.some(c => c.id === selectId)) return;
+        setMyCourses([...myCourses, schoolCourses.find(c => c.id === selectId)]);
         setCourse('');
+        setSelectId('');
     };
 
     const removeCourse = id => {
@@ -149,10 +150,10 @@ const MyCourses = () => {
                 <form className={classes.form}>
                     <FormHelperText>Select course</FormHelperText>
                     <Select
-                        value={course}
+                        value={selectId}
                         variant="outlined"
                         onChange={e => {
-                            setCourse(e.target.value);
+                            setSelectId(e.target.value);
                         }}
                     >
                         {schoolCourses.map(course => {
