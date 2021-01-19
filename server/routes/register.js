@@ -1,10 +1,12 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const { GeneralError } = require('../utils/errors');
 const router = express.Router();
 const User = require("../models/user");
 const validateBody = require('../middleware/validateBody');
 const validateEntryReq = validateBody.entry;
+const Profile = require("../models/profile")
 
 router.post("/", validateEntryReq, async function(req, res) {
   const {email, password, courses, university} = req.body;
@@ -28,6 +30,12 @@ router.post("/", validateEntryReq, async function(req, res) {
         process.env.SECRET_KEY,
         { expiresIn: "180d" },
       );
+
+      await new Profile({ user: userDoc.id }).save()
+          .catch((err) => {
+            throw new GeneralError("Error creating user profile on registration.");
+          })
+      
       res.cookie("token", token, { httpOnly: true });
       res.sendStatus(201);
     }

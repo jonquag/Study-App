@@ -8,6 +8,16 @@ export const theme = createMuiTheme({
             // could customize the h1 variant as well
             fontSize: '36px',
         },
+        h3: {
+            fontFamily: 'Montserrat',
+            fontSize: 26,
+            fontWeight: 500,
+            letterSpacing: -1,
+        },
+        h6: {
+            fontSize: 16,
+            fontWeight: 500,
+        },
     },
     palette: {
         primary: {

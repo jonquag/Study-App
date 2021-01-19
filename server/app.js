@@ -12,6 +12,8 @@ const pingRouter = require("./routes/ping");
 const registerRouter = require("./routes/register");
 const universityRouter = require("./routes/universities");
 const userRouter = require("./routes/user");
+const uploadRouter = require("./routes/upload");
+const profileRouter = require ("./routes/profile");
 
 const { json, urlencoded } = express;
 
@@ -32,6 +34,8 @@ app.use("/ping", pingRouter);
 app.use("/register", registerRouter);
 app.use("/universities", universityRouter);
 app.use("/user", userRouter);
+app.use("/profile", profileRouter);
+app.use("/upload", uploadRouter);
 
 app.use(handleErrors);
 
