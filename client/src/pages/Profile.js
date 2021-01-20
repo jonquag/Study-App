@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 // Custom component imports
 import UserInfo from '../components/Profile/UserInfo';
 // import Courses from '../components/Profile/Courses';
@@ -9,10 +10,14 @@ import Notifications from '../components/Profile/Notifications';
 import Sidebar from '../components/Profile/Sidebar';
 import NavBar from '../pages/layout/Navbar';
 
-// const useStyles = makeStyles({});
+const useStyles = makeStyles({
+    contentContainer: {
+        marginTop: 3,
+    },
+});
 
 const Profile = props => {
-    // const classes = useStyles();
+    const classes = useStyles();
     let { path } = useRouteMatch();
 
     console.log(path);
@@ -20,7 +25,7 @@ const Profile = props => {
         <Grid>
             <NavBar />
 
-            <Grid container>
+            <Grid container className={classes.contentContainer}>
                 <Grid item container direction="row" sm={3}>
                     <Sidebar />
                 </Grid>

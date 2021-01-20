@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, InputLabel } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+
+import { Typography, Button, Grid, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles(theme => ({
     inputStyles: {
         fontWeight: '600',
         width: 300,
@@ -14,19 +14,25 @@ const useStyles = makeStyles({
         paddingBottom: '.5em',
     },
     profileGrid: {
-        padding: '2em 0 0 4em',
+        paddingLeft: '5em',
     },
-    headerContainer: {},
-});
+    button: {
+        color: '#FFF',
+        background: theme.palette.primary.gradient,
+        height: 54,
+        marginLeft: '1.2em',
+        marginTop: '1em',
+    },
+}));
 
 // TEST USER ID 60021edaab2f25167778e7f9
 
 const UserInfo = props => {
     let [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('usermail@gmail.com');
+    const [email, setEmail] = useState('');
     const [location, setLocation] = useState('');
-    const [phone, setPhone] = useState('+1 (202) 555 0192');
+    const [phone, setPhone] = useState('');
 
     const classes = useStyles();
 
@@ -45,22 +51,38 @@ const UserInfo = props => {
         fetchData();
     }, []);
 
+    const updateProfileInfo = () => {
+        console.log('update changes clicked');
+    };
+
     return (
         //  User Info Grid Parent Container
         <Grid container item className={classes.profileGrid} direction="column">
-            <Grid item container sm={2} className={classes.headerContainer}>
+            <Grid
+                item
+                container
+                alignContent="center"
+                sm={2}
+                className={classes.headerContainer}
+            >
                 <Typography variant="h1">Profile</Typography>
-                <Typography>{firstName}</Typography>
             </Grid>
             {/* First Name  */}
-            <Grid item container sm={10} alignItems="flex-start" spacing={4}>
+            <Grid
+                item
+                container
+                sm={10}
+                alignContent="flex-start"
+                justify="flex-start"
+                spacing={4}
+            >
                 <Grid item>
                     <InputLabel className={classes.labelStyles}>First Name</InputLabel>{' '}
                     <TextField
                         variant="outlined"
                         hinttext="Change First Name.."
                         onChange={e => setFirstName(e.target.value)}
-                        defaultValue={firstName}
+                        value={firstName}
                         className={classes.inputStyles}
                     />
                 </Grid>
@@ -71,7 +93,7 @@ const UserInfo = props => {
                         variant="outlined"
                         hinttext="Change Last Name.."
                         onChange={e => setLastName(e.target.value)}
-                        defaultValue={lastName}
+                        value={lastName}
                         className={classes.inputStyles}
                     />
                 </Grid>
@@ -82,7 +104,7 @@ const UserInfo = props => {
                         variant="outlined"
                         hinttext="Change Email..."
                         onChange={e => setEmail(e.target.value)}
-                        defaultValue={email}
+                        value={email}
                         className={classes.inputStyles}
                     />
                 </Grid>
@@ -94,7 +116,7 @@ const UserInfo = props => {
                         variant="outlined"
                         hinttext="Change Phone Number..."
                         onChange={e => setPhone(e.target.value)}
-                        defaultValue={phone}
+                        value={phone}
                         className={classes.inputStyles}
                     />
                 </Grid>
@@ -105,11 +127,17 @@ const UserInfo = props => {
                         variant="outlined"
                         hinttext="Change Location.."
                         onChange={e => setLocation(e.target.value)}
-                        defaultValue={location}
+                        value={location}
                         className={classes.inputStyles}
                     />
                 </Grid>
-                {/* <div>{this.res.data}</div> */}
+                <Grid container>
+                    <Grid item>
+                        <Button className={classes.button} onClick={updateProfileInfo}>
+                            Submit Changes
+                        </Button>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     );
