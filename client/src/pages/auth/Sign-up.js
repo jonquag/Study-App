@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     Grid,
     Typography,
@@ -9,6 +9,7 @@ import {
     Select,
     MenuItem,
     Hidden,
+    LinearProgress,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Formik, Form, Field } from 'formik';
@@ -19,7 +20,6 @@ import axios from 'axios';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
-import { schools, courses } from '../../data/mockData';
 import CourseList from './CourseList';
 
 const SignupSchema = Yup.object().shape({
@@ -29,24 +29,56 @@ const SignupSchema = Yup.object().shape({
 
 const Signup = () => {
     const classes = useStyles();
-    const [course, setCourse] = useState('');
-    const [schoolCourses] = useState(courses);
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [schools, setSchools] = useState([]);
+    const [courseId, setCourseId] = useState('');
+    const [courses, setCourses] = useState([{ _id: 1, name: 'Select a school first' }]);
+    const [id, setId] = useState('');
     const [addedCourses, setAddedCourses] = useState([]);
-    const [selectedId, setSelectedId] = useState([]);
+
+    // fetch all the universities
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('/universities');
+            console.log(response.data);
+            setSchools(response.data);
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (courseId) {
+            const schoolCourses = [];
+            [...schools].forEach(s => {
+                if (s._id === courseId) schoolCourses.push(...s.courses);
+            });
+            setCourses(schoolCourses);
+        }
+    }, [courseId, schools]);
 
     const addCourse = () => {
-        if (addedCourses.some(ac => ac.id === course)) return;
-        setAddedCourses([...addedCourses, courses.find(c => c.id === course)]);
-        setSelectedId([...selectedId, course]);
+        // return if the courese alread exist or
+        // if user haven't selected anything
+        if (addedCourses.some(ac => ac._id === id) || id === '' || id === 1) return;
+
+        setAddedCourses([...addedCourses, courses.find(c => c._id === id)]);
     };
 
     const handleRemoveCourse = useCallback(
         id => {
-            setAddedCourses(addedCourses.filter(c => c.id !== id));
-            setSelectedId(selectedId.filter(sId => sId !== id));
+            setAddedCourses(addedCourses.filter(c => c._id !== id));
         },
-        [addedCourses, selectedId]
+        [addedCourses]
     );
+
+    if (isLoading) return <LinearProgress />;
 
     return (
         <div className={classes.root}>
@@ -93,10 +125,7 @@ const Signup = () => {
                         }}
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
-                            values.courses = [...addedCourses].map(ac =>
-                                ac.id.toString()
-                            );
-
+                            values.courses = [...addedCourses].map(ac => ac._id);
                             try {
                                 console.log(values);
                                 // TODO: better to move it to a helper action.
@@ -132,12 +161,14 @@ const Signup = () => {
                                     type="text"
                                     select
                                     variant="outlined"
+                                    defaultValue=""
                                 >
                                     {schools.map(school => {
                                         return (
                                             <MenuItem
-                                                key={school.id}
-                                                value={school.id.toString()}
+                                                key={school._id}
+                                                value={school._id}
+                                                onClick={() => setCourseId(school._id)}
                                             >
                                                 {school.name}
                                             </MenuItem>
@@ -152,19 +183,19 @@ const Signup = () => {
                                 )}
                                 <FormHelperText>Select the course</FormHelperText>
                                 <Select
-                                    value={course}
+                                    defaultValue=""
                                     variant="outlined"
-                                    onChange={e => setCourse(e.target.value)}
+                                    onChange={e => setId(e.target.value)}
                                 >
-                                    {schoolCourses.map(course => {
-                                        const isSelected = selectedId.some(
-                                            id => id === course.id
+                                    {courses.map(course => {
+                                        const isSelected = addedCourses.some(
+                                            ac => ac._id === course._id
                                         );
                                         if (isSelected) {
                                             return (
                                                 <MenuItem
-                                                    key={course.id}
-                                                    value={course.id}
+                                                    key={course._id}
+                                                    value={course._id}
                                                     disabled
                                                 >
                                                     {course.name}
@@ -173,8 +204,8 @@ const Signup = () => {
                                         } else {
                                             return (
                                                 <MenuItem
-                                                    key={course.id}
-                                                    value={course.id}
+                                                    key={course._id}
+                                                    value={course._id}
                                                 >
                                                     {course.name}
                                                 </MenuItem>
@@ -182,7 +213,7 @@ const Signup = () => {
                                         }
                                     })}
                                 </Select>
-                                <Grid style={{ marginTop: 8 }}>
+                                <Grid className={classes.add_course}>
                                     <Button
                                         color="primary"
                                         startIcon={<AddIcon />}
@@ -212,9 +243,9 @@ const Signup = () => {
                                     variant="inherit"
                                     underline="none"
                                     component={RouterLink}
-                                    to="/sign-up"
+                                    to="/login"
                                 >
-                                    <Button variant="outlined">Get started</Button>
+                                    <Button variant="outlined">Login</Button>
                                 </Link>
                             </div>
                         </Paper>

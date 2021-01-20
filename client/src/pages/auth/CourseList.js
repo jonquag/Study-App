@@ -21,8 +21,8 @@ const CourseList = React.memo(({ courses, removeCourse }) => {
             {courses.map(c => (
                 <Button
                     className={classes.button}
-                    key={c.id}
-                    endIcon={<HighlightOffIcon onClick={() => removeCourse(c.id)} />}
+                    key={c._id}
+                    endIcon={<HighlightOffIcon onClick={() => removeCourse(c._id)} />}
                 >
                     {c.name}
                 </Button>
