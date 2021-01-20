@@ -14,9 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
-// import axios from 'axios';
-
-import { courses } from '../../data/mockData';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -64,45 +62,38 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(4),
         height: '3rem',
     },
+    add_btn: {
+        marginTop: 8,
+    },
 }));
 
-const mockMyCourses = [
-    {
-        id: 2,
-        name: 'Art History and Visual Culture',
-    },
-    {
-        id: 3,
-        name: 'Environment and Health',
-    },
-    {
-        id: 4,
-        name: 'Neuroscience',
-    },
-];
-
-const MyCourses = () => {
+const MyCourses = props => {
+    const { school, userCourses, schoolCourses } = props;
+    console.log(schoolCourses);
     const classes = useStyles();
-    const [school] = useState('University of Toronto');
     const [selectId, setSelectId] = useState('');
     const [course, setCourse] = useState('');
-    const [schoolCourses] = useState(courses);
-    const [myCourses, setMyCourses] = useState(mockMyCourses);
+    const [myCourses, setMyCourses] = useState(userCourses);
 
     const addCourse = () => {
-        if (selectId === '' || myCourses.some(c => c.id === selectId)) return;
-        setMyCourses([...myCourses, schoolCourses.find(c => c.id === selectId)]);
+        if (selectId === '' || myCourses.some(c => c._id === selectId)) return;
+        setMyCourses([...myCourses, schoolCourses.find(c => c._id === selectId)]);
         setCourse('');
         setSelectId('');
     };
 
     const removeCourse = id => {
-        setMyCourses(myCourses.filter(c => c.id !== id));
+        setMyCourses(myCourses.filter(c => c._id !== id));
     };
 
-    const handleCourseUpdate = () => {
-        const courses = [...myCourses].map(c => c.id);
-        // axios.post('/', {courses});
+    const handleCourseUpdate = async () => {
+        const courses = [...myCourses].map(c => c._id);
+        console.log(courses);
+        try {
+            axios.post('/user/courses', courses);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -115,12 +106,15 @@ const MyCourses = () => {
             </Typography>
             {myCourses.length < 1 && <Typography>No course selected.</Typography>}
             {myCourses.map(c => {
-                if (c.id === course) {
+                if (c._id === course) {
                     return (
-                        <ListItem key={c.id} className={classes.list_item}>
+                        <ListItem key={c._id} className={classes.list_item}>
                             <Typography>{c.name}</Typography>
                             <div className={classes.btn_group}>
-                                <IconButton edge="end" onClick={() => removeCourse(c.id)}>
+                                <IconButton
+                                    edge="end"
+                                    onClick={() => removeCourse(c._id)}
+                                >
                                     <DeleteIcon />
                                 </IconButton>
                                 <IconButton edge="end" onClick={() => setCourse('')}>
@@ -131,9 +125,9 @@ const MyCourses = () => {
                     );
                 }
                 return (
-                    <ListItem key={c.id} className={classes.list_item}>
+                    <ListItem key={c._id} className={classes.list_item}>
                         <Typography>{c.name}</Typography>
-                        <IconButton edge="end" onClick={() => setCourse(c.id)}>
+                        <IconButton edge="end" onClick={() => setCourse(c._id)}>
                             <EditOutlinedIcon />
                         </IconButton>
                     </ListItem>
@@ -150,23 +144,23 @@ const MyCourses = () => {
                     }}
                 >
                     {schoolCourses.map(course => {
-                        const isSelected = myCourses.some(c => c.id === course.id);
+                        const isSelected = myCourses.some(c => c._id === course._id);
                         if (isSelected) {
                             return (
-                                <MenuItem key={course.id} value={course.id} disabled>
+                                <MenuItem key={course._id} value={course._id} disabled>
                                     {course.name}
                                 </MenuItem>
                             );
                         } else {
                             return (
-                                <MenuItem key={course.id} value={course.id}>
+                                <MenuItem key={course._id} value={course._id}>
                                     {course.name}
                                 </MenuItem>
                             );
                         }
                     })}
                 </Select>
-                <Grid style={{ marginTop: 8 }}>
+                <Grid className={classes.add_btn}>
                     <Button color="primary" startIcon={<AddIcon />} onClick={addCourse}>
                         Add course
                     </Button>

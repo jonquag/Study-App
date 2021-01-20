@@ -8,7 +8,7 @@ const User = require('../models/user');
 const { NotExtended } = require('http-errors');
 
 // Returns current user profile based on ID
-router.get('/:user_id', auth, async (req, res, next) => {
+router.get('/', auth, async (req, res, next) => {
     try {
         //find profile by user id and populate email
         const profile = await Profile.findOne({
