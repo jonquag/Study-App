@@ -20,7 +20,7 @@ const Groups = () => {
     return (
         <Grid>
         <Navbar />
-        <Grid container className={classes.contentpage} >
+        <Grid container >
             <Grid 
             item
             justify="center"
