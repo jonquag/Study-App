@@ -17,11 +17,12 @@ import { TextField as MikTextField } from 'formik-material-ui';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
 import CourseList from './CourseList';
-import * as actoins from '../../context/actions';
+import * as actions from '../../context/actions';
 import { useGlobalContext } from '../../context/studyappContext';
 
 const SignupSchema = Yup.object().shape({
@@ -32,6 +33,7 @@ const SignupSchema = Yup.object().shape({
 const Signup = () => {
     const classes = useStyles();
     const { isAuth, dispatch } = useGlobalContext();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [isLoading, setIsLoading] = useState(true);
     const [schools, setSchools] = useState([]);
@@ -131,7 +133,22 @@ const Signup = () => {
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
                             values.courses = [...addedCourses].map(ac => ac._id);
-                            actoins.register(values)(dispatch);
+                            console.log(values);
+                            actions
+                                .register(values)(dispatch)
+                                .then(res => {
+                                    if (res === 201) {
+                                        enqueueSnackbar('Registered successfully', {
+                                            variant: 'success',
+                                            autoHideDuration: '5000',
+                                        });
+                                    } else {
+                                        enqueueSnackbar(res, {
+                                            variant: 'Error',
+                                            autoHideDuration: '5000',
+                                        });
+                                    }
+                                });
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);

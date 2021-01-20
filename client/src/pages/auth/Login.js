@@ -12,6 +12,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField as MikTextField } from 'formik-material-ui';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
@@ -26,6 +27,7 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
     const classes = useStyles();
     const { isAuth, dispatch } = useGlobalContext();
+    const { enqueueSnackbar } = useSnackbar();
 
     if (isAuth) return <Redirect to="/profile" />;
 
@@ -72,7 +74,21 @@ const Login = () => {
                         }}
                         validationSchema={LoginSchema}
                         onSubmit={async (values, { setSubmitting }) => {
-                            actions.login(values)(dispatch);
+                            actions
+                                .login(values)(dispatch)
+                                .then(res => {
+                                    if (res === 200) {
+                                        enqueueSnackbar('Logged in successfully', {
+                                            variant: 'success',
+                                            autoHideDuration: '5000',
+                                        });
+                                    } else {
+                                        enqueueSnackbar(res, {
+                                            variant: 'Error',
+                                            autoHideDuration: '5000',
+                                        });
+                                    }
+                                });
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);
