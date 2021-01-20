@@ -14,13 +14,15 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import { Formik, Form, Field } from 'formik';
 import { TextField as MikTextField } from 'formik-material-ui';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
 import CourseList from './CourseList';
+import * as actoins from '../../context/actions';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -29,6 +31,7 @@ const SignupSchema = Yup.object().shape({
 
 const Signup = () => {
     const classes = useStyles();
+    const { isAuth, dispatch } = useGlobalContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [schools, setSchools] = useState([]);
@@ -80,6 +83,8 @@ const Signup = () => {
 
     if (isLoading) return <LinearProgress />;
 
+    if (isAuth) return <Redirect to="/profile" />;
+
     return (
         <div className={classes.root}>
             <Grid container>
@@ -126,13 +131,7 @@ const Signup = () => {
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
                             values.courses = [...addedCourses].map(ac => ac._id);
-                            try {
-                                console.log(values);
-                                // TODO: better to move it to a helper action.
-                                await axios.post('/register', values);
-                            } catch (err) {
-                                console.log(err.message);
-                            }
+                            actoins.register(values)(dispatch);
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);
