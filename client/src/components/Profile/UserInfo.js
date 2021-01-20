@@ -20,8 +20,9 @@ const useStyles = makeStyles({
 });
 
 // TEST USER ID 60021edaab2f25167778e7f9
+
 const UserInfo = props => {
-    const [firstName, setFirstName] = useState('');
+    let [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('usermail@gmail.com');
     const [location, setLocation] = useState('');
@@ -32,8 +33,11 @@ const UserInfo = props => {
     const fetchData = () => {
         axios.get('profile/60021edaab2f25167778e7f9').then(res => {
             console.log(res.data);
-            console.log(res.data.firstName);
             setFirstName(res.data.firstName);
+            setLastName(res.data.lastName);
+            setEmail(res.data.user.email);
+            setLocation(res.data.location);
+            setPhone(res.data.phone);
         });
     };
 
@@ -46,6 +50,7 @@ const UserInfo = props => {
         <Grid container item className={classes.profileGrid} direction="column">
             <Grid item container sm={2} className={classes.headerContainer}>
                 <Typography variant="h1">Profile</Typography>
+                <Typography>{firstName}</Typography>
             </Grid>
             {/* First Name  */}
             <Grid item container sm={10} alignItems="flex-start" spacing={4}>
