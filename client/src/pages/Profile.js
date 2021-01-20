@@ -10,7 +10,7 @@ import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import Sidebar from '../components/Profile/Sidebar';
 import Navbar from '../pages/layout/Navbar';
-import MyCourses from '../pages/dashboard/MyCourses';
+import MyCourses from '../components/Profile/MyCourses';
 
 const useStyles = makeStyles(theme => ({
     container: {
