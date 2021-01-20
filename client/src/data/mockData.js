@@ -92,7 +92,7 @@ export const groups = [
         id: 1,
         title: 'University of Toronto Computer Science',
         image: "https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611091521/group_images/46ea42a5314c11be622d1d2bbebf3186fefeab76_zqeuow.png",
-        members: "2.5k"
+        members: "2577"
     },
     {
         id: 2,
@@ -104,7 +104,7 @@ export const groups = [
         id: 3,
         title: 'Development Talks',
         image: "https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611091520/group_images/7e849a91fc21fae116f4fb00d06acd0ce150056e_kwdqwj.png",
-        members: "4000"
+        members: "5600"
     },
     {
         id: 4,
