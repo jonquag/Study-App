@@ -15,13 +15,13 @@ router.get('/:user_id', auth, async (req, res, next) => {
     const profile = await Profile.findOne({ user: req.body.userId }).populate('user', ['email']);
 
     if(!profile) {
-         throw new NotFound("No profile found.");
+         throw new NotFound("No profile found");
     }
 
     res.json(profile);
 
-    } catch(err){
-        next();
+    } catch(error){
+        next(error);
     }
 })
 

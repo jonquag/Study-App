@@ -8,27 +8,32 @@ require("../models/courses");
 
 
 // Get the logged in user
-router.get("/", verifyAuth, async function(req, res) {
+router.get("/", verifyAuth, async function(req, res, next) {
+
     const userId = req.body.userId;
     const userDoc = await User.findById(userId)
-      .catch(() => { return null });
-    return userDoc ? res.send(userDoc) : res.sendStatus(500);
+    .catch(() => {
+        return next(new GeneralError('Error Establishing a Database Connection'));
+    });
+
+    return res.send(userDoc);
 })
 
 // Gets all the current users courses
 router.get("/courses", verifyAuth, async function(req, res) {
+
     const userDoc = await User.findById({ _id: req.body.userId })
-      .populate({path: 'courses', model: 'Course'})
-      .catch(() => { return null });
-    if (userDoc && userDoc.courses) {
-        res.send(userDoc.courses);
-    } else {
-        res.sendStatus(500);
-    }
+    .populate({path: 'courses', model: 'Course'})
+    .catch(() => {
+        return next(new GeneralError('Error Establishing a Database Connection'));
+    });
+    
+    res.send(userDoc.courses);
 })
 
 // Adds a user to a course, sends the updated user
 router.put("/courses/:courseId", verifyAuth, async function(req, res, next) {
+
     const courseId = req.params.courseId;
     const userId = req.body.userId;
     try {
@@ -36,22 +41,23 @@ router.put("/courses/:courseId", verifyAuth, async function(req, res, next) {
             userId, 
             {$addToSet: { 'courses': courseId }},
             {useFindAndModify: false, new: true}
-          ).populate({path: 'courses', model: 'Course'})
-          .catch((err) => {
-              if (err.kind == "ObjectId") {
-                  throw new BadRequest('Invalid Course ID')
-              }
-              throw new GeneralError('Server Error')
-          });
-          res.status(201);
-          res.send(userDoc);
+        ).populate({path: 'courses', model: 'Course'})
+        .catch((err) => {
+            if (err.kind == "ObjectId") {
+                throw new BadRequest('Invalid Course ID');
+            }
+            throw new GeneralError('Error Establishing a Database Connection');
+        });
+        res.status(201);
+        res.send(userDoc);
     } catch (err) {
-        next(err)
+        next(err);
     }
 });
 
 //Remove a user from a course, sends the updated user
 router.delete("/courses/:courseId", verifyAuth, async function(req, res) {
+
     const courseId = req.params.courseId;
     const userId = req.body.userId;
     try {
@@ -59,22 +65,23 @@ router.delete("/courses/:courseId", verifyAuth, async function(req, res) {
             userId, 
             {$pull: { 'courses': courseId }},
             {useFindAndModify: false, new: true}
-          ).populate({path: 'courses', model: 'Course'})
-          .catch((err) => {
-              if (err.kind == "ObjectId") {
-                  throw new BadRequest('Invalid Course ID')
-              }
-              throw new GeneralError('Server Error')
-          });
-          res.status(201);
-          res.send(userDoc);
+        ).populate({path: 'courses', model: 'Course'})
+        .catch((err) => {
+            if (err.kind == "ObjectId") {
+                throw new BadRequest('Invalid Course ID');
+            }
+            throw new GeneralError('Error Establishing a Database Connection');
+        });
+        res.status(201);
+        res.send(userDoc);
     } catch (err) {
-        next(err)
+        next(err);
     }
 });
 
 //Assign a user to a University, sends the updated user
 router.put("/universities/:universityId", verifyAuth, async function(req, res, next) {
+
     const universityId = req.params.universityId;
     const userId = req.body.userId;
     const session = await User.startSession();
@@ -87,9 +94,9 @@ router.put("/universities/:universityId", verifyAuth, async function(req, res, n
           opts,
         ).catch((err) => {
             if (err.kind == "ObjectId") {
-                throw new BadRequest('Invalid University ID')
+                throw new BadRequest('Invalid University ID');
             }
-            throw new GeneralError('Server Error')
+            throw new GeneralError('Error Establishing a Database Connection');
         });
         if (userDoc.university) {
             await University.findByIdAndUpdate(
@@ -107,10 +114,10 @@ router.put("/universities/:universityId", verifyAuth, async function(req, res, n
         session.endSession();
         res.status(201);
         return res.send(userDoc);
-    } catch (err) {
+    } catch (error) {
         await session.abortTransaction();
         session.endSession();
-        next(err)
+        next(error);
     }
 });
 
