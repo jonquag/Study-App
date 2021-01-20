@@ -21,6 +21,7 @@ import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
 import { schools, courses } from '../../data/mockData';
 import CourseList from './CourseList';
+import handleAuthErrors from '../../utils/handleAuthErrors';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -92,24 +93,24 @@ const Signup = () => {
                             university: '',
                         }}
                         validationSchema={SignupSchema}
-                        onSubmit={async (values, { setSubmitting }) => {
+                        onSubmit={async (values, { setSubmitting, setErrors }) => {
                             values.courses = [...addedCourses].map(ac =>
                                 ac.id.toString()
                             );
 
                             try {
-                                console.log(values);
                                 // TODO: better to move it to a helper action.
                                 await axios.post('/register', values);
                             } catch (err) {
-                                console.log(err.message);
+                                handleAuthErrors(err, setErrors)
                             }
+
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);
                         }}
                     >
-                        {({ submitForm, isSubmitting }) => (
+                        {({ submitForm, isSubmitting, errors }) => (
                             <Form className={classes.form}>
                                 <FormHelperText>Email address</FormHelperText>
                                 <Field

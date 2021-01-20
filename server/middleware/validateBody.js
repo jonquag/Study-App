@@ -25,7 +25,8 @@ validate_entry = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new BadRequest('Missing or invalid field(s)');
+      const response = errors.errors.map(err => err.param);
+      const err = new BadRequest(response);
       return res.status(err.getCode()).send({
         status: 'Error',
         response: err.response,

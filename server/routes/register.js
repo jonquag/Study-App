@@ -22,7 +22,7 @@ router.post("/", validateEntryReq, async function(req, res, next) {
         if (!err.errors || err.errors.email && err.errors.email.reason) {
           throw new GeneralError('Error connecting to database.');
         } else {
-          throw new Conflict('Email conflicts with existing user.');
+          throw new Conflict('Email already in use.');
         }
       });
       const token = jwt.sign(

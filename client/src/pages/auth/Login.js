@@ -16,6 +16,7 @@ import axios from 'axios';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
+import handleAuthErrors from '../../utils/handleAuthErrors';
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -67,12 +68,12 @@ const Login = () => {
                             password: '',
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={async (values, { setSubmitting }) => {
+                        onSubmit={async (values, { setSubmitting, setErrors }) => {
                             try {
                                 // TODO: better to move it to a helper action.
                                 await axios.post('/login', values);
                             } catch (err) {
-                                console.log(err.message);
+                                handleAuthErrors(err, setErrors);
                             }
                             setTimeout(() => {
                                 setSubmitting(false);
