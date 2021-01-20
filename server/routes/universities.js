@@ -16,7 +16,7 @@ router.get("/", async function(req, res, next) {
 });
 
 //GET university with universityId and populated courses
-router.get('/:universityId/courses', async function(req, res, next) {
+router.get('/:universityId', async function(req, res, next) {
 
     const universityId = req.params.universityId;
     try {

@@ -14,13 +14,13 @@ import {
 import { useGlobalContext } from '../context/studyappContext';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import defaultImage from "../images/profile_picture.png";
+import defaultImage from '../images/profile_picture.png';
 
 const ProfilePic = () => {
     const classes = useStyles();
     const [uploading, setUploading] = useState(false);
     const {profile, dispatch} = useGlobalContext();
-    
+
     const onDrop = useCallback(async (droppedFiles) => {
         if (droppedFiles.length) {
             setUploading(true);
@@ -28,7 +28,7 @@ const ProfilePic = () => {
             const form = new FormData();
             form.append('image', droppedFiles[0]);
             const res = await axios.post('/upload', form)
-            .catch((err) => console.log(err));
+                .catch((err) => console.log(err));
 
             if (res && res.data) {
                 dispatch({type: 'updateProfile', payload: res.data})
@@ -61,12 +61,12 @@ const ProfilePic = () => {
     return (
         <Box className={classes.container}>
             <Tooltip
-                title="Drag and drop profile picture"
-                arrow placement="right"
+                title='Drag and drop profile picture'
+                arrow placement='right'
             >
                 <Box {...getRootProps({style})}>
                     <Avatar
-                        alt="Profile Pic"
+                        alt='Profile Pic'
                         src={profile.imageUrl.length ? profile.imageUrl : defaultImage}
                         className={uploading ? classes.uploading : classes.large}
                     />

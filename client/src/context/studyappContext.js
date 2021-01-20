@@ -16,9 +16,9 @@ const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
         case 'updateProfile':
-            state.profile = payload;
             return {
                 ...state,
+                profile: payload,
             };
         case 'CASE_TWO':
             return {
