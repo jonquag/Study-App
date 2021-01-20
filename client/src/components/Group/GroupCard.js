@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, CardContent, CardMedia, CardActions, Container, Button, Box } from '@material-ui/core';
+import { Grid, Typography, Card, CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
     },
     cardMedia: {
-      paddingTop: '56.25%',
+      paddingTop: '60%',
     },
     cardContent: {
       flexGrow: 1,
@@ -28,8 +28,6 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
 
     }
-
-
     
   }));
 
@@ -64,10 +62,10 @@ const GroupCard = (props) => {
                     <Typography gutterBottom variant="h6" style={{ fontWeight: 600 }}>
                       {props.data.title}
                     </Typography>
-                    <Grid container direction="row">
+                    <Grid container direction="row" style={{ paddingTop: "10px"}}>
                         <PeopleAltOutlinedIcon color="disabled" fontSize="small" />
                         <Typography variant="p" color="textSecondary" style={{ paddingLeft: "5px"}} >
-                            {formatGroupCount(props.data.members)}
+                            {formatGroupCount(props.data.members)} members
                         </Typography>
                     </Grid>
                   </CardContent>
