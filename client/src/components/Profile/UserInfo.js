@@ -28,18 +28,18 @@ const UserInfo = props => {
 
     return (
         //  User Info Grid Parent Container
-        <Grid container sm={12} className={classes.profileGrid}>
+        <Grid container item sm={12} className={classes.profileGrid}>
             <Grid item sm={12}>
                 <Typography variant="h1" className={classes.headerStyles}>
                     Profile
                 </Typography>
             </Grid>
             {/* First Name  */}
-            <Grid item xs={12} sm={6}>
+            <Grid item>
                 <InputLabel className={classes.labelStyles}>First Name</InputLabel>{' '}
                 <TextField
                     variant="outlined"
-                    hintText="Change First Name.."
+                    hinttext="Change First Name.."
                     onChange={e => setFirstName(e.target.value)}
                     defaultValue={firstName}
                     className={classes.inputStyles}
@@ -47,22 +47,22 @@ const UserInfo = props => {
             </Grid>
 
             {/* Last Name */}
-            <Grid item xs={12} sm={6}>
+            <Grid item>
                 <InputLabel className={classes.labelStyles}>Last Name</InputLabel>{' '}
                 <TextField
                     variant="outlined"
-                    hintText="Change Last Name.."
+                    hinttext="Change Last Name.."
                     onChange={e => setLastName(e.target.value)}
                     defaultValue={lastName}
                     className={classes.inputStyles}
                 />
             </Grid>
             {/* Email */}
-            <Grid item xs={12} sm={6}>
+            <Grid item>
                 <InputLabel className={classes.labelStyles}>Email address</InputLabel>{' '}
                 <TextField
                     variant="outlined"
-                    hintText="Change Email..."
+                    hinttext="Change Email..."
                     onChange={e => setEmail(e.target.value)}
                     defaultValue={email}
                     className={classes.inputStyles}
@@ -70,22 +70,22 @@ const UserInfo = props => {
             </Grid>
 
             {/* Phone */}
-            <Grid item xs={12} sm={6}>
+            <Grid item>
                 <InputLabel className={classes.labelStyles}>Phone</InputLabel>{' '}
                 <TextField
                     variant="outlined"
-                    hintText="Change Phone Number..."
+                    hinttext="Change Phone Number..."
                     onChange={e => setPhone(e.target.value)}
                     defaultValue={phone}
                     className={classes.inputStyles}
                 />
             </Grid>
             {/* Location */}
-            <Grid item xs={12} sm={6}>
+            <Grid item>
                 <InputLabel className={classes.labelStyles}>Location</InputLabel>{' '}
                 <TextField
                     variant="outlined"
-                    hintText="Change Location.."
+                    hinttext="Change Location.."
                     onChange={e => setLocation(e.target.value)}
                     defaultValue={location}
                     className={classes.inputStyles}

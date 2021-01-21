@@ -15,25 +15,27 @@ import {
     Link,
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
 import { useStyles } from './NavbarStyles';
-import { useGlobalContext } from '../../context/studyappContext';
 
 const Navbar = () => {
     const classes = useStyles();
+
+    const history = useHistory();
+
     const { profile, isLoading } = useGlobalContext();
+
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleClose = () => {
         setAnchorEl(null);
+        history.push('/profile');
     };
-
-    console.log('test context', isLoading);
 
     return (
         <div className={classes.root}>
@@ -116,7 +118,7 @@ const Navbar = () => {
                             open={open}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem onClick={() => history.push('/login')}>
                                 <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
