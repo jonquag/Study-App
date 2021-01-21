@@ -48,7 +48,7 @@ const GroupCard = (props) => {
 
     return (
 
-        <Grid item key={props.data.id} xs={12} sm={6} md={4}>
+        <Grid item  xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
