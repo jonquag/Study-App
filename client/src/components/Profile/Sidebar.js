@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
-// import { Drawer as MUIDrawer } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 
@@ -14,7 +13,6 @@ const useStyles = makeStyles(theme => ({
         fontSize: 18,
         opacity: '50%',
     },
-
     drawer: {
         background: '#F9F9FC',
         height: '100vh',

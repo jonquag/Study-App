@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Typography, Button, Grid, InputLabel } from '@material-ui/core';
+import { Typography, Button, Grid, InputLabel, FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
@@ -24,12 +24,16 @@ export const useStyles = makeStyles(theme => ({
         marginLeft: '1.2em',
         marginTop: '1em',
     },
+    header: {
+        padding: '1.5em',
+        background: 'orange',
+    },
 }));
 
 // TEST USER ID 60021edaab2f25167778e7f9
 
 const UserInfo = props => {
-    let [firstName, setFirstName] = useState('');
+    const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [location, setLocation] = useState('');
@@ -61,18 +65,19 @@ const UserInfo = props => {
     };
 
     return (
-        //  User Info Grid Parent Container
-        <Grid container item className={classes.profileGrid} direction="column">
+        <Grid container direction="column" sm={12}>
             <Grid
                 item
                 container
+                spacing={4}
                 alignContent="center"
                 sm={2}
                 className={classes.headerContainer}
             >
-                <Typography variant="h1">Profile</Typography>
+                <Typography variant="h1" className={classes.header}>
+                    Profile
+                </Typography>
             </Grid>
-            {/* First Name  */}
             <Grid
                 item
                 container
@@ -81,68 +86,65 @@ const UserInfo = props => {
                 justify="flex-start"
                 spacing={4}
             >
-                <Grid item>
-                    <InputLabel className={classes.labelStyles}>First Name</InputLabel>{' '}
-                    <TextField
-                        variant="outlined"
-                        hinttext="Change First Name.."
-                        onChange={e => setFirstName(e.target.value)}
-                        value={firstName}
-                        className={classes.inputStyles}
-                    />
-                </Grid>
-                {/* Last Name */}
-                <Grid item>
-                    <InputLabel className={classes.labelStyles}>Last Name</InputLabel>{' '}
-                    <TextField
-                        variant="outlined"
-                        hinttext="Change Last Name.."
-                        onChange={e => setLastName(e.target.value)}
-                        value={lastName}
-                        className={classes.inputStyles}
-                    />
-                </Grid>
-                {/* Email */}
-                <Grid item>
-                    <InputLabel className={classes.labelStyles}>Email address</InputLabel>{' '}
-                    <TextField
-                        variant="outlined"
-                        hinttext="Change Email..."
-                        onChange={e => setEmail(e.target.value)}
-                        value={email}
-                        className={classes.inputStyles}
-                    />
-                </Grid>
-
-                {/* Phone */}
-                <Grid item>
-                    <InputLabel className={classes.labelStyles}>Phone</InputLabel>{' '}
-                    <TextField
-                        variant="outlined"
-                        hinttext="Change Phone Number..."
-                        onChange={e => setPhone(e.target.value)}
-                        value={phone}
-                        className={classes.inputStyles}
-                    />
-                </Grid>
-                {/* Location */}
-                <Grid item>
-                    <InputLabel className={classes.labelStyles}>Location</InputLabel>{' '}
-                    <TextField
-                        variant="outlined"
-                        hinttext="Change Location.."
-                        onChange={e => setLocation(e.target.value)}
-                        value={location}
-                        className={classes.inputStyles}
-                    />
-                </Grid>
-                <Grid container>
-                    <Grid item>
+                <form className={classes.root} noValidate autoComplete="off">
+                    <div>
+                        {/* First Name */}
+                        <InputLabel className={classes.labelStyles}>
+                            First Name
+                        </InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change first name.."
+                            defaultValue="Default Value"
+                            variant="outlined"
+                            value={firstName}
+                            onChange={e => setFirstName(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                        <InputLabel className={classes.labelStyles}>Last Name</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change last name.."
+                            variant="outlined"
+                            value={lastName}
+                            onChange={e => setLastName(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                        <InputLabel className={classes.labelStyles}>Email</InputLabel>
+                        {/* Email */}
+                        <TextField
+                            id="outlined"
+                            hinttext="Change email.."
+                            variant="outlined"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                        {/* Phone */}
+                        <InputLabel className={classes.labelStyles}>Phone</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change phone.."
+                            variant="outlined"
+                            value={phone}
+                            onChange={e => setPhone(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                        {/* Location */}
+                        <InputLabel className={classes.labelStyles}>Location</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change location.."
+                            variant="outlined"
+                            value={location}
+                            onChange={e => setLocation(e.target.value)}
+                            className={classes.inputStyles}
+                        />
                         <Button className={classes.button} onClick={updateProfileInfo}>
                             Submit Changes
                         </Button>
-                    </Grid>
-                </Grid>
+                    </div>
+                </form>
             </Grid>
         </Grid>
     );
