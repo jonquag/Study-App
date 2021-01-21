@@ -46,7 +46,7 @@ const Signup = () => {
     const fetchData = async () => {
         try {
             const response = await axios.get('/universities');
-            console.log(response.data);
+
             setSchools(response.data);
             setIsLoading(false);
         } catch (err) {
@@ -133,7 +133,6 @@ const Signup = () => {
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
                             values.courses = [...addedCourses].map(ac => ac._id);
-                            console.log(values);
                             actions
                                 .register(values)(dispatch)
                                 .then(res => {

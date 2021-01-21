@@ -1,6 +1,7 @@
 export const initialState = {
     isLoading: true,
     isAuth: false,
+    userCourse: {},
 };
 
 export const reducer = (state, action) => {
@@ -11,6 +12,12 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 isAuth: true,
+                isLoading: false,
+            };
+        case 'FETCH_USER_COURSES':
+            return {
+                ...state,
+                userCourse: payload,
                 isLoading: false,
             };
         case 'LOGIN_FAIL':

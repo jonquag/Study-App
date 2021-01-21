@@ -13,6 +13,7 @@ import Forum from './pages/contentPages/Forum';
 import Groups from './pages/contentPages/Groups';
 
 import './App.css';
+import Layout from './pages/layout/Layout';
 
 function App() {
     return (
@@ -27,15 +28,19 @@ function App() {
                                 path="/"
                                 render={() => <Redirect to="/sign-up" />}
                             />
-                            <Route exact path="/login" component={Login} />
-                            <Route exact path="/profile" component={Profile} />
                             <Route exact path="/sign-up" component={Signup} />
-                            <Route path="/profile" component={Profile} />
-                            <Route path="/profile/:profileContent" component={Profile} />
+                            <Route exact path="/login" component={Login} />
 
-                            <ProtectedRoute path="/forum" component={Forum} />
-                            <ProtectedRoute path="/groups" component={Groups} />
-                            <ProtectedRoute path="/chat" component={Chat} />
+                            <Layout>
+                                <Route exact path="/profile" component={Profile} />
+                                <Route
+                                    path="/profile/:profileContent"
+                                    component={Profile}
+                                />
+                                <ProtectedRoute path="/forum" component={Forum} />
+                                <ProtectedRoute path="/groups" component={Groups} />
+                                <ProtectedRoute path="/chat" component={Chat} />
+                            </Layout>
 
                             {/* Any other unknown paths redirects to sign-up. */}
                             <Route

@@ -9,6 +9,7 @@ import {
     MenuItem,
     ListItem,
     IconButton,
+    LinearProgress,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -16,6 +17,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -68,9 +70,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const MyCourses = props => {
-    const { school, userCourses, schoolCourses } = props;
+const MyCourses = () => {
     const { enqueueSnackbar } = useSnackbar();
+    const { isLoading, userCourse } = useGlobalContext();
+
+    const { school, userCourses, schoolCourses } = userCourse;
 
     const classes = useStyles();
     const [selectId, setSelectId] = useState('');
@@ -89,6 +93,9 @@ const MyCourses = props => {
     };
 
     const handleCourseUpdate = async () => {
+        // if user haven't changed anything
+        if (JSON.stringify(myCourses) === JSON.stringify(userCourses)) return;
+
         const courses = [...myCourses].map(c => c._id);
         try {
             const res = await axios.post('/user/courses', courses);
@@ -107,6 +114,8 @@ const MyCourses = props => {
             console.log(err);
         }
     };
+
+    if (isLoading) return <LinearProgress />;
 
     return (
         <Grid item container md={9} className={classes.container}>
