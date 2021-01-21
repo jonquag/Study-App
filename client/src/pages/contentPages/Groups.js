@@ -46,7 +46,7 @@ const Groups = () => {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {groups.map((card) => (
-              <GroupCard data={card} />
+              <GroupCard key={card.id} data={card} />
             ))}
           </Grid>
         </Container>
