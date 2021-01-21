@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Badge, Divider, Avatar, Button } from '@material-ui/core';
 import { NavLink, useLocation } from 'react-router-dom';
-
-import profilePic from '../../static/images/profilePicSample.png';
+import DropzonePicture from '../DragzonePicture';
 import { chatList, courseGroupList } from '../../data/mockData';
 import { useStyles } from './SidebarStyles';
 import AddIcon from '@material-ui/icons/Add';
@@ -131,11 +130,7 @@ const Drawer = props => {
         >
             {/* Profile briefing container */}
             <Grid container item direction="column" alignItems="center" sm={3}>
-                <img
-                    src={profilePic}
-                    alt="Ashly Sanford"
-                    className={classes.profilePic}
-                />
+                <DropzonePicture />
 
                 <Typography className={classes.profileName} align="center">
                     Ashly Sanford
