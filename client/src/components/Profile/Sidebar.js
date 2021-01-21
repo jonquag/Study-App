@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Grid, Typography, Badge, Divider, Avatar, Button } from '@material-ui/core';
-import { NavLink, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import { NavLink } from 'react-router-dom';
+import { makeStyles } from '@material-ui/styles';
+import profilePic from '../../static/images/profilePicSample.png';
+import DropzonePicture from '../DragzonePicture';
 
 import profilePic from '../../static/images/profilePicSample.png';
 import { chatList, courseGroupList } from '../../data/mockData';
@@ -130,12 +133,14 @@ const Drawer = props => {
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={3}>
-                <img
+            <Grid container item direction="column" alignItems="center" sm={4}>
+                {/* <img
                     src={profilePic}
                     alt="Ashly Sanford"
                     className={classes.profilePic}
-                />
+                /> */}
+
+                <DropzonePicture />
 
                 <Typography className={classes.profileName} align="center">
                     Ashly Sanford
