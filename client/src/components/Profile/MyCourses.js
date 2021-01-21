@@ -15,6 +15,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -69,7 +70,8 @@ const useStyles = makeStyles(theme => ({
 
 const MyCourses = props => {
     const { school, userCourses, schoolCourses } = props;
-    console.log(schoolCourses);
+    const { enqueueSnackbar } = useSnackbar();
+
     const classes = useStyles();
     const [selectId, setSelectId] = useState('');
     const [course, setCourse] = useState('');
@@ -88,9 +90,19 @@ const MyCourses = props => {
 
     const handleCourseUpdate = async () => {
         const courses = [...myCourses].map(c => c._id);
-        console.log(courses);
         try {
-            axios.post('/user/courses', courses);
+            const res = await axios.post('/user/courses', courses);
+            if (res.status === 200) {
+                enqueueSnackbar('Updated successfully', {
+                    variant: 'success',
+                    autoHideDuration: '5000',
+                });
+            } else {
+                enqueueSnackbar(res.messages, {
+                    variant: 'Error',
+                    autoHideDuration: '5000',
+                });
+            }
         } catch (err) {
             console.log(err);
         }
