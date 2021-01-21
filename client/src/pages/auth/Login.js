@@ -10,13 +10,15 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField as MikTextField } from 'formik-material-ui';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
-import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
 import handleAuthErrors from '../../utils/handleAuthErrors';
+import { useGlobalContext } from '../../context/studyappContext';
+import * as actions from '../../context/actions';
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -25,6 +27,10 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
     const classes = useStyles();
+    const { isAuth, dispatch } = useGlobalContext();
+    const { enqueueSnackbar } = useSnackbar();
+
+    if (isAuth) return <Redirect to="/profile" />;
 
     return (
         <div className={classes.root}>
@@ -69,12 +75,24 @@ const Login = () => {
                         }}
                         validationSchema={LoginSchema}
                         onSubmit={async (values, { setSubmitting, setErrors }) => {
-                            try {
-                                // TODO: better to move it to a helper action.
-                                await axios.post('/login', values);
-                            } catch (err) {
-                                handleAuthErrors(err, setErrors);
-                            }
+                            actions
+                                .login(values)(dispatch)
+                                .then(res => {
+                                    if (res.status === 200) {
+                                        enqueueSnackbar('Logged in successfully', {
+                                            variant: 'success',
+                                            autoHideDuration: '5000',
+                                        });
+                                    } else if (res.status === 500) {
+                                        enqueueSnackbar('Server Error', {
+                                            variant: 'Error',
+                                            autoHideDuration: '5000',
+                                        });
+                                    } else {
+                                        console.log(res)
+                                        handleAuthErrors(res, setErrors);
+                                    }
+                                });
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);

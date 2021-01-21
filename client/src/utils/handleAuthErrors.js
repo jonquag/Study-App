@@ -1,16 +1,16 @@
 const handleAuthErrors = (err, setErrors) => {
-    if (err.response && err.response.data.response) {
-        if (err.response.status === 400) {
+    if (err && err.data && err.data.response) {
+        if (err.status === 400) {
             const errors = {};
-            err.response.data.response.forEach(param => {
+            err.data.response.forEach(param => {
                 errors[param] = 'Invalid ' + param;
             });
             setErrors(errors);
-        } else if (err.response.status === 401) {
+        } else if (err.status === 401) {
             setErrors({password: 'Invalid password'});
-        } else if (err.response.status === 404) {
+        } else if (err.status === 404) {
             setErrors({email: 'User with email not found'});
-        } else if (err.response.status === 409) {
+        } else if (err.status === 409) {
             setErrors({email: 'Email already in use'});
         }
     }
