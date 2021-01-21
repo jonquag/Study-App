@@ -61,7 +61,7 @@ const GroupCard = (props) => {
                     </Typography>
                     <Grid container direction="row" style={{ paddingTop: "10px"}}>
                         <PeopleAltOutlinedIcon color="disabled" fontSize="small" />
-                        <Typography variant="p" color="textSecondary" style={{ paddingLeft: "5px"}} >
+                        <Typography variant="body1" color="textSecondary" style={{ paddingLeft: "5px"}} >
                             {formatGroupCount(props.data.members)} members
                         </Typography>
                     </Grid>
