@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     Grid,
     Typography,
@@ -9,17 +9,21 @@ import {
     Select,
     MenuItem,
     Hidden,
+    LinearProgress,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Formik, Form, Field } from 'formik';
 import { TextField as MikTextField } from 'formik-material-ui';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
-import { schools, courses } from '../../data/mockData';
+import CourseList from './CourseList';
+import * as actions from '../../context/actions';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -28,26 +32,60 @@ const SignupSchema = Yup.object().shape({
 
 const Signup = () => {
     const classes = useStyles();
-    const [school, setSchool] = useState('');
-    const [course, setCourse] = useState('');
-    const [schoolCourses, setSchoolCourses] = useState(courses);
-    // const [addedCourses, setAddedCourses] = useState([]);
+    const { isAuth, dispatch } = useGlobalContext();
+    const { enqueueSnackbar } = useSnackbar();
 
-    // const addCourse = () => {
-    //     setAddedCourses([...addedCourses, course]);
-    //     setSchoolCourses(schoolCourses.filter(sc => sc.name !== course));
-    // };
+    const [isLoading, setIsLoading] = useState(true);
+    const [schools, setSchools] = useState([]);
+    const [courseId, setCourseId] = useState('');
+    const [courses, setCourses] = useState([{ _id: 1, name: 'Select a school first' }]);
+    const [id, setId] = useState('');
+    const [addedCourses, setAddedCourses] = useState([]);
+
+    // fetch all the universities
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('/universities');
+
+            setSchools(response.data);
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
-        if (school) {
-            let filteredCourses = [];
-            schools.forEach(sch => {
-                if (sch.name === school) return (filteredCourses = [...sch.courses]);
-            });
+        fetchData();
+    }, []);
 
-            setSchoolCourses(filteredCourses);
+    useEffect(() => {
+        if (courseId) {
+            const schoolCourses = [];
+            [...schools].forEach(s => {
+                if (s._id === courseId) schoolCourses.push(...s.courses);
+            });
+            setCourses(schoolCourses);
         }
-    }, [school]);
+    }, [courseId, schools]);
+
+    const addCourse = () => {
+        // return if the courese alread exist or
+        // if user haven't selected anything
+        if (addedCourses.some(ac => ac._id === id) || id === '' || id === 1) return;
+
+        setAddedCourses([...addedCourses, courses.find(c => c._id === id)]);
+    };
+
+    const handleRemoveCourse = useCallback(
+        id => {
+            setAddedCourses(addedCourses.filter(c => c._id !== id));
+        },
+        [addedCourses]
+    );
+
+    if (isLoading) return <LinearProgress />;
+
+    if (isAuth) return <Redirect to="/profile" />;
 
     return (
         <div className={classes.root}>
@@ -90,16 +128,26 @@ const Signup = () => {
                         initialValues={{
                             email: '',
                             password: '',
-                            schoolSelect: '',
+                            university: '',
                         }}
                         validationSchema={SignupSchema}
                         onSubmit={async (values, { setSubmitting }) => {
-                            try {
-                                // TODO: better to move it to a helper action.
-                                await axios.post('/register', values);
-                            } catch (err) {
-                                console.log(err.message);
-                            }
+                            values.courses = [...addedCourses].map(ac => ac._id);
+                            actions
+                                .register(values)(dispatch)
+                                .then(res => {
+                                    if (res === 201) {
+                                        enqueueSnackbar('Registered successfully', {
+                                            variant: 'success',
+                                            autoHideDuration: '5000',
+                                        });
+                                    } else {
+                                        enqueueSnackbar(res, {
+                                            variant: 'Error',
+                                            autoHideDuration: '5000',
+                                        });
+                                    }
+                                });
                             setTimeout(() => {
                                 setSubmitting(false);
                             }, 500);
@@ -122,42 +170,69 @@ const Signup = () => {
                                     variant="outlined"
                                 />
                                 <FormHelperText>Select your school</FormHelperText>
-                                <Select
-                                    value={school}
+                                <Field
+                                    component={MikTextField}
+                                    name="university"
+                                    type="text"
+                                    select
                                     variant="outlined"
-                                    onChange={e => setSchool(e.target.value)}
+                                    defaultValue=""
                                 >
                                     {schools.map(school => {
                                         return (
-                                            <MenuItem key={school.id} value={school.name}>
+                                            <MenuItem
+                                                key={school._id}
+                                                value={school._id}
+                                                onClick={() => setCourseId(school._id)}
+                                            >
                                                 {school.name}
                                             </MenuItem>
                                         );
                                     })}
-                                </Select>
-
+                                </Field>
+                                {addedCourses.length > 0 && (
+                                    <CourseList
+                                        courses={addedCourses}
+                                        removeCourse={handleRemoveCourse}
+                                    />
+                                )}
                                 <FormHelperText>Select the course</FormHelperText>
                                 <Select
-                                    value={course}
+                                    defaultValue=""
                                     variant="outlined"
-                                    onChange={e => setCourse(e.target.value)}
+                                    onChange={e => setId(e.target.value)}
                                 >
-                                    <MenuItem value="Select">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {schoolCourses.map(course => {
-                                        return (
-                                            <MenuItem key={course.id} value={course.name}>
-                                                {course.name}
-                                            </MenuItem>
+                                    {courses.map(course => {
+                                        const isSelected = addedCourses.some(
+                                            ac => ac._id === course._id
                                         );
+                                        if (isSelected) {
+                                            return (
+                                                <MenuItem
+                                                    key={course._id}
+                                                    value={course._id}
+                                                    disabled
+                                                >
+                                                    {course.name}
+                                                </MenuItem>
+                                            );
+                                        } else {
+                                            return (
+                                                <MenuItem
+                                                    key={course._id}
+                                                    value={course._id}
+                                                >
+                                                    {course.name}
+                                                </MenuItem>
+                                            );
+                                        }
                                     })}
                                 </Select>
-                                <Grid style={{ marginTop: 8 }}>
+                                <Grid className={classes.add_course}>
                                     <Button
                                         color="primary"
                                         startIcon={<AddIcon />}
-                                        // onClick={addCourse}
+                                        onClick={addCourse}
                                     >
                                         Add course
                                     </Button>
@@ -183,9 +258,9 @@ const Signup = () => {
                                     variant="inherit"
                                     underline="none"
                                     component={RouterLink}
-                                    to="/sign-up"
+                                    to="/login"
                                 >
-                                    <Button variant="outlined">Get started</Button>
+                                    <Button variant="outlined">Login</Button>
                                 </Link>
                             </div>
                         </Paper>

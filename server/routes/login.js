@@ -2,10 +2,11 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-
 const User = require("../models/user");
+const validateBody = require('../middleware/validateBody');
+const validateEntryReq = validateBody.entry;
 
-router.post("/", async function(req, res) {
+router.post("/", validateEntryReq, async function(req, res) {
   const {email, password} = req.body;
   const user = await User.findOne({email});
   if (!user) {
@@ -19,12 +20,12 @@ router.post("/", async function(req, res) {
         { expiresIn: "180d" },
         );
         res.cookie("token", token, { httpOnly: true });
-        res.status(200).send();
+        res.sendStatus(200);
       } else {
         res.status(403).send({ response: "Invalid credentials" });
       }
     } catch {
-      res.status(500).send();
+      res.sendStatus(500);
     }
   }
 });
