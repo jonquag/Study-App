@@ -4,6 +4,8 @@ const verifyAuth = require('../middleware/verifyAuth');
 const User = require('../models/user');
 const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
+const courses = require('../models/courses');
+const groups = require('../models/Group');
 require('../models/courses');
 
 // Get the logged in user
@@ -140,5 +142,31 @@ router.put(
         }
     }
 );
+
+
+// returns all the groups to join from a users courses
+router.get('/groups', verifyAuth, async function (req, res, next) {
+    const userId = req.body.userId;
+    try {
+        const userDoc = await User.findById({ _id: req.body.userId })
+            .populate({ 
+                path: 'courses', model: 'Course',
+                populate: {
+                    path: 'groups'
+                }      
+            })
+            .catch((err) => {
+                throw new GeneralError('Error returning groups to join');
+            });
+        if (userDoc && userDoc.courses) {
+            res.send(userDoc.courses);
+        } else {
+            res.sendStatus(500);
+        }
+    } catch (err) {
+        next(err);
+    }
+    
+});
 
 module.exports = router;
