@@ -5,6 +5,7 @@ import { Grid } from '@material-ui/core';
 
 // Custom component imports
 import UserInfo from '../components/Profile/UserInfo';
+
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import Sidebar from '../components/Profile/Sidebar';
@@ -45,6 +46,7 @@ const Profile = () => {
                         </Route>
                     </Switch>
                 </Grid>
+
             </Grid>
         </Grid>
     );
