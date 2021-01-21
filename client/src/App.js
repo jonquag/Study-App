@@ -23,9 +23,9 @@ function App() {
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/dashboard" component={Dashboard} />
-                        <ProtectedRoute path="/forum" component={Forum} />
+                        <Route path="/forum" component={Forum} />
                         <ProtectedRoute path="/groups" component={Groups} />
-                        <ProtectedRoute path="/chat" component={Chat} />
+                        <Route path="/chat" component={Chat} />
 
                         {/* Landing page temporarily redirects to sign-up. */}
                         <Route exact path="/" render={() => <Redirect to="/sign-up" />} />

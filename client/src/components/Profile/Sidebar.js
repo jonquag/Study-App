@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { Drawer as MUIDrawer } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import profilePic from '../../static/images/profilePicSample.png';
 
@@ -33,6 +33,10 @@ const useStyles = makeStyles(theme => ({
 
 const Drawer = props => {
     const classes = useStyles();
+    const location = useLocation();
+
+    if (location.pathname === '/forum') return <h1>Forum page side panel</h1>;
+    if (location.pathname === '/chat') return <h1>Chat page side panel</h1>;
 
     return (
         <MUIDrawer variant="permanent" anchor="left" className={classes.drawer}>

@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 
 // Custom component imports
 import UserInfo from '../components/Profile/UserInfo';
-import Courses from '../components/Profile/Courses';
+// import Courses from '../components/Profile/Courses';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import Drawer from '../components/Profile/Sidebar';
@@ -26,7 +26,7 @@ const Profile = props => {
             <Grid container style={{ height: '100vh' }}>
                 <Switch>
                     <Route path="/profile/" exact component={UserInfo} />
-                    <Route path="/profile/courses" component={Courses} />
+                    {/* <Route path="/profile/courses" component={Courses} /> */}
                     <Route path="/profile/settings" component={Settings} />
                     <Route path="/profile/notifications" component={Notifications} />
                 </Switch>
