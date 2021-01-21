@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/verifyAuth');
-const { NotFound, GeneralError } = require('../utils/errors');
+const { NotFound } = require('../utils/errors');
 
 const Profile = require('../models/profile');
 const User = require('../models/user');
-const { NotExtended } = require('http-errors');
+const updateProfile = require('../controllers/profile');
 
 // Returns current user profile based on ID
 router.get('/:user_id', async (req, res, next) => {

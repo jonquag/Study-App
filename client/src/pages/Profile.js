@@ -4,7 +4,8 @@ import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 // Custom component imports
 import UserInfo from '../components/Profile/UserInfo';
-// import Courses from '../components/Profile/Courses';
+
+//import Courses from '../components/Profile/Courses';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import Sidebar from '../components/Profile/Sidebar';
