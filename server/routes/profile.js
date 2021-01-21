@@ -8,12 +8,11 @@ const User = require('../models/user');
 const updateProfile = require('../controllers/profile');
 
 // Returns current user profile based on ID
-router.get('/:user_id', async (req, res, next) => {
-    console.log(req.params.user_id);
+router.get('/', auth, async (req, res, next) => {
     try {
         //find profile by user id and populate email
         const profile = await Profile.findOne({
-            user: req.params.user_id,
+            user: req.body.userId,
         }).populate('user', ['email']);
 
         if (!profile) {

@@ -4,6 +4,7 @@ import { Typography, Button, Grid, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import { useGlobalContext } from '../../context/studyappContext';
 
 export const useStyles = makeStyles(theme => ({
     inputStyles: {
@@ -35,10 +36,14 @@ const UserInfo = props => {
     const [phone, setPhone] = useState('');
 
     const classes = useStyles();
+    const { isLoading, dispatch, profile } = useGlobalContext();
+    // console.log('profile: ' + { ...profile });
+    for (let e in profile) {
+        console.log(profile[e]);
+    }
 
     const fetchData = () => {
         axios.get('profile/60021edaab2f25167778e7f9').then(res => {
-            console.log(res.data);
             setFirstName(res.data.firstName);
             setLastName(res.data.lastName);
             setEmail(res.data.user.email);

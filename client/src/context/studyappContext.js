@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import Profile from '../models/Profile';
+import axios from 'axios';
 
 const AppContext = createContext({
     isLoading: true,
@@ -16,9 +17,9 @@ const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
         case 'updateProfile':
-            state.profile = payload;
             return {
                 ...state,
+                profile: payload,
             };
         case 'CASE_TWO':
             return {
@@ -31,6 +32,19 @@ const reducer = (state, action) => {
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    const fetchData = () => {
+        axios.get('profile/60021edaab2f25167778e7f9').then(res => {
+            dispatch({
+                type: 'updateProfile',
+                payload: res.data,
+            });
+        });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <AppContext.Provider value={{ ...state, dispatch }}>
