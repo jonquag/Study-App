@@ -114,7 +114,7 @@ const Navbar = () => {
                             open={open}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={() => console.log('Logout')}>
+                            <MenuItem onClick={() => history.push('/login')}>
                                 <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
