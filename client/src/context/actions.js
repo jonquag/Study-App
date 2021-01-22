@@ -2,10 +2,9 @@ import axios from 'axios';
 
 export const register = values => async dispatch => {
     try {
-        const res = await axios.post('auth/register', values)
-            .catch((err) => {
-                throw err.response;
-            });
+        const res = await axios.post('auth/register', values).catch(err => {
+            throw err.response;
+        });
         if (res.status === 201) {
             dispatch({ type: 'REGISTER_SUCCESS' });
             return res;
@@ -19,8 +18,7 @@ export const register = values => async dispatch => {
 
 export const login = values => async dispatch => {
     try {
-        const res = await axios.post('auth/login', values)
-        .catch((err) => {
+        const res = await axios.post('auth/login', values).catch(err => {
             throw err.response;
         });
 
@@ -42,17 +40,15 @@ export const logout = () => async dispatch => {
             dispatch({ type: 'LOGOUT' });
         }
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
-}
+};
 
 export const fetchProfile = () => async dispatch => {
     try {
         const res = await axios.get('/profile');
-
         const { profile, user } = res.data;
         const { courses, university } = user;
-
         dispatch({
             type: 'FETCH_USER_COURSES',
             payload: [

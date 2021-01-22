@@ -18,6 +18,7 @@ export const reducer = (state, action) => {
                 isLoading: false,
             };
         case 'FETCH_USER_COURSES':
+            console.log(payload);
             return {
                 ...state,
                 userCourse: payload[1],

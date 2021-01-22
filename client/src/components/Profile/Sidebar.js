@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Badge, Divider, Avatar, Button } from '@material-ui/core';
 import { NavLink, useLocation } from 'react-router-dom';
-import DropzonePicture from '../DragzonePicture';
 import { chatList, courseGroupList } from '../../data/mockData';
 import { useStyles } from './SidebarStyles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+
+import { makeStyles } from '@material-ui/styles';
+import DragzonePicture from '../DragzonePicture';
 
 const Drawer = props => {
     const classes = useStyles();
@@ -125,12 +127,19 @@ const Drawer = props => {
             container
             direction="column"
             alignItems="center"
+            justify="space-between"
             item
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={3}>
-                <DropzonePicture />
+            <Grid
+                container
+                item
+                direction="column"
+                alignItems="center"
+                style={{ marginTop: '3em' }}
+            >
+                <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
                     Ashly Sanford
@@ -180,9 +189,9 @@ const Drawer = props => {
                     Notifications
                 </NavLink>
             </Grid>
-            <Grid container direction="column" item justify="flex-end" sm={4}>
+            <Grid container item>
                 <Grid item>
-                    <Typography>Logout</Typography>
+                    <Typography className={classes.logoutStyles}>Logout</Typography>
                 </Grid>
             </Grid>
         </Grid>
