@@ -194,4 +194,27 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
     
 });
 
+// delete a user from a group
+router.delete('/groups/:groupId', verifyAuth, async function (req, res) {
+    const userId = req.body.userId;
+    const groupId = req.params.groupId;
+    try {
+        const groupDoc = await Group.findByIdAndUpdate(
+            groupId,
+            { $pull: { members: userId } },
+            { useFindAndModify: false, new: true }
+        )
+            .catch(err => {
+                if (err.kind == 'ObjectId') {
+                    throw new BadRequest('Invalid Group ID');
+                }
+                throw new GeneralError('Server Error');
+            });
+        res.status(201);
+        res.send(groupDoc);
+    } catch (err) {
+        next(err);
+    }
+});
+
 module.exports = router;
