@@ -6,6 +6,7 @@ const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
 const courses = require('../models/courses');
 const groups = require('../models/Group');
+const Group = require('../models/Group');
 require('../models/courses');
 
 // Get the logged in user
@@ -144,7 +145,7 @@ router.put(
 );
 
 
-// returns all the groups to join from a users courses
+// returns all the groups a user can join from their courses
 router.get('/groups', verifyAuth, async function (req, res, next) {
     const userId = req.body.userId;
     try {
@@ -163,6 +164,30 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
         } else {
             res.sendStatus(500);
         }
+    } catch (err) {
+        next(err);
+    }
+    
+});
+
+// add a new user to a group from a course they are enrolled in
+router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
+    const userId = req.body.userId;
+    const groupId = req.params.groupId;
+    try {
+        const groupDoc = await Group.findByIdAndUpdate(
+            groupId,
+            { $addToSet: { members: userId } },
+            { useFindAndModify: false, new: true }
+        )
+            .catch(err => {
+                if (err.kind == 'ObjectId') {
+                    throw new BadRequest('Invalid Group ID');
+                }
+                throw new GeneralError('Server Error');
+            });
+        res.status(201);
+        res.send(groupDoc);
     } catch (err) {
         next(err);
     }
