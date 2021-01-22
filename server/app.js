@@ -6,11 +6,6 @@ const logger = require("morgan");
 const connectDB = require('./db');
 const handleErrors = require('./middleware/handleErrors');
 
-<<<<<<< HEAD
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
-=======
->>>>>>> IN-logout-47
 const universityRouter = require("./routes/universities");
 const userRouter = require("./routes/user");
 const uploadRouter = require("./routes/upload");
@@ -30,12 +25,7 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
-<<<<<<< HEAD
-app.use("/login", loginRouter);
-app.use("/register", registerRouter);
-=======
 app.use("/auth", authRouter);
->>>>>>> IN-logout-47
 app.use("/universities", universityRouter);
 app.use("/user", userRouter);
 app.use("/profile", profileRouter);
