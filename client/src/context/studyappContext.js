@@ -8,35 +8,8 @@ const AppContext = createContext({
     isAuth: false,
 
     dispatch: () => {},
-  profile: {},
+    profile: {},
 });
-
-
-    
-});
-
-const initialState = {
-    isLoading: true,
-    profile: Profile,
-};
-
-const reducer = (state, action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case 'updateProfile':
-            state.profile = payload;
-            return {
-                ...state,
-            };
-        case 'CASE_TWO':
-            return {
-                ...state,
-            };
-        default:
-            throw new Error('No action type found!');
-    }
-};
-
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);

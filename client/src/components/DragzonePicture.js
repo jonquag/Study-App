@@ -1,75 +1,77 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import { Avatar, Tooltip, Box } from '@material-ui/core';
 import {
-    Avatar,
-    Tooltip,
-    Box
-} from '@material-ui/core';
-import {
-  baseStyle,
-  activeStyle,
-  acceptStyle,
-  rejectStyle,
-  useStyles,
+    baseStyle,
+    activeStyle,
+    acceptStyle,
+    rejectStyle,
+    useStyles,
 } from './DragzonePicture.styles';
 import { useGlobalContext } from '../context/studyappContext';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import defaultImage from "../images/profile_picture.png";
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import defaultImage from '../images/profile_picture.png';
 
 const ProfilePic = () => {
     const classes = useStyles();
     const [uploading, setUploading] = useState(false);
-    const {profile, dispatch} = useGlobalContext();
-    
-    const onDrop = useCallback(async (droppedFiles) => {
-        if (droppedFiles.length) {
-            setUploading(true);
+    const { profile, dispatch } = useGlobalContext();
 
-            const form = new FormData();
-            form.append('image', droppedFiles[0]);
-            const res = await axios.post('/upload', form)
-            .catch((err) => console.log(err));
+    const onDrop = useCallback(
+        async droppedFiles => {
+            if (droppedFiles.length) {
+                setUploading(true);
 
-            if (res && res.data) {
-                dispatch({type: 'updateProfile', payload: res.data})
+                const form = new FormData();
+                form.append('image', droppedFiles[0]);
+                const res = await axios
+                    .post('/upload', form)
+                    .catch(err => console.log(err));
+
+                if (res && res.data) {
+                    dispatch({ type: 'updateProfile', payload: res.data });
+                }
             }
-        }
-    }, [dispatch]);
+        },
+        [dispatch]
+    );
 
     useEffect(() => {
-      setUploading(false);
+        setUploading(false);
     }, [profile]);
 
-    const {
-      getRootProps,
-      isDragActive,
-      isDragAccept,
-      isDragReject,
-    } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
-  
-    const style = useMemo(() => ({
-      ...baseStyle,
-      ...(isDragActive ? activeStyle : {}),
-      ...(isDragAccept ? acceptStyle : {}),
-      ...(isDragReject ? rejectStyle : {})
-    }), [
-      isDragActive,
-      isDragReject,
-      isDragAccept
-    ]);
-  
+    const { getRootProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+        onDrop,
+        maxFiles: 1,
+        accept: 'image/*',
+    });
+
+    const style = useMemo(
+        () => ({
+            ...baseStyle,
+            ...(isDragActive ? activeStyle : {}),
+            ...(isDragAccept ? acceptStyle : {}),
+            ...(isDragReject ? rejectStyle : {}),
+        }),
+        [isDragActive, isDragReject, isDragAccept]
+    );
+
     return (
         <Box className={classes.container}>
-            <Tooltip
-                title="Drag and drop profile picture"
-                arrow placement="right"
-            >
-                <Box {...getRootProps({style})}>
-                    <Avatar
-                        alt="Profile Pic"
-                        src={profile.imageUrl.length ? profile.imageUrl : defaultImage}
-                        className={uploading ? classes.uploading : classes.large}
-                    />
+            <Tooltip title="Drag and drop profile picture" arrow placement="right">
+                <Box {...getRootProps({ style })}>
+                    {/* {profile.imageUrl.length ? (
+                        <Avatar
+                            alt="Profile Pic"
+                            src={profile.imageUrl}
+                            className={uploading ? classes.uploading : classes.large}
+                        />
+                    ) : (
+                    )} */}
+                    <Avatar className={classes.large}>
+                        <PersonAddIcon className={classes.large} />
+                    </Avatar>
                 </Box>
             </Tooltip>
         </Box>

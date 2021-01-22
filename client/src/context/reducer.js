@@ -2,6 +2,7 @@ export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
+    profile: {},
 };
 
 export const reducer = (state, action) => {
@@ -15,9 +16,11 @@ export const reducer = (state, action) => {
                 isLoading: false,
             };
         case 'FETCH_USER_COURSES':
+            console.log(payload);
             return {
                 ...state,
-                userCourse: payload,
+                userCourse: payload[1],
+                profile: payload[0],
                 isLoading: false,
             };
         case 'LOGIN_FAIL':
