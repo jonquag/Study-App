@@ -7,11 +7,12 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useGlobalContext } from '../../context/studyappContext';
 import DragzonePicture from '../DragzonePicture';
+import * as actions from '../../context/actions';
 
 const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
-    const { profile } = useGlobalContext();
+    const { profile, dispatch } = useGlobalContext();
 
     const [courseList, setCourseList] = useState(
         courseGroupList.map(cgl => ({ ...cgl, expand: false }))
@@ -191,7 +192,12 @@ const Drawer = props => {
             </Grid>
             <Grid container item>
                 <Grid item>
-                    <Button className={classes.logoutStyles}>Logout</Button>
+                    <Button
+                        className={classes.logoutStyles}
+                        onClick={() => actions.logout()(dispatch)}
+                    >
+                        Logout
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
