@@ -2,13 +2,36 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import DropzonePicture from '../DragzonePicture';
 
-import profilePic from '../../static/images/profilePicSample.png';
-import { chatList, courseGroupList } from '../../data/mockData';
-import { useStyles } from './SidebarStyles';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import DragzonePicture from '../DragzonePicture';
+
+const useStyles = makeStyles(theme => ({
+    linkStyles: {
+        textDecoration: 'none',
+        color: 'black',
+        padding: '1em 0 0 2em',
+        fontSize: 18,
+        opacity: '50%',
+    },
+    profilePic: {
+        borderRadius: '50%',
+        width: '130px',
+        marginTop: '4em',
+    },
+    drawer: {
+        background: '#F9F9FC',
+    },
+    linkContainer: {
+        paddingTop: '2em',
+    },
+    profileName: {
+        paddingTop: '1em',
+        fontSize: 22,
+    },
+    logoutStyles: {
+        padding: '2em',
+    },
+}));
 
 const Drawer = props => {
     const classes = useStyles();
@@ -128,18 +151,19 @@ const Drawer = props => {
             container
             direction="column"
             alignItems="center"
+            justify="space-between"
             item
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={4}>
-                {/* <img
-                    src={profilePic}
-                    alt="Ashly Sanford"
-                    className={classes.profilePic}
-                /> */}
-
-                <DropzonePicture />
+            <Grid
+                container
+                item
+                direction="column"
+                alignItems="center"
+                style={{ marginTop: '3em' }}
+            >
+                <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
                     Ashly Sanford
@@ -189,9 +213,9 @@ const Drawer = props => {
                     Notifications
                 </NavLink>
             </Grid>
-            <Grid container direction="column" item justify="flex-end" sm={4}>
+            <Grid container item>
                 <Grid item>
-                    <Typography>Logout</Typography>
+                    <Typography className={classes.logoutStyles}>Logout</Typography>
                 </Grid>
             </Grid>
         </Grid>

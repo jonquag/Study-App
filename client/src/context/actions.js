@@ -36,17 +36,15 @@ export const logout = () => async dispatch => {
             dispatch({ type: 'LOGOUT' });
         }
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
-}
+};
 
 export const fetchProfile = () => async dispatch => {
     try {
         const res = await axios.get('/profile');
-
         const { profile, user } = res.data;
         const { courses, university } = user;
-
         dispatch({
             type: 'FETCH_USER_COURSES',
             payload: [

@@ -111,8 +111,8 @@ const Navbar = () => {
                     </div>
                     <div className={classes.profile}>
                         <Avatar
-                            alt="profiel_img"
-                            src={profile.imageUrl ? profile.imageUrl : profileImg}
+                            alt="profile_img"
+                            src={profileImg}
                             className={classes.avatar}
                         />
                         <Button
