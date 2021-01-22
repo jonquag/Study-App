@@ -11,7 +11,6 @@ import { useGlobalContext } from '../context/studyappContext';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import defaultImage from '../images/profile_picture.png';
 
 const ProfilePic = () => {
     const classes = useStyles();
@@ -25,6 +24,7 @@ const ProfilePic = () => {
 
                 const form = new FormData();
                 form.append('image', droppedFiles[0]);
+                form.append('firstName', profile.firstName);
                 const res = await axios
                     .post('/upload', form)
                     .catch(err => console.log(err));
@@ -61,17 +61,17 @@ const ProfilePic = () => {
         <Box className={classes.container}>
             <Tooltip title="Drag and drop profile picture" arrow placement="right">
                 <Box {...getRootProps({ style })}>
-                    {/* {profile.imageUrl.length ? (
+                    {profile.imageUrl ? (
                         <Avatar
                             alt="Profile Pic"
                             src={profile.imageUrl}
                             className={uploading ? classes.uploading : classes.large}
                         />
                     ) : (
-                    )} */}
-                    <Avatar className={classes.large}>
-                        <PersonAddIcon className={classes.large} />
-                    </Avatar>
+                        <Avatar className={classes.large}>
+                            <PersonAddIcon className={classes.large} />
+                        </Avatar>
+                    )}
                 </Box>
             </Tooltip>
         </Box>

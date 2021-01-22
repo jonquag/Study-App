@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-
+import { useGlobalContext } from '../../context/studyappContext';
 import DragzonePicture from '../DragzonePicture';
 
 const useStyles = makeStyles(theme => ({
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 const Drawer = props => {
     const classes = useStyles();
-
+    const { profile } = useGlobalContext();
     return (
         <Grid
             container
@@ -56,7 +56,7 @@ const Drawer = props => {
                 <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
-                    Ashly Sanford
+                    {profile.firstName + ' ' + profile.lastName}
                 </Typography>
             </Grid>
 
