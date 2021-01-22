@@ -20,14 +20,15 @@ import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
 import { useStyles } from './NavbarStyles';
-import { useGlobalContext } from '../../context/studyappContext';
+import {useGlobalContext} from '../../context/studyappContext';
+import { logout } from '../../context/actions';
 
 const Navbar = () => {
     const classes = useStyles();
 
     const history = useHistory();
 
-    const { profile } = useGlobalContext();
+    const { profile, dispatch } = useGlobalContext();
 
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -119,7 +120,7 @@ const Navbar = () => {
                             open={open}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={() => history.push('/login')}>
+                            <MenuItem onClick={() => logout()(dispatch)}>
                                 <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
