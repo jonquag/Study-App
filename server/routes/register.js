@@ -10,13 +10,16 @@ const { GeneralError, Conflict } = require('../utils/errors');
 
 router.post("/", validateEntryReq, async function(req, res, next) {
   const {email, password, courses, university} = req.body;
-
+  const userInfo = {email, password, courses, university};
+  if (!university) delete userInfo['university'];
+  
   try {
       const hashedPw = await bcrypt.hash(password, 10)
       .catch(() => {
           throw new GeneralError('Failed to hash password.')
       });
-      const user = new User({ email, password: hashedPw, courses, university });
+      userInfo.password = hashedPw;
+      const user = new User(userInfo);
       const userDoc = await user.save()
       .catch((err) => {
         if (!err.errors || err.errors.email && err.errors.email.reason) {
