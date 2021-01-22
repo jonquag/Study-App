@@ -191,7 +191,7 @@ const Drawer = props => {
             </Grid>
             <Grid container item>
                 <Grid item>
-                    <Typography className={classes.logoutStyles}>Logout</Typography>
+                    <Button className={classes.logoutStyles}>Logout</Button>
                 </Grid>
             </Grid>
         </Grid>
