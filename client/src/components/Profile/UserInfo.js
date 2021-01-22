@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: '1em',
     },
     container: {
-        marginLeft: '3em',
+        padding: theme.spacing(0, 0, 0, 11),
     },
 }));
 
@@ -40,7 +40,8 @@ const UserInfo = () => {
     const { profile } = useGlobalContext();
     console.log(profile);
 
-    const updateProfileInfo = () => {
+    const handleSubmit = e => {
+        e.preventDefault();
         const userInfo = {
             firstName,
             lastName,
@@ -50,6 +51,11 @@ const UserInfo = () => {
         };
         axios.put(`/profile/${profile.user._id}`, userInfo);
         console.log('update changes clicked');
+        // setFirstName(profile.firstName);
+        // setLastName(profile.lastName);
+        // setEmail(profile.email);
+        // setLocation(profile.location);
+        // setPhone(profile.phone);
     };
 
     return (
@@ -65,7 +71,7 @@ const UserInfo = () => {
                     Profile
                 </Typography>
             </Grid>
-            <form className={classes.root} noValidate autoComplete="off">
+            <form noValidate autoComplete="off">
                 <Grid
                     item
                     container
@@ -82,7 +88,7 @@ const UserInfo = () => {
                             id="outlined"
                             hinttext="Change first name.."
                             variant="outlined"
-                            value={profile.firstName}
+                            defaultValue={profile.firstName}
                             onChange={e => setFirstName(e.target.value)}
                             className={classes.inputStyles}
                         />
@@ -138,10 +144,7 @@ const UserInfo = () => {
                     </Grid>
                     <Grid container>
                         <Grid item>
-                            <Button
-                                className={classes.button}
-                                onClick={updateProfileInfo}
-                            >
+                            <Button className={classes.button} onClick={handleSubmit}>
                                 Submit Changes
                             </Button>
                         </Grid>
