@@ -29,6 +29,11 @@ export const reducer = (state, action) => {
                 ...state,
                 isLoading: true,
             };
+        case 'updateProfile':
+            return {
+                ...state,
+                profile: payload,
+            };
         default:
             throw new Error('No action type found!');
     }
