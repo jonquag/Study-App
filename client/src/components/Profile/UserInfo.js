@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import { useGlobalContext } from '../../context/studyappContext';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     inputStyles: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: '1em',
     },
     container: {
-        margin: '3em',
+        marginLeft: '3em',
     },
 }));
 
@@ -40,6 +41,14 @@ const UserInfo = () => {
     console.log(profile);
 
     const updateProfileInfo = () => {
+        const userInfo = {
+            firstName,
+            lastName,
+            email,
+            location,
+            phone,
+        };
+        axios.put(`/profile/${profile.user._id}`, userInfo);
         console.log('update changes clicked');
     };
 
@@ -72,7 +81,6 @@ const UserInfo = () => {
                         <TextField
                             id="outlined"
                             hinttext="Change first name.."
-                            defaultValue="Default Value"
                             variant="outlined"
                             value={profile.firstName}
                             onChange={e => setFirstName(e.target.value)}
