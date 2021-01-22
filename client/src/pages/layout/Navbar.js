@@ -18,7 +18,6 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { NavLink, useHistory } from 'react-router-dom';
 
 import logo from '../../images/logo_study.png';
-import profileImg from '../../images/empty_profile.png';
 import { useStyles } from './NavbarStyles';
 import { useGlobalContext } from '../../context/studyappContext';
 import { logout } from '../../context/actions';
@@ -61,58 +60,56 @@ const Navbar = () => {
                     </div>
                     <div className={classes.listContainer}>
                         <List>
-                            <Link
-                                color="inherit"
-                                variant="inherit"
-                                underline="none"
-                                component={NavLink}
-                                activeStyle={{
-                                    fontWeight: 600,
-                                    color: '#2574FF',
-                                }}
-                                to="/forum"
-                            >
-                                <ListItem>
-                                    <Typography variant="h6">Forum</Typography>
-                                </ListItem>
-                            </Link>
-                            <Link
-                                color="inherit"
-                                variant="inherit"
-                                underline="none"
-                                component={NavLink}
-                                activeStyle={{
-                                    fontWeight: 600,
-                                    color: '#2574FF',
-                                }}
-                                to="/groups"
-                            >
-                                <ListItem>
-                                    <Typography variant="h6">Groups</Typography>
-                                </ListItem>
-                            </Link>
-                            <Link
-                                color="inherit"
-                                variant="inherit"
-                                underline="none"
-                                component={NavLink}
-                                activeStyle={{
-                                    fontWeight: 600,
-                                    color: '#2574FF',
-                                }}
-                                to="/chat"
-                            >
-                                <ListItem>
-                                    <Typography variant="h6">Chats</Typography>
-                                    <Badge badgeContent={12} className={classes.badge} />
-                                </ListItem>
-                            </Link>
+                            <ListItem>
+                                <NavLink
+                                    color="inherit"
+                                    variant="inherit"
+                                    underline="none"
+                                    to="/forum"
+                                    style={{ opacity: '50%' }}
+                                    activeStyle={{
+                                        opacity: '100%',
+                                    }}
+                                    className={classes.linkStyles}
+                                >
+                                    Forum
+                                </NavLink>
+                            </ListItem>
+                            <ListItem>
+                                <NavLink
+                                    color="inherit"
+                                    variant="inherit"
+                                    underline="none"
+                                    to="/groups"
+                                    activeStyle={{
+                                        opacity: '100%',
+                                    }}
+                                    className={classes.linkStyles}
+                                >
+                                    Groups
+                                </NavLink>
+                            </ListItem>
+                            <ListItem>
+                                <NavLink
+                                    color="inherit"
+                                    variant="inherit"
+                                    underline="none"
+                                    to="/chat"
+                                    activeStyle={{
+                                        opacity: '100%',
+                                    }}
+                                    className={classes.linkStyles}
+                                >
+                                    Chats
+                                </NavLink>
+                                <Badge badgeContent={12} className={classes.badge} />
+                            </ListItem>
                         </List>
                     </div>
                     <div className={classes.profile}>
                         <Avatar
                             alt="profile_img"
-                            src={profileImg}
+                            src={profile.imageUrl}
                             className={classes.avatar}
                         />
                         <Button
