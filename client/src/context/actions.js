@@ -2,10 +2,8 @@ import axios from 'axios';
 
 export const register = values => async dispatch => {
     try {
-        const res = await axios.post('/register', values)
-            .catch((err) => {
-                throw err.response;
-            });
+        const res = await axios.post('/auth/register', values);
+
         if (res.status === 201) {
             dispatch({ type: 'REGISTER_SUCCESS' });
             return res;
@@ -19,11 +17,7 @@ export const register = values => async dispatch => {
 
 export const login = values => async dispatch => {
     try {
-        const res = await axios.post('/login', values)
-        .catch((err) => {
-            throw err.response;
-        });
-
+        const res = await axios.post('/auth/login', values);
         if (res.status === 200) {
             dispatch({ type: 'LOGIN_SUCCESS' });
             return res;
