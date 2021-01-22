@@ -18,8 +18,8 @@ class GeneralError extends Error {
     }
 }
 
-class Conflict extends GeneralError {}
 class BadRequest extends GeneralError { }
+class Conflict extends GeneralError { }
 class NotFound extends GeneralError { }
 class Unauthorized extends GeneralError { }
   
