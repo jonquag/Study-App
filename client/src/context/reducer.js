@@ -4,7 +4,7 @@ export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
-    profile: Profile,
+    profile: {},
 };
 
 export const reducer = (state, action) => {
@@ -20,7 +20,8 @@ export const reducer = (state, action) => {
         case 'FETCH_USER_COURSES':
             return {
                 ...state,
-                userCourse: payload,
+                userCourse: payload[1],
+                profile: payload[0],
                 isLoading: false,
             };
         case 'LOGIN_FAIL':
@@ -29,16 +30,16 @@ export const reducer = (state, action) => {
                 ...state,
                 isLoading: true,
             };
+        case 'LOGOUT':
+            return {
+                ...state,
+                isLoading: true,
+                isAuth: false,
+            };
         case 'updateProfile':
             return {
                 ...state,
                 profile: payload,
-            };
-        case 'LOGOUT':
-            return {
-                ...state,
-                isAuth: false,
-                isLoading: true,
             };
         default:
             throw new Error('No action type found!');
