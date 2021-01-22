@@ -20,7 +20,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../images/logo_study.png';
 import { useStyles } from './NavbarStyles';
 import { useGlobalContext } from '../../context/studyappContext';
-import { logout } from '../../context/actions';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const Navbar = () => {
     const classes = useStyles();
@@ -107,11 +107,18 @@ const Navbar = () => {
                         </List>
                     </div>
                     <div className={classes.profile}>
-                        <Avatar
-                            alt="profile_img"
-                            src={profile.imageUrl}
-                            className={classes.avatar}
-                        />
+                        {profile.imageUrl ? (
+                            <Avatar
+                                alt="Profile Pic"
+                                src={profile.imageUrl}
+                                className={classes.avatar}
+                            />
+                        ) : (
+                            <Avatar className={classes.large}>
+                                <PersonAddIcon className={classes.large} />
+                            </Avatar>
+                        )}
+
                         <Button
                             endIcon={<ArrowDropDownIcon />}
                             className={classes.profile_button}

@@ -24,7 +24,6 @@ const ProfilePic = () => {
 
                 const form = new FormData();
                 form.append('image', droppedFiles[0]);
-                // form.append('firstName', profile.firstName);
                 const res = await axios
                     .post('/upload', form)
                     .catch(err => console.log(err));
