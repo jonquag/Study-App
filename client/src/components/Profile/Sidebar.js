@@ -5,13 +5,13 @@ import { chatList, courseGroupList } from '../../data/mockData';
 import { useStyles } from './SidebarStyles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-
-import { makeStyles } from '@material-ui/styles';
+import { useGlobalContext } from '../../context/studyappContext';
 import DragzonePicture from '../DragzonePicture';
 
 const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
+    const { profile } = useGlobalContext();
 
     const [courseList, setCourseList] = useState(
         courseGroupList.map(cgl => ({ ...cgl, expand: false }))
@@ -142,7 +142,7 @@ const Drawer = props => {
                 <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
-                    Ashly Sanford
+                    {profile.firstName + ' ' + profile.lastName}
                 </Typography>
             </Grid>
 
