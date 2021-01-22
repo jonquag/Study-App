@@ -21,7 +21,7 @@ import logo from '../../images/logo_study.png';
 import profileImg from '../../images/empty_profile.png';
 import { useStyles } from './NavbarStyles';
 import { useGlobalContext } from '../../context/studyappContext';
-import * as actions from '../../context/actions';
+import { logout } from '../../context/actions';
 
 const Navbar = () => {
     const classes = useStyles();
@@ -136,7 +136,7 @@ const Navbar = () => {
                             open={open}
                             onClose={() => setAnchorEl(null)}
                         >
-                            <MenuItem onClick={handleLogout}>
+                            <MenuItem onClick={() => logout()(dispatch)}>
                                 <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
