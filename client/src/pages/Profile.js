@@ -46,7 +46,6 @@ const Profile = () => {
                         </Route>
                     </Switch>
                 </Grid>
-
             </Grid>
         </Grid>
     );

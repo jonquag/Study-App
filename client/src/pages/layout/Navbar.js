@@ -30,7 +30,6 @@ const Navbar = () => {
 
     const { profile, dispatch } = useGlobalContext();
 
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -95,8 +94,8 @@ const Navbar = () => {
                     </div>
                     <div className={classes.profile}>
                         <Avatar
-                            alt="profiel_img"
-                            src={profile.imageUrl.length ? profile.imageUrl : profileImg}
+                            alt="profile_img"
+                            src={profile.imageUrl ? profile.imageUrl : profileImg}
                             className={classes.avatar}
                         />
                         <Button
