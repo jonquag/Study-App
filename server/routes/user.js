@@ -93,7 +93,7 @@ router.delete('/courses/:courseId', verifyAuth, async function (req, res, next) 
             .populate({ path: 'courses', model: 'Course' })
             .catch(err => {
                 if (err.kind == 'ObjectId') {
-                    throw new BadRequest('Invalid userID');
+                    throw new BadRequest('Invalid Course ID');
                 }
                 throw new GeneralError('Server Error');
             });
