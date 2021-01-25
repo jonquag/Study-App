@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Container } from '@material-ui/core';
+import { Grid, Typography, Container, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { groups } from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
@@ -10,7 +10,15 @@ const useStyles = makeStyles((theme) => ({
     cardGrid: {
       paddingTop: theme.spacing(8),
       paddingBottom: theme.spacing(8),
-    }
+    },
+    button: {
+      color: '#FFF',
+      background: theme.palette.primary.gradient,
+      marginTop: "60px",
+      marginRight: "60px",
+      textTransform: 'none',
+      height: '3rem',
+  }
     
   }));
 
@@ -20,27 +28,36 @@ const Groups = () => {
     return (
         <Grid>
         <Navbar />
-        <Grid container >
+        <Grid container>
             <Grid 
             item
-            justify="center"
             direction="row"
             container
-            sm={12} >
-                 <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
-                    Sugggested For You.
-                </Typography>
+            md={4} >
             </Grid>
             <Grid 
             item
             justify="center"
             direction="row"
             container
-            sm={12}>
-                 <Typography variant="h6" color="textSecondary" style={{ paddingTop: "20px"}}>
+            md={4}>
+                <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
+                    Sugggested For You.
+                </Typography>
+                <Typography variant="h6" color="textSecondary" style={{ paddingTop: "20px"}}>
                     Groups you might be interested in!
                 </Typography>
             </Grid>
+            <Grid 
+            item
+            justify="flex-end"
+            direction="row"
+            container
+            md={4}>
+                 <Button  className={classes.button}>
+                      Create New Group
+                 </Button>
+            </Grid>       
         </Grid>
 
         <Container className={classes.cardGrid} maxWidth="md">
