@@ -1,4 +1,4 @@
-import Profile from '../models/Profile';
+import Profile from '../constants/Profile';
 
 export const initialState = {
     isLoading: true,
