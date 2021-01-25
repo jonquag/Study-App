@@ -75,28 +75,53 @@ router.post('/courses', verifyAuth, async function (req, res, next) {
     }
 });
 
-//Remove a user from a course, sends the updated user
-router.delete('/courses/:courseId', verifyAuth, async function (req, res) {
+//Remove a user from a course, removes them from all groups that belong to that course, returns user data
+router.delete('/courses/:courseId', verifyAuth, async function (req, res, next) {
     const courseId = req.params.courseId;
     const userId = req.body.userId;
-    try {
-        const userDoc = await User.findByIdAndUpdate(
-            userId,
-            { $pull: { courses: courseId } },
-            { useFindAndModify: false, new: true }
-        )
+
+        // start new session for transaction
+        const session = await User.startSession();
+        session.startTransaction();
+        try {
+            const opts = { session };
+            const userDoc = await User.findByIdAndUpdate(
+                userId,
+                { $pull: { courses: courseId } },
+                { useFindAndModify: false, new: true }
+            )
             .populate({ path: 'courses', model: 'Course' })
             .catch(err => {
                 if (err.kind == 'ObjectId') {
-                    throw new BadRequest('Invalid Course ID');
+                    throw new BadRequest('Invalid userID');
                 }
                 throw new GeneralError('Server Error');
             });
-        res.status(201);
-        res.send(userDoc);
-    } catch (err) {
-        next(err);
-    }
+            if (userDoc) {
+                const group = await Group.updateMany(
+                    { course: userId },
+                    { $pull: { members: userId } },
+                    opts
+                ).catch(err => {
+                    throw new GeneralError('Server Error');
+                });
+            }
+            
+            //commit transaction
+            await session.commitTransaction();
+            session.endSession();
+            
+            //send updated user data as response
+            res.status(201);
+            return res.send(userDoc);
+
+        } catch (err) {
+            await session.abortTransaction();
+            session.endSession();
+            next(err);
+        }
+        
+ 
 });
 
 //Assign a user to a University, sends the updated user
