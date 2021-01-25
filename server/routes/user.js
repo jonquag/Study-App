@@ -201,12 +201,12 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
     const session = await Group.startSession();
     session.startTransaction();
     try {
-        const opts = { session };
         const groupDoc = await Group.findByIdAndUpdate(
             groupId,
             { $addToSet: { members: userId } },
-            { useFindAndModify: false, new: true },
+            { useFindAndModify: false, new: true }
         )
+        .session(session)
         .catch(err => {
             if (err.kind == 'ObjectId') {
                 throw new BadRequest('Invalid Group ID');
@@ -216,9 +216,9 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
         if (groupDoc) {
             await User.findByIdAndUpdate(
                 userId,
-                { $addToSet: { groups: groupId } },
-                opts
+                { $addToSet: { groups: groupId } },              
             )
+            .session(session)
         }
         await session.commitTransaction();
         session.endSession();
