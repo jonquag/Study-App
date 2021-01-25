@@ -25,7 +25,7 @@ export const login = values => async dispatch => {
     } catch (err) {
         console.log(err);
         dispatch({ type: 'LOGIN_FAIL' });
-        return err.response.data.response;
+        return err;
     }
 };
 

@@ -20,6 +20,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../images/logo_study.png';
 import profileImg from '../../images/profile-pic.png';
 import { useStyles } from './NavbarStyles';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const Navbar = () => {
     const classes = useStyles();
@@ -27,7 +28,6 @@ const Navbar = () => {
     const history = useHistory();
 
     const { profile, isLoading } = useGlobalContext();
-
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
