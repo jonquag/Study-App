@@ -197,24 +197,38 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
 router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
     const userId = req.body.userId;
     const groupId = req.params.groupId;
+
+    const session = await Group.startSession();
+    session.startTransaction();
     try {
+        const opts = { session };
         const groupDoc = await Group.findByIdAndUpdate(
             groupId,
             { $addToSet: { members: userId } },
-            { useFindAndModify: false, new: true }
+            { useFindAndModify: false, new: true },
         )
-            .catch(err => {
-                if (err.kind == 'ObjectId') {
-                    throw new BadRequest('Invalid Group ID');
-                }
+        .catch(err => {
+            if (err.kind == 'ObjectId') {
+                throw new BadRequest('Invalid Group ID');
+            }
                 throw new GeneralError('Server Error');
             });
+        if (groupDoc) {
+            await User.findByIdAndUpdate(
+                userId,
+                { $addToSet: { groups: groupId } },
+                opts
+            )
+        }
+        await session.commitTransaction();
+        session.endSession();
         res.status(201);
         res.send(groupDoc);
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
         next(err);
     }
-    
 });
 
 // delete a user from a group
