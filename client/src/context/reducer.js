@@ -17,7 +17,6 @@ export const reducer = (state, action) => {
                 isAuth: true,
             };
         case 'FETCH_USER_INFO':
-            console.log(payload);
             return {
                 ...state,
                 userCourse: payload[1],
