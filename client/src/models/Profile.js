@@ -1,10 +1,12 @@
 const Profile = {
-    user: {},
-    firstName: "",
-    lastName: "",
-    phone: "",
-    location: "",
-    imageUrl: "",
+    user: {
+        email: ''
+    },
+    firstName: '',
+    lastName: '',
+    phone: '',
+    location: '',
+    imageUrl: '',
 }
 
 export default Profile;
