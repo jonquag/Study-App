@@ -4,8 +4,6 @@ const verifyAuth = require('../middleware/verifyAuth');
 const User = require('../models/user');
 const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
-const courses = require('../models/courses');
-const groups = require('../models/Group');
 const Group = require('../models/Group');
 require('../models/courses');
 
