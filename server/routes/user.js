@@ -239,12 +239,12 @@ router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
     const session = await Group.startSession();
     session.startTransaction();
     try {
-        const opts = { session };
         const groupDoc = await Group.findByIdAndUpdate(
             groupId,
             { $pull: { members: userId } },
             { useFindAndModify: false, new: true }
         )
+        .session(session)
         .catch(err => {
             if (err.kind == 'ObjectId') {
                 throw new BadRequest('Invalid Group ID');
@@ -255,8 +255,8 @@ router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
             await User.findByIdAndUpdate(
                 userId,
                 { $pull: { groups: groupId } },
-                opts
             )
+            .session(session)
         }
         await session.commitTransaction();
         session.endSession();
