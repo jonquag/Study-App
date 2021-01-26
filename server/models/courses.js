@@ -6,7 +6,7 @@ const courseSchema = mongoose.Schema({
     courseCode: String,
     program: String,
     groups: [{
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Group',
     }],
 });

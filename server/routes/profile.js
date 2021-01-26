@@ -21,12 +21,9 @@ router.get('/', auth, async (req, res, next) => {
 
         res.json(profile);
     } catch (err) {
-        next();
+        next(err);
     }
-
 });
-
-
 
 //Updates user profile fields based on ID and populates email
 router.put('/:user_id', auth, updateProfile);
