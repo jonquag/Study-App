@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Container, Button, Modal } from '@material-ui/core';
+import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { groups } from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
 import GroupCard from '../../components/Group/GroupCard';
 import axios from 'axios';
+
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -49,17 +52,27 @@ const Groups = () => {
     const [modalStyle] = React.useState(getModalStyle);
     const [openModal, setOpen] = useState(false);
     const [courses, setCourses] = useState([]);
+    const [groupName, setGroupName] = useState('');
+    const [courseId, setCourseId] = useState('');
 
      // fetch all the users courses
      const fetchUserCourses = async () => {
       try {
-          const response = await axios.get('/user/courses');
+          const courseResponse = await axios.get('/user/courses');
 
-          setCourses(response.data);
+          setCourses(courseResponse.data);
 
       } catch (err) {
           console.log(err);
       }
+  };
+
+  const handleOpen = () => {
+    setOpen(true)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -71,65 +84,97 @@ const Groups = () => {
       <h2>Create a new group</h2>
       <p>
         Add group name and select your course.
-        {
-          courses.map(course => {
-            return <p>{course.name} </p>
-          })
-        }
       </p>
+        <Formik initialValues={{ course: '' }}>
+        
+        <Form className={classes.form}>
+        <FormHelperText>Add a new group name</FormHelperText>
+        <Field
+          component={TextField}
+          name="group_name"
+          type="text"
+          variant="outlined"
+          defaultValue=""
+          fullWidth="true"
+          onChange={(e) => setGroupName(e.target.value)}
+        >
+        </Field>
+        <FormHelperText>Course</FormHelperText>
+        <Field
+        component={TextField}
+        name="course"
+        type="text"
+        select
+        variant="outlined"
+        defaultValue=""
+        fullWidth="true"
+        >
+        { 
+        courses.map(course => {
+          return (
+            <MenuItem
+                key={course._id}
+                value={course._id}
+                onChange={() => setCourseId(course._id)}
+                >
+                {course.name}
+            </MenuItem>
+          );
+        })}
+        </Field>
+        <Button
+          className={classes.button}
+          style={{marginTop: "20px"}}
+        >
+          Create New Group
+        </Button>                    
+        </Form>     
+        </Formik>             
     </div>
     );
-
-    const handleOpen = () => {
-      setOpen(true)
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
 
     return (
         <Grid>
         <Navbar />
         <Grid container>
-            <Grid 
-            item
-            direction="row"
-            container
-            md={4} >
-            </Grid>
-            <Grid 
-            item
-            justify="center"
-            direction="row"
-            container
-            md={4}>
-               <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
-                    Sugggested For You.
-                </Typography>
-                <Typography variant="h6" color="textSecondary" style={{ paddingTop: "20px"}}>
-                    Groups you might be interested in!
-                </Typography>
-            </Grid>
-            <Grid 
-            item
-            justify="flex-end"
-            direction="row"
-            container
-            md={4}>
-              <Button
-                className={classes.button}
-                onClick={handleOpen}
-                >
-                Create New Group
-              </Button>
-              <Modal
-                open={openModal}
-                onClose={handleClose}
-                >
-                {body}
-            </Modal>
-            </Grid>       
+          <Grid 
+          item
+          direction="row"
+          container
+          md={4} >
+          </Grid>
+          <Grid 
+          item
+          justify="center"
+          direction="row"
+          container
+          md={4}>
+            <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
+                Sugggested For You.
+            </Typography>
+            <Typography variant="h6" color="textSecondary" style={{ paddingTop: "20px"}}>
+                Groups you might be interested in!
+            </Typography>
+          </Grid>
+          <Grid 
+          item
+          justify="flex-end"
+          direction="row"
+          container
+          md={4}>
+            <Button
+              className={classes.button}
+              onClick={handleOpen}
+              >
+              Create New Group
+            </Button>
+            <Modal
+              open={openModal}
+              onClose={handleClose}
+              >
+              {body}
+          </Modal>
+          </Grid>       
         </Grid>
 
         <Container className={classes.cardGrid} maxWidth="md">
