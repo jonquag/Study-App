@@ -68,6 +68,5 @@ export const useStyles = makeStyles(theme => ({
         color: '#FFF',
         background: theme.palette.primary.gradient,
         marginTop: theme.spacing(4),
-        height: '3rem',
     },
 }));

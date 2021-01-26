@@ -8,29 +8,31 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: 120,
         width: '100%',
         marginTop: theme.spacing(2),
     },
     actionArea: {
+        height: 120,
         display: 'grid',
         gridTemplateColumns: '120px 1fr',
+        alignItems: 'center',
     },
     cardInfo: {
         display: 'grid',
-        gridTemplateRows: '1fr 1fr',
+        gridTemplateRows: '1fr',
+        justify: 'space-between',
+
+        padding: 0,
     },
     cardImage: {
         width: 100,
         height: 100,
         justifySelf: 'center',
         borderRadius: '10px',
-        margin: 10,
     },
     cardTitle: {
         fontWeight: 'bold',
         fontSize: 22,
-        paddingBottom: 5,
     },
     cardDesc: {
         fontSize: 14,

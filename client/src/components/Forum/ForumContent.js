@@ -8,19 +8,15 @@ const useStyles = makeStyles(theme => ({
     headerContainer: {
         height: 150,
     },
-    // button: {
-    //     color: '#FFF',
-    //     background: theme.palette.primary.gradient,
-    //     padding: 10,
-    //     width: 150,
-    //     textTransform: 'none',
-    //     fontSize: 18,
-    // },
     divider: {
         marginBottom: 10,
     },
     cardContainer: {
         maxWidth: '100%',
+    },
+    button: {
+        width: 150,
+        marginRight: theme.spacing(3),
     },
 }));
 
@@ -55,7 +51,12 @@ const ForumContent = () => {
                 </Grid>
 
                 <Grid item container sm={3}>
-                    <Button className={classes.button} onClick={addPost}>
+                    <Button
+                        className={classes.button}
+                        onClick={addPost}
+                        variant="text"
+                        color="primary"
+                    >
                         Add Post
                     </Button>
                 </Grid>

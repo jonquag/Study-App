@@ -61,10 +61,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
         marginTop: theme.spacing(4),
-        height: '3rem',
     },
     add_btn: {
         marginTop: 8,
@@ -181,12 +178,13 @@ const MyCourses = () => {
                     })}
                 </Select>
                 <Grid className={classes.add_btn}>
-                    <Button color="primary" startIcon={<AddIcon />} onClick={addCourse}>
+                    <Button startIcon={<AddIcon />} onClick={addCourse}>
                         Add course
                     </Button>
                 </Grid>
                 <Button
-                    variant="contained"
+                    variant="text"
+                    color="primary"
                     className={classes.button}
                     onClick={handleCourseUpdate}
                 >

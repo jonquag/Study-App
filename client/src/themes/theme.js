@@ -32,18 +32,15 @@ export const theme = createMuiTheme({
             gradient: 'linear-gradient(45deg, #2574FF, #4B00FF)',
         },
     },
-    button: {
-        color: '#FFF',
-        background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
-        height: 54,
-    },
     overrides: {
         MuiButton: {
-            root: {
+            textPrimary: {
                 color: '#FFF',
                 background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
                 textTransform: 'none',
-                fontSize: 22,
+                fontSize: 14,
+                padding: 10,
+                height: '3rem',
             },
         },
     },
