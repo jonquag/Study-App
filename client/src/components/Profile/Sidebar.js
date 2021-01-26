@@ -12,13 +12,20 @@ const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
 
+    const [courseList, setCourseList] = useState(
+        courseGroupList.map(cgl => ({ ...cgl, expand: false }))
+    );
     const [chatId, setChatId] = useState(null);
-    const [isExpand, setIsExpand] = useState(false);
-    const [courseId, setCourseId] = useState(null);
+    const [courseId, setCourseId] = useState([]);
 
-    const showAnswer = id => {
-        setCourseId(id);
-        setIsExpand(preState => !preState);
+    const showGroup = id => {
+        setCourseId([...courseId, id]);
+        const editedCourseList = courseList.map(cl => {
+            if (cl.id === id && !cl.expand) return { ...cl, expand: true };
+            if (cl.id === id && cl.expand) return { ...cl, expand: false };
+            else return { ...cl };
+        });
+        setCourseList(editedCourseList);
     };
 
     if (location.pathname === '/chat')
@@ -79,14 +86,16 @@ const Drawer = props => {
                     <Badge badgeContent={3} className={classes.badge} />
                 </Grid>
                 <Grid item className={classes.accordion}>
-                    {courseGroupList.map(cgl => {
+                    {courseList.map(cgl => {
                         let groupList = null;
-                        if (isExpand && cgl.id === courseId)
+                        const isIdThere = courseId.some(id => cgl.id === id);
+                        if (cgl.expand && isIdThere)
                             groupList = cgl.groups.map(group => {
                                 return (
                                     <Typography
                                         key={group.id}
                                         className={classes.group_list}
+                                        onClick={() => console.log(`${group.name} forum`)}
                                     >
                                         {group.name}
                                     </Typography>
@@ -96,8 +105,8 @@ const Drawer = props => {
                             <div key={cgl.id} className={classes.accordion_container}>
                                 <Grid className={classes.course_name}>
                                     <Typography>{cgl.name}</Typography>
-                                    <Button onClick={() => showAnswer(cgl.id)}>
-                                        {isExpand && courseId === cgl.id ? (
+                                    <Button onClick={() => showGroup(cgl.id)}>
+                                        {cgl.expand && isIdThere ? (
                                             <RemoveIcon className={classes.icons} />
                                         ) : (
                                             <AddIcon className={classes.icons} />

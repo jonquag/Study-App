@@ -105,8 +105,10 @@ export const useStyles = makeStyles(theme => ({
         backgroundColor: '#2967ff',
         marginLeft: theme.spacing(0.1),
     },
-    // empty css
-    accordion: {},
+    accordion: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
     accordion_container: {
         display: 'block',
         width: '90%',
