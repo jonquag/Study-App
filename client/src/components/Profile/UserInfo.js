@@ -27,10 +27,9 @@ const UserInfo = props => {
     const classes = useStyles();
 
     return (
-        //  User Info Grid Parent Container
-        <Grid container item sm={12} className={classes.profileGrid}>
-            <Grid item sm={12}>
-                <Typography variant="h1" className={classes.headerStyles}>
+        <Grid container direction="column" className={classes.container}>
+            <Grid item container alignContent="center" sm={2}>
+                <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
             </Grid>
