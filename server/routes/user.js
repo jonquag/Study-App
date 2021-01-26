@@ -102,7 +102,7 @@ router.delete('/courses/:courseId', verifyAuth, async function (req, res, next) 
                 throw new GeneralError('Error Establishing a Database Connection');
             });
             if (userDoc) {
-                const group = await Group.updateMany(
+                await Group.updateMany(
                     { course: userId },
                     { $pull: { members: userId } },
                     opts
