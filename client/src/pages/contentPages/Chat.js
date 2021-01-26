@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
         height: 'calc(100vh - 100px)',
         marginTop: 3,
     },
+    sidebar: {},
     contentContainer: {
         backgroundColor: theme.palette.common.white,
     },
@@ -18,7 +19,13 @@ const Forum = () => {
     return (
         <Grid>
             <Grid container className={classes.container}>
-                <Grid item container sm={3} className={classes.sidebar}>
+                <Grid
+                    item
+                    container
+                    direction="column"
+                    sm={3}
+                    className={classes.sidebar}
+                >
                     <Sidebar />
                 </Grid>
                 <Grid item container sm={9} className={classes.contentContainer}>

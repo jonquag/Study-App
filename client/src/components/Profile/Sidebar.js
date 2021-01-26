@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { Grid, Typography, Badge, Divider } from '@material-ui/core';
+import { NavLink, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import profilePic from '../../static/images/profilePicSample.png';
 
@@ -27,14 +27,46 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '1em',
         fontSize: 22,
     },
+    chat_head: {
+        height: 120,
+        // backgroundColor: '#2967ff',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingLeft: theme.spacing(4),
+        '& p': {
+            fontSize: 22,
+        },
+    },
+    badge: {
+        color: theme.palette.common.white,
+        paddingLeft: theme.spacing(4),
+        '& span': {
+            width: 40,
+            height: 24,
+            fontSize: 14,
+            background: theme.palette.primary.gradient,
+        },
+    },
 }));
 
 const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
 
+    if (location.pathname === '/chat')
+        return (
+            <>
+                <Grid item className={classes.chat_head}>
+                    <Typography>All Chats</Typography>
+                    <Badge badgeContent={12} className={classes.badge} />
+                </Grid>
+                <Divider />
+                <Grid item>Math Exam Chats</Grid>
+                <Grid item>Biology course</Grid>
+            </>
+        );
     if (location.pathname === '/forum') return <h1>Forum page side panel</h1>;
-    if (location.pathname === '/chat') return <h1>Chat page side panel</h1>;
 
     return (
         <Grid
