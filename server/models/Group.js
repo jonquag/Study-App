@@ -15,6 +15,7 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User'
     }],
+    image: {type: String},
     course: {type: Schema.Types.ObjectId, ref: 'User'},
 });
 

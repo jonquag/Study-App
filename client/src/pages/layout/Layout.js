@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
     const { dispatch } = useGlobalContext();
 
     useEffect(() => {
-        actions.fetchProfile()(dispatch);
+        actions.fetchUserInfoOnStartup()(dispatch);
     }, [dispatch]);
 
     return (

@@ -1,7 +1,10 @@
+import Profile from '../models/Profile';
+
 export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
+    profile: Profile,
 };
 
 export const reducer = (state, action) => {

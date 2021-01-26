@@ -1,3 +1,4 @@
+import React from 'react';
 import { Grid, Typography, Card, CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,6 +46,7 @@ const formatGroupCount = (num) => {
 const GroupCard = (props) => {
     
     const classes = useStyles();
+    const [isUpdating, setIsUpdating] = React.useState(false);
 
     return (
 
@@ -57,18 +59,21 @@ const GroupCard = (props) => {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h6" style={{ fontWeight: 600 }}>
-                      {props.data.title}
+                      {props.data.name}
                     </Typography>
                     <Grid container direction="row" style={{ paddingTop: "10px"}}>
                         <PeopleAltOutlinedIcon color="disabled" fontSize="small" />
                         <Typography variant="body1" color="textSecondary" style={{ paddingLeft: "5px"}} >
-                            {formatGroupCount(props.data.members)} members
+                            {formatGroupCount(props.data.members.length)} members
                         </Typography>
                     </Grid>
                   </CardContent>
-                  <CardActions>
-                    <Button  className={classes.button}>
-                      Join Group
+                  <CardActions onClick={() => {
+                    setIsUpdating(true);
+                    props.handleCardPress(props.data._id);
+                  }}>
+                    <Button disabled={isUpdating} className={classes.button}>
+                      {props.actionText}
                     </Button>
                   </CardActions>
                 </Card>
@@ -77,4 +82,4 @@ const GroupCard = (props) => {
     )
 }
 
-export default GroupCard
+export default GroupCard;
