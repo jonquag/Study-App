@@ -12,7 +12,7 @@ import MyCourses from '../components/Profile/MyCourses';
 
 const useStyles = makeStyles(theme => ({
     container: {
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 103px)',
         marginTop: 3,
     },
     contentContainer: {

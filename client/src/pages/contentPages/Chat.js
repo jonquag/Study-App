@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     container: {
-        height: 'calc(100vh - 100px)',
         marginTop: 3,
     },
     sidebar: {},

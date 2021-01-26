@@ -1,98 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
 import { NavLink, useLocation } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
 
 import profilePic from '../../static/images/profilePicSample.png';
 import { chatList } from '../../data/mockData';
-
-const useStyles = makeStyles(theme => ({
-    linkStyles: {
-        textDecoration: 'none',
-        color: 'black',
-        padding: '1em 0 0 2em',
-        fontSize: 18,
-        opacity: '50%',
-    },
-    profilePic: {
-        borderRadius: '50%',
-        width: '130px',
-        marginTop: '4em',
-    },
-    drawer: {
-        background: '#F9F9FC',
-    },
-    linkContainer: {
-        paddingTop: '2em',
-    },
-    profileName: {
-        paddingTop: '1em',
-        fontSize: 22,
-    },
-    chat_head: {
-        height: 120,
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingLeft: theme.spacing(4),
-        '& p': {
-            fontSize: 22,
-        },
-    },
-    badge: {
-        color: theme.palette.common.white,
-        paddingLeft: theme.spacing(4),
-        '& span': {
-            width: 40,
-            height: 24,
-            fontSize: 14,
-            background: theme.palette.primary.gradient,
-        },
-    },
-    chat_list: {
-        height: 100,
-        flexWrap: 'nowrap',
-        alignItems: 'center',
-        paddingLeft: theme.spacing(5),
-    },
-    group_member: {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingLeft: theme.spacing(2),
-    },
-    avatar: {
-        height: 60,
-        width: 60,
-        borderRadius: 18,
-    },
-    group_name: {
-        fontSize: 18,
-        fontWeight: 500,
-    },
-    divider: {
-        opacity: 0.10414,
-        height: 1,
-        background: '#2967ff',
-    },
-}));
+import { useStyles } from './SidebarStyles';
 
 const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
 
+    const [chatId, setChatId] = useState(null);
+
     if (location.pathname === '/chat')
         return (
-            <>
+            <Grid container className={classes.list_container}>
                 <Grid item className={classes.chat_head}>
                     <Typography>All Chats</Typography>
                     <Badge badgeContent={12} className={classes.badge} />
                 </Grid>
                 <Divider className={classes.divider} />
                 {chatList.map(cg => {
+                    let activeChat = null;
+                    if (cg.id === chatId) {
+                        activeChat = <div className={classes.active_line}></div>;
+                    }
                     return (
                         <React.Fragment key={cg.id}>
-                            <Grid item container className={classes.chat_list}>
-                                <Grid item>
+                            <Grid
+                                item
+                                container
+                                className={
+                                    cg.id === chatId
+                                        ? classes.chat_list_active
+                                        : classes.chat_list
+                                }
+                                onClick={() => setChatId(cg.id)}
+                            >
+                                {activeChat}
+                                <Grid item className={classes.avatar_container}>
                                     <Avatar
                                         alt="chat_group_img"
                                         src={cg.imgUrl}
@@ -113,7 +59,7 @@ const Drawer = props => {
                         </React.Fragment>
                     );
                 })}
-            </>
+            </Grid>
         );
     if (location.pathname === '/forum') return <h1>Forum page side panel</h1>;
 
@@ -126,7 +72,7 @@ const Drawer = props => {
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={4}>
+            <Grid container item direction="column" alignItems="center" sm={3}>
                 <img
                     src={profilePic}
                     alt="Ashly Sanford"
