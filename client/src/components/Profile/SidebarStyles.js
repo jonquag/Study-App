@@ -26,7 +26,22 @@ export const useStyles = makeStyles(theme => ({
     list_container: {
         display: 'block',
         height: 'calc(100vh - 103px)',
-        overflowY: 'scroll',
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '0.6rem',
+            height: '12rem',
+        },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 5px grey',
+            borderRadius: 4,
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,.1)',
+            borderRadius: 4,
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+            background: '#ccc',
+        },
     },
     chat_head: {
         height: 120,
@@ -90,6 +105,7 @@ export const useStyles = makeStyles(theme => ({
         backgroundColor: '#2967ff',
         marginLeft: theme.spacing(0.1),
     },
+    // empty css
     accordion: {},
     accordion_container: {
         display: 'block',
