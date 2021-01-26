@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
+import { Grid, Typography, Badge, Divider, Avatar, Button } from '@material-ui/core';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import profilePic from '../../static/images/profilePicSample.png';
-import { chatList } from '../../data/mockData';
+import { chatList, courseGroupList } from '../../data/mockData';
 import { useStyles } from './SidebarStyles';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
 
     const [chatId, setChatId] = useState(null);
+    const [isExpand, setIsExpand] = useState(false);
+    const [courseId, setCourseId] = useState(null);
+
+    const showAnswer = id => {
+        setCourseId(id);
+        setIsExpand(preState => !preState);
+    };
 
     if (location.pathname === '/chat')
         return (
@@ -61,7 +70,42 @@ const Drawer = props => {
                 })}
             </Grid>
         );
-    if (location.pathname === '/forum') return <h1>Forum page side panel</h1>;
+
+    if (location.pathname === '/forum')
+        return (
+            <Grid>
+                <Grid item className={classes.chat_head}>
+                    <Typography>My Courses</Typography>
+                    <Badge badgeContent={3} className={classes.badge} />
+                </Grid>
+                <Grid item>
+                    {courseGroupList.map(cgl => {
+                        let groupList = null;
+                        if (isExpand && cgl.id === courseId)
+                            groupList = cgl.groups.map(group => {
+                                return (
+                                    <Typography key={group.id}>{group.name}</Typography>
+                                );
+                            });
+                        return (
+                            <div key={cgl.id} className={classes.accordion_container}>
+                                <div>
+                                    <Typography>{cgl.name}</Typography>
+                                    <Button onClick={() => showAnswer(cgl.id)}>
+                                        {isExpand && courseId === cgl.id ? (
+                                            <RemoveIcon />
+                                        ) : (
+                                            <AddIcon />
+                                        )}
+                                    </Button>
+                                </div>
+                                <div>{groupList}</div>
+                            </div>
+                        );
+                    })}
+                </Grid>
+            </Grid>
+        );
 
     return (
         <Grid

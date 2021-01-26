@@ -183,3 +183,48 @@ export const chatList = [
         members: 80,
     },
 ];
+
+export const courseGroupList = [
+    {
+        id: 1,
+        name: 'Computer science',
+        groups: [
+            {
+                id: 10,
+                name: 'CS Winter 2020',
+            },
+            {
+                id: 15,
+                name: 'Programming Fundamentals',
+            },
+            {
+                id: 12,
+                name: 'Data Structures',
+            },
+        ],
+    },
+    {
+        id: 2,
+        name: 'Applied Physics',
+        groups: [
+            {
+                id: 21,
+                name: 'Applied Physics Exam prep',
+            },
+        ],
+    },
+    {
+        id: 3,
+        name: 'Sociology',
+        groups: [
+            {
+                id: 28,
+                name: 'SOC winter 2021',
+            },
+            {
+                id: 24,
+                name: 'Introduction group',
+            },
+        ],
+    },
+];

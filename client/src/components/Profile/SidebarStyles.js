@@ -90,4 +90,10 @@ export const useStyles = makeStyles(theme => ({
         backgroundColor: '#2967ff',
         marginLeft: theme.spacing(0.1),
     },
+    accordion_container: {
+        display: 'block',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: theme.spacing(0, 5, 2, 4),
+    },
 }));
