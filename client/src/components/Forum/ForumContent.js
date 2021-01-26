@@ -8,14 +8,14 @@ const useStyles = makeStyles(theme => ({
     headerContainer: {
         height: 150,
     },
-    button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        padding: 10,
-        width: 150,
-        textTransform: 'none',
-        fontSize: 18,
-    },
+    // button: {
+    //     color: '#FFF',
+    //     background: theme.palette.primary.gradient,
+    //     padding: 10,
+    //     width: 150,
+    //     textTransform: 'none',
+    //     fontSize: 18,
+    // },
     divider: {
         marginBottom: 10,
     },

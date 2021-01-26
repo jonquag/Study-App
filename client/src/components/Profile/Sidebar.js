@@ -30,11 +30,8 @@ const useStyles = makeStyles(theme => ({
         fontSize: 22,
     },
     logoutStyles: {
-        padding: '2em',
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        height: 54,
         margin: '2em',
+        padding: 15,
     },
 }));
 

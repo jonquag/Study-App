@@ -37,4 +37,14 @@ export const theme = createMuiTheme({
         background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
         height: 54,
     },
+    overrides: {
+        MuiButton: {
+            root: {
+                color: '#FFF',
+                background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
+                textTransform: 'none',
+                fontSize: 22,
+            },
+        },
+    },
 });
