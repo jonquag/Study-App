@@ -13,7 +13,7 @@ export const theme = createMuiTheme({
             fontSize: 20,
             fontWeight: 500,
             letterSpacing: -0.5,
-},
+        },
         h3: {
             fontFamily: 'Montserrat',
             fontSize: 26,
@@ -31,5 +31,10 @@ export const theme = createMuiTheme({
             light: '#2574FF',
             gradient: 'linear-gradient(45deg, #2574FF, #4B00FF)',
         },
+    },
+    button: {
+        color: '#FFF',
+        background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
+        height: 54,
     },
 });

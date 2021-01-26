@@ -66,13 +66,7 @@ const UserInfo = () => {
 
     return (
         <Grid container direction="column" className={classes.container}>
-            <Grid
-                item
-                container
-                alignContent="center"
-                sm={2}
-                className={classes.headerContainer}
-            >
+            <Grid item container alignContent="center" sm={2}>
                 <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
