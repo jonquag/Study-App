@@ -78,27 +78,32 @@ const Drawer = props => {
                     <Typography>My Courses</Typography>
                     <Badge badgeContent={3} className={classes.badge} />
                 </Grid>
-                <Grid item>
+                <Grid item className={classes.accordion}>
                     {courseGroupList.map(cgl => {
                         let groupList = null;
                         if (isExpand && cgl.id === courseId)
                             groupList = cgl.groups.map(group => {
                                 return (
-                                    <Typography key={group.id}>{group.name}</Typography>
+                                    <Typography
+                                        key={group.id}
+                                        className={classes.group_list}
+                                    >
+                                        {group.name}
+                                    </Typography>
                                 );
                             });
                         return (
                             <div key={cgl.id} className={classes.accordion_container}>
-                                <div>
+                                <Grid className={classes.course_name}>
                                     <Typography>{cgl.name}</Typography>
                                     <Button onClick={() => showAnswer(cgl.id)}>
                                         {isExpand && courseId === cgl.id ? (
-                                            <RemoveIcon />
+                                            <RemoveIcon className={classes.icons} />
                                         ) : (
-                                            <AddIcon />
+                                            <AddIcon className={classes.icons} />
                                         )}
                                     </Button>
-                                </div>
+                                </Grid>
                                 <div>{groupList}</div>
                             </div>
                         );

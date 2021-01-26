@@ -90,10 +90,29 @@ export const useStyles = makeStyles(theme => ({
         backgroundColor: '#2967ff',
         marginLeft: theme.spacing(0.1),
     },
+    accordion: {},
     accordion_container: {
         display: 'block',
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '90%',
+        backgroundColor: '#e6edff',
         margin: theme.spacing(0, 5, 2, 4),
+        padding: theme.spacing(2.5),
+        borderRadius: 8,
+    },
+    course_name: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& p': {
+            fontSize: 18,
+        },
+    },
+    icons: {
+        color: '#2968ff',
+    },
+    group_list: {
+        color: theme.palette.primary.main,
+        cursor: 'pointer',
+        marginTop: 16,
     },
 }));
