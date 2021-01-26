@@ -8,9 +8,9 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: '100%',
+        height: 120,
         width: '100%',
-        margin: 10,
+        marginTop: theme.spacing(2),
     },
     actionArea: {
         display: 'grid',
@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
         height: 100,
         justifySelf: 'center',
         borderRadius: '10px',
+        margin: 10,
     },
     cardTitle: {
         fontWeight: 'bold',
@@ -33,10 +34,12 @@ const useStyles = makeStyles(theme => ({
     },
     cardDesc: {
         fontSize: 14,
-        paddingTop: 5,
     },
     postedBy: {
         color: '#2968FF',
+    },
+    postDateInfo: {
+        paddingTop: 10,
     },
 }));
 
@@ -60,13 +63,11 @@ const PostCard = props => {
                             {props.post.title}
                         </Typography>
                     </div>
-                    <div>
-                        <Typography className={classes.cardDesc}>
-                            Posted {props.post.postDate} by
-                        </Typography>
-                        <Typography className={classes.postedBy}>
-                            {props.post.postedBy}
-                        </Typography>
+                    <div className={classes.postDateInfo}>
+                        <span className={classes.cardDesc}>
+                            Posted {props.post.postDate} by{' '}
+                        </span>
+                        <span className={classes.postedBy}>{props.post.postedBy}</span>
                     </div>
                 </CardContent>
             </CardActionArea>
