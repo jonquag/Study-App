@@ -5,11 +5,9 @@ import { initialState, reducer } from './reducer';
 const AppContext = createContext({
     isLoading: true,
     isAuth: false,
-
     dispatch: () => {},
-  profile: {},
+    profile: {},
 });
-
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);

@@ -6,9 +6,7 @@ const logger = require("morgan");
 const connectDB = require('./db');
 const handleErrors = require('./middleware/handleErrors');
 
-const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
-const pingRouter = require("./routes/ping");
 const registerRouter = require("./routes/register");
 const universityRouter = require("./routes/universities");
 const userRouter = require("./routes/user");
@@ -28,9 +26,7 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
-app.use("/", indexRouter);
 app.use("/login", loginRouter);
-app.use("/ping", pingRouter);
 app.use("/register", registerRouter);
 app.use("/universities", universityRouter);
 app.use("/user", userRouter);

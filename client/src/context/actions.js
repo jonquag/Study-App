@@ -2,30 +2,36 @@ import axios from 'axios';
 
 export const register = values => async dispatch => {
     try {
-        const res = await axios.post('/register', values);
-
+        const res = await axios.post('/register', values)
+            .catch((err) => {
+                throw err.response;
+            });
         if (res.status === 201) {
             dispatch({ type: 'REGISTER_SUCCESS' });
-            return res.status;
+            return res;
         }
     } catch (err) {
-        console.log(err.response);
+        console.log(err);
         dispatch({ type: 'REGISTER_FAIL' });
-        return err.response.data.response;
+        return err;
     }
 };
 
 export const login = values => async dispatch => {
     try {
-        const res = await axios.post('/login', values);
+        const res = await axios.post('/login', values)
+        .catch((err) => {
+            throw err.response;
+        });
+
         if (res.status === 200) {
             dispatch({ type: 'LOGIN_SUCCESS' });
-            return res.status;
+            return res;
         }
     } catch (err) {
         console.log(err);
         dispatch({ type: 'LOGIN_FAIL' });
-        return err.response.data.response;
+        return err;
     }
 };
 

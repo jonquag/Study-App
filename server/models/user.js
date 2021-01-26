@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema({
         ref: 'Course',
     },
     groups: [{
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Group',
     }],
 });
