@@ -1,8 +1,10 @@
 import React from 'react';
-import { Grid, Typography, Badge, Divider } from '@material-ui/core';
+import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
 import { NavLink, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
+
 import profilePic from '../../static/images/profilePicSample.png';
+import { chatList } from '../../data/mockData';
 
 const useStyles = makeStyles(theme => ({
     linkStyles: {
@@ -29,7 +31,6 @@ const useStyles = makeStyles(theme => ({
     },
     chat_head: {
         height: 120,
-        // backgroundColor: '#2967ff',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -48,6 +49,31 @@ const useStyles = makeStyles(theme => ({
             background: theme.palette.primary.gradient,
         },
     },
+    chat_list: {
+        height: 100,
+        flexWrap: 'nowrap',
+        alignItems: 'center',
+        paddingLeft: theme.spacing(5),
+    },
+    group_member: {
+        display: 'flex',
+        flexDirection: 'column',
+        paddingLeft: theme.spacing(2),
+    },
+    avatar: {
+        height: 60,
+        width: 60,
+        borderRadius: 18,
+    },
+    group_name: {
+        fontSize: 18,
+        fontWeight: 500,
+    },
+    divider: {
+        opacity: 0.10414,
+        height: 1,
+        background: '#2967ff',
+    },
 }));
 
 const Drawer = props => {
@@ -61,9 +87,32 @@ const Drawer = props => {
                     <Typography>All Chats</Typography>
                     <Badge badgeContent={12} className={classes.badge} />
                 </Grid>
-                <Divider />
-                <Grid item>Math Exam Chats</Grid>
-                <Grid item>Biology course</Grid>
+                <Divider className={classes.divider} />
+                {chatList.map(cg => {
+                    return (
+                        <React.Fragment key={cg.id}>
+                            <Grid item container className={classes.chat_list}>
+                                <Grid item>
+                                    <Avatar
+                                        alt="chat_group_img"
+                                        src={cg.imgUrl}
+                                        variant="rounded"
+                                        className={classes.avatar}
+                                    />
+                                </Grid>
+                                <Grid item container className={classes.group_member}>
+                                    <Typography className={classes.group_name}>
+                                        {cg.chatGroup}
+                                    </Typography>
+                                    <Typography variant="subtitle1" color="textSecondary">
+                                        {cg.members} members
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <Divider className={classes.divider} />
+                        </React.Fragment>
+                    );
+                })}
             </>
         );
     if (location.pathname === '/forum') return <h1>Forum page side panel</h1>;
