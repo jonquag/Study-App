@@ -5,7 +5,6 @@ import { initialState, reducer } from './reducer';
 const AppContext = createContext({
     isLoading: true,
     isAuth: false,
-
     dispatch: () => {},
     profile: {},
 });
