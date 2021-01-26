@@ -5,33 +5,48 @@ import { Grid } from '@material-ui/core';
 
 // Custom component imports
 import UserInfo from '../components/Profile/UserInfo';
-// import Courses from '../components/Profile/Courses';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
-import Drawer from '../components/Profile/Sidebar';
+import Sidebar from '../components/Profile/Sidebar';
+import MyCourses from '../components/Profile/MyCourses';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     container: {
-        display: 'flex',
+        height: 'calc(100vh - 100px)',
+        marginTop: 3,
     },
-});
+    contentContainer: {
+        backgroundColor: theme.palette.common.white,
+    },
+}));
 
-const Profile = props => {
+const Profile = () => {
     const classes = useStyles();
 
     return (
-        <div className={classes.container}>
-            <Drawer />
-
-            <Grid container style={{ height: '100vh' }}>
-                <Switch>
-                    <Route path="/profile/" exact component={UserInfo} />
-                    {/* <Route path="/profile/courses" component={Courses} /> */}
-                    <Route path="/profile/settings" component={Settings} />
-                    <Route path="/profile/notifications" component={Notifications} />
-                </Switch>
+        <Grid>
+            <Grid container className={classes.container}>
+                <Grid item container sm={3} className={classes.sidebar}>
+                    <Sidebar />
+                </Grid>
+                <Grid item container sm={9} className={classes.contentContainer}>
+                    <Switch>
+                        <Route exact path="/profile">
+                            <UserInfo />
+                        </Route>
+                        <Route path="/profile/courses">
+                            <MyCourses />
+                        </Route>
+                        <Route path="/profile/settings">
+                            <Settings />
+                        </Route>
+                        <Route path="/profile/notifications">
+                            <Notifications />
+                        </Route>
+                    </Switch>
+                </Grid>
             </Grid>
-        </div>
+        </Grid>
     );
 };
 

@@ -1,29 +1,13 @@
 import React, { createContext, useContext, useReducer } from 'react';
 
+import { initialState, reducer } from './reducer';
+
 const AppContext = createContext({
     isLoading: true,
     isAuth: false,
+    dispatch: () => {},
+    profile: {},
 });
-
-const initialState = {
-    isLoading: true,
-};
-
-const reducer = (state, action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case 'CASE_ONE':
-            return {
-                ...state,
-            };
-        case 'CASE_TWO':
-            return {
-                ...state,
-            };
-        default:
-            throw new Error('No action type found!');
-    }
-};
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
