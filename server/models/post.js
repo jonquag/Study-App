@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const postSchema = new Schema({
+const PostSchema = new Schema({
     posts: [
         {
             // user creating this specific post
@@ -51,4 +51,4 @@ const postSchema = new Schema({
     ],
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Post', PostSchema);

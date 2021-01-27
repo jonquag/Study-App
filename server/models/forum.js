@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const forumSchema = new Schema({
+const ForumSchema = new Schema({
     // name of the forum
     name: { type: String, required: true },
 
     // user creating the forum
     user: {
         type: Schema.Types.ObjectId,
+        required: true,
     },
     post: [
         {
@@ -21,4 +22,4 @@ const forumSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model('Forum', forumSchema);
+module.exports = mongoose.model('Forum', ForumSchema);
