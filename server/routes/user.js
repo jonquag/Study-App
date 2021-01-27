@@ -67,9 +67,13 @@ router.put('/courses/:courseId', verifyAuth, async function (req, res, next) {
 router.post('/courses', verifyAuth, async function (req, res, next) {	
     const userId = req.body.userId;	
     try {	
-        const user = await User.findByIdAndUpdate(userId, {	
-            courses: req.body,	
-        });	
+        const user = await User.findByIdAndUpdate(
+            userId, 
+            { courses: req.body },
+            { new: true },
+        )
+            .populate({ path: 'courses', model: 'Course' })
+            .populate({ path: 'groups', model: 'Group'});
         if (!user)	
             return res.status(400).json({ message: 'Can not update user' });	
         res.status(200).json({ user });	
@@ -85,48 +89,50 @@ router.delete('/courses/:courseId', verifyAuth, async function (req, res, next) 
     const courseId = req.params.courseId;
     const userId = req.body.userId;
 
-        // start new session for transaction
-        const session = await User.startSession();
-        session.startTransaction();
-        try {
-            const opts = { session };
-            const userDoc = await User.findByIdAndUpdate(
-                userId,
-                { $pull: { courses: courseId } },
-                { useFindAndModify: false, new: true }
-            )
-            .populate({ path: 'courses', model: 'Course' })
-            .catch((err) => {
-                if (err.kind == "ObjectId") {
-                    throw new BadRequest('Invalid Course ID');
-                }
-                throw new GeneralError('Error Establishing a Database Connection');
-            });
-            if (userDoc) {
-                const group = await Group.updateMany(
-                    { course: userId },
-                    { $pull: { members: userId } },
-                    opts
-                ).catch(err => {
-                    throw new GeneralError('Server Error');
-                });
+    // start new session for transaction
+    const session = await User.startSession();
+    session.startTransaction();
+    try {
+        const opts = { session };
+        const userDoc = await User.findByIdAndUpdate(
+            userId,
+            { 
+                $pull: { courses: courseId },
+                $pullAll: {groups: req.body.groupsRemoved}
+            },
+            { useFindAndModify: false, new: true }
+        )
+        .populate({ path: 'courses', model: 'Course' })
+        .populate({ path: 'groups', model: 'Group'})
+        .catch((err) => {
+            if (err.kind == "ObjectId") {
+                throw new BadRequest('Invalid Course ID');
             }
-            
-            //commit transaction
-            await session.commitTransaction();
-            session.endSession();
-            
-            //send updated user data as response
-            res.status(201);
-            return res.send(userDoc);
-
-        } catch (err) {
-            await session.abortTransaction();
-            session.endSession();
-            next(err);
+            throw new GeneralError('Error Establishing a Database Connection');
+        });
+        if (userDoc) {
+            await Group.updateMany(
+                { course: courseId },
+                { $pull: { members: userId } },
+                opts
+            ).catch(err => {
+                throw new GeneralError('Server Error');
+            });
         }
         
- 
+        //commit transaction
+        await session.commitTransaction();
+        session.endSession();
+        
+        //send updated user data as response
+        res.status(201);
+        return res.send(userDoc);
+
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        next(err);
+    }
 });
 
 //Assign a user to a University, sends the updated user

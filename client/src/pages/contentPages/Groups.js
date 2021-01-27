@@ -57,7 +57,9 @@ const Groups = () => {
     const handleJoinGroup = async (id) => {
       try {
         const res = await axios.post(`/user/groups/${id}`, {groupId: id});
-        dispatch({type: 'joinGroup', payload: res.data});
+        const currGroups = [...groups, res.data];
+        const newUserGroups = {courseGroups: [...courseGroups], groups: currGroups};
+        dispatch({type: 'updateUserGroups', payload: newUserGroups});
       } catch (err) {
         console.log(err);
       }
@@ -66,7 +68,12 @@ const Groups = () => {
     const handleLeaveGroup = async (id) => {
       try {
         const res = await axios.delete(`/user/groups/${id}`, {groupId: id});
-        dispatch({type: 'leaveGroup', payload: res.data});
+        const [currentGroups, updatedCourseGroups] = [[...groups], [...userGroups.courseGroups]];
+        const myGroups = currentGroups.filter((group) => group._id !== res.data._id);
+        const index = updatedCourseGroups.findIndex(group => group._id === res.data._id);
+        updatedCourseGroups[index] = res.data;
+        const newUserGroups = {courseGroups: updatedCourseGroups, groups: myGroups}
+        dispatch({type: 'updateUserGroups', payload: newUserGroups});
       } catch (err) {
         console.log(err);
       }

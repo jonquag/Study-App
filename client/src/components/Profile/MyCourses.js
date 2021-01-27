@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Grid,
@@ -80,6 +80,11 @@ const MyCourses = () => {
     const [selectId, setSelectId] = useState('');
     const [course, setCourse] = useState('');
     const [myCourses, setMyCourses] = useState(userCourses);
+    const [hasChanges, setHasChanges] = useState(false);
+
+    useEffect(() => {
+        setHasChanges(JSON.stringify(myCourses) !== JSON.stringify(userCourses));
+    }, [myCourses, userCourses]);
 
     const addCourse = () => {
         if (selectId === '' || myCourses.some(c => c._id === selectId)) return;
@@ -88,30 +93,8 @@ const MyCourses = () => {
         setSelectId('');
     };
 
-    // const handleCourseUpdate = async () => {
-    //     // if user haven't changed anything
-    //     if (JSON.stringify(myCourses) === JSON.stringify(userCourses)) return;
-
-    //     const courses = [...myCourses].map(c => c._id);
-    //     try {
-    //         const res = await axios.post('/user/courses', courses);
-    //         if (res.status === 200) {
-    //             enqueueSnackbar('Updated successfully', {
-    //                 variant: 'success',
-    //                 autoHideDuration: '5000',
-    //             });
-    //         } else {
-    //             enqueueSnackbar(res.messages, {
-    //                 variant: 'Error',
-    //                 autoHideDuration: '5000',
-    //             });
-    //         }
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
     const handleAddCourses = async () => {
-        if (JSON.stringify(myCourses) === JSON.stringify(userCourses)) return;
+        if (!hasChanges) return;
         const courses = [...myCourses].map(c => c._id);
         try {
             const res = await axios.post('/user/courses', courses);
@@ -134,22 +117,27 @@ const MyCourses = () => {
     }
 
     const handleRemove = async (id) => {
-        try {
-            let groupIds;
-            if (groups && groups.length) {
-                // This line filters user groups selecting only the group id's 
-                // eslint-disable-next-line no-sequences
-                groupIds = groups.reduce((arr, o) => (o.course === id && arr.push(o._id), arr), []);
-            } else {
-                groupIds = groups.map(group => group._id);
-            }
-            const res = await axios.delete(`/user/courses/${id}`, {data: {groupsRemoved: groupIds}});
-
-            actions.fetchUserGroups(res.data.groups)(dispatch);
-            dispatch({type: 'updateUserCourses', payload: res.data.courses});
+        //if course has not been added to user 
+        if (!userCourses.some(course => course._id === id)) {
             setMyCourses(myCourses.filter(c => c._id !== id));
-        } catch (err) {
-            console.log(err)
+        } else {
+            try {
+                let groupIds;
+                if (groups && groups.length) {
+                    // filter user groups selecting only the group id's 
+                    // eslint-disable-next-line no-sequences
+                    groupIds = groups.reduce((arr, g) => (g.course === id && arr.push(g._id), arr), []);
+                } else {
+                    groupIds = groups.map(group => group._id);
+                }
+                const res = await axios.delete(`/user/courses/${id}`, {data: {groupsRemoved: groupIds}});
+    
+                actions.fetchUserGroups(res.data.groups)(dispatch);
+                dispatch({type: 'updateUserCourses', payload: res.data.courses});
+                setMyCourses(myCourses.filter(c => c._id !== id));
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 
@@ -228,6 +216,7 @@ const MyCourses = () => {
                     variant="contained"
                     className={classes.button}
                     onClick={handleAddCourses}
+                    disabled={!hasChanges}
                 >
                     Update
                 </Button>
