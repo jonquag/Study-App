@@ -1,4 +1,4 @@
-import Profile from '../models/Profile';
+import Profile from '../constants/Profile';
 
 export const initialState = {
     isLoading: true,
@@ -33,6 +33,12 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 profile: payload,
+            };
+        case 'LOGOUT':
+            return {
+                ...state,
+                isAuth: false,
+                isLoading: true,
             };
         default:
             throw new Error('No action type found!');
