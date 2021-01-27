@@ -29,7 +29,6 @@ const Navbar = () => {
 
     const { profile } = useGlobalContext();
 
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -40,7 +39,7 @@ const Navbar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default" elevation={2}>
+            <AppBar position="relative" color="default" elevation={2}>
                 <Toolbar className={classes.toolbar}>
                     <div className={classes.logo_study}>
                         <Link
