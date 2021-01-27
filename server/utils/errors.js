@@ -17,13 +17,14 @@ class GeneralError extends Error {
         return 500;
     }
 }
-  
+
 class BadRequest extends GeneralError { }
 class Conflict extends GeneralError { }
 class NotFound extends GeneralError { }
 class Unauthorized extends GeneralError { }
   
 module.exports = {
+    Conflict,
     GeneralError,
     Conflict,
     BadRequest,
