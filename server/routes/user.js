@@ -4,50 +4,56 @@ const verifyAuth = require('../middleware/verifyAuth');
 const User = require('../models/user');
 const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
+const Group = require('../models/Group');
 require('../models/courses');
 
 // Get the logged in user
-router.get('/', verifyAuth, async function (req, res) {
+router.get('/', verifyAuth, async function(req, res, next) {
+
     const userId = req.body.userId;
     const userDoc = await User.findById(userId)
         .populate({ path: 'courses', model: 'Course' })
         .select('-password')
         .catch(() => {
-            return null;
+            return next(new GeneralError('Error Establishing a Database Connection'));
         });
-    return userDoc ? res.send(userDoc) : res.sendStatus(500);
-});
+
+    return res.send(userDoc);
+})
 
 // Gets all the current users courses
-router.get('/courses', verifyAuth, async function (req, res) {
+router.get('/courses', verifyAuth, async function(req, res, next) {
+
     const userDoc = await User.findById({ _id: req.body.userId })
         .populate({ path: 'courses', model: 'Course' })
         .catch(() => {
-            return null;
+            return next(new GeneralError('Error Establishing a Database Connection'));
         });
+
     if (userDoc && userDoc.courses) {
         res.send(userDoc.courses);
     } else {
-        res.sendStatus(500);
+        next(new GeneralError('No user found.'));
     }
-});
+})
 
 // Adds a user to a course, sends the updated user
 router.put('/courses/:courseId', verifyAuth, async function (req, res, next) {
+
     const courseId = req.params.courseId;
     const userId = req.body.userId;
     try {
         const userDoc = await User.findByIdAndUpdate(
-            userId,
-            { $addToSet: { courses: courseId } },
+            userId, 
+            { $addToSet: { courses: courseId }},
             { useFindAndModify: false, new: true }
         )
             .populate({ path: 'courses', model: 'Course' })
-            .catch(err => {
+            .catch((err) => {
                 if (err.kind == 'ObjectId') {
                     throw new BadRequest('Invalid Course ID');
                 }
-                throw new GeneralError('Server Error');
+                throw new GeneralError('Error Establishing a Database Connection');
             });
         res.status(201);
         res.send(userDoc);
@@ -56,51 +62,77 @@ router.put('/courses/:courseId', verifyAuth, async function (req, res, next) {
     }
 });
 
-// updates a user based on selected courses id
-router.post('/courses', verifyAuth, async function (req, res, next) {
-    const userId = req.body.userId;
-    try {
-        const user = await User.findByIdAndUpdate(userId, {
-            courses: req.body,
-        });
-        if (!user)
-            return res.status(400).json({ message: 'Can not update user' });
-        res.status(200).json({ user });
-    } catch (err) {
-        console.log(err.message);
-        res.send('Server Error');
-    }
+// updates a user based on selected courses id	
+router.post('/courses', verifyAuth, async function (req, res, next) {	
+    const userId = req.body.userId;	
+    try {	
+        const user = await User.findByIdAndUpdate(userId, {	
+            courses: req.body,	
+        });	
+        if (!user)	
+            return res.status(400).json({ message: 'Can not update user' });	
+        res.status(200).json({ user });	
+    } catch (err) {	
+        console.log(err.message);	
+        res.send('Server Error');	
+    }	
 });
 
-//Remove a user from a course, sends the updated user
-router.delete('/courses/:courseId', verifyAuth, async function (req, res) {
+
+//Remove a user from a course, removes them from all groups that belong to that course, returns user data
+router.delete('/courses/:courseId', verifyAuth, async function (req, res, next) {
     const courseId = req.params.courseId;
     const userId = req.body.userId;
-    try {
-        const userDoc = await User.findByIdAndUpdate(
-            userId,
-            { $pull: { courses: courseId } },
-            { useFindAndModify: false, new: true }
-        )
+
+        // start new session for transaction
+        const session = await User.startSession();
+        session.startTransaction();
+        try {
+            const opts = { session };
+            const userDoc = await User.findByIdAndUpdate(
+                userId,
+                { $pull: { courses: courseId } },
+                { useFindAndModify: false, new: true }
+            )
             .populate({ path: 'courses', model: 'Course' })
-            .catch(err => {
-                if (err.kind == 'ObjectId') {
+            .catch((err) => {
+                if (err.kind == "ObjectId") {
                     throw new BadRequest('Invalid Course ID');
                 }
-                throw new GeneralError('Server Error');
+                throw new GeneralError('Error Establishing a Database Connection');
             });
-        res.status(201);
-        res.send(userDoc);
-    } catch (err) {
-        next(err);
-    }
+            if (userDoc) {
+                await Group.updateMany(
+                    { course: userId },
+                    { $pull: { members: userId } },
+                    opts
+                ).catch(err => {
+                    throw new GeneralError('Server Error');
+                });
+            }
+            
+            //commit transaction
+            await session.commitTransaction();
+            session.endSession();
+            
+            //send updated user data as response
+            res.status(201);
+            return res.send(userDoc);
+
+        } catch (err) {
+            await session.abortTransaction();
+            session.endSession();
+            next(err);
+        }
+        
+ 
 });
 
 //Assign a user to a University, sends the updated user
 router.put(
-    '/universities/:universityId',
-    verifyAuth,
-    async function (req, res, next) {
+    '/universities/:universityId', 
+    verifyAuth, 
+    async function(req, res, next) {
         const universityId = req.params.universityId;
         const userId = req.body.userId;
         const session = await User.startSession();
@@ -108,19 +140,19 @@ router.put(
         try {
             const opts = { session };
             const userDoc = await User.findByIdAndUpdate(
-                userId,
+                userId, 
                 { university: universityId },
-                opts
-            ).catch(err => {
-                if (err.kind == 'ObjectId') {
+                opts,
+            ).catch((err) => {
+                if (err.kind == "ObjectId") {
                     throw new BadRequest('Invalid University ID');
                 }
-                throw new GeneralError('Server Error');
+                throw new GeneralError('Error Establishing a Database Connection');
             });
             if (userDoc.university) {
                 await University.findByIdAndUpdate(
-                    userDoc.university,
-                    { $pull: { students: userId } },
+                    userDoc.universityId,
+                    { $addToSet: { students: userId } },
                     opts
                 );
             }
@@ -133,12 +165,113 @@ router.put(
             session.endSession();
             res.status(201);
             return res.send(userDoc);
-        } catch (err) {
+        } catch (error) {
             await session.abortTransaction();
             session.endSession();
-            next(err);
+            next(error);
         }
     }
 );
+
+
+// returns all the groups a user can join from their courses
+router.get('/groups', verifyAuth, async function (req, res, next) {
+    try {
+        const userDoc = await User.findById({ _id: req.body.userId })
+            .populate({ 
+                path: 'courses', model: 'Course',
+                populate: {
+                    path: 'groups'
+                }      
+            })
+            .catch((err) => {
+                throw new GeneralError('Error returning groups to join');
+            });
+        if (userDoc && userDoc.courses) {
+            res.send(userDoc.courses);
+        } else {
+            res.sendStatus(500);
+        }
+    } catch (err) {
+        next(err);
+    }
+    
+});
+
+// add a new user to a group from a course they are enrolled in
+router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
+    const userId = req.body.userId;
+    const groupId = req.params.groupId;
+
+    const session = await Group.startSession();
+    session.startTransaction();
+    try {
+        const groupDoc = await Group.findByIdAndUpdate(
+            groupId,
+            { $addToSet: { members: userId } },
+            { useFindAndModify: false, new: true }
+        )
+        .session(session)
+        .catch(err => {
+            if (err.kind == 'ObjectId') {
+                throw new BadRequest('Invalid Group ID');
+            }
+                throw new GeneralError('Server Error');
+            });
+        if (groupDoc) {
+            await User.findByIdAndUpdate(
+                userId,
+                { $addToSet: { groups: groupId } },              
+            )
+            .session(session)
+        }
+        await session.commitTransaction();
+        session.endSession();
+        res.status(201);
+        res.send(groupDoc);
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        next(err);
+    }
+});
+
+// delete a user from a group
+router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
+    const userId = req.body.userId;
+    const groupId = req.params.groupId;
+
+    const session = await Group.startSession();
+    session.startTransaction();
+    try {
+        const groupDoc = await Group.findByIdAndUpdate(
+            groupId,
+            { $pull: { members: userId } },
+            { useFindAndModify: false, new: true }
+        )
+        .session(session)
+        .catch(err => {
+            if (err.kind == 'ObjectId') {
+                throw new BadRequest('Invalid Group ID');
+            }
+                throw new GeneralError('Server Error');
+        })
+        if (groupDoc) {
+            await User.findByIdAndUpdate(
+                userId,
+                { $pull: { groups: groupId } },
+            )
+            .session(session)
+        }
+        await session.commitTransaction();
+        session.endSession();
+        res.status(201);
+        res.send(groupDoc);
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        next(err);
+    }
+});
 
 module.exports = router;

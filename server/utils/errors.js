@@ -26,6 +26,7 @@ class Unauthorized extends GeneralError { }
 module.exports = {
     Conflict,
     GeneralError,
+    Conflict,
     BadRequest,
     NotFound,
     Unauthorized
