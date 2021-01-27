@@ -9,40 +9,16 @@ const forumSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
     },
-
-    posts: [
+    post: [
         {
-            // user creating this specific post
-            user: {
-                type: Schema.Types.ObjectId,
-            },
-            avatar: {
-                type: String,
-            },
-            title: {
-                type: String,
-                required: true,
-            },
-            text: {
-                type: String,
-                required: true,
-            },
-
-            comments: [
-                {
-                    // user creating this specific comment
-                    user: { type: Schema.Types.ObjectId },
-                    text: { type: String, required: true },
-                    name: { type: String },
-                    avatar: { type: String },
-                    date: {
-                        type: Date,
-                        default: Date.now,
-                    },
-                },
-            ],
+            type: Schema.Types.ObjectId,
+            ref: 'Post',
         },
     ],
+    date: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = mongoose.model('Forum', forumSchema);
