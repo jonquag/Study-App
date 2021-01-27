@@ -257,7 +257,9 @@ const Signup = () => {
                                     component={RouterLink}
                                     to="/login"
                                 >
-                                    <Button variant="outlined">Login</Button>
+                                    <Button variant="outlined" color="primary">
+                                        Login
+                                    </Button>
                                 </Link>
                             </div>
                         </Paper>
