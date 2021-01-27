@@ -48,29 +48,23 @@ export const fetchProfile = () => async dispatch => {
                 schoolCourses: response.data.courses,
             },
         });
+        return res.data.groups;
     } catch (err) {
         console.log(err.message);
     }
 };
 
-export const fetchUserInfoOnStartup = () => async dispatch => {
+export const fetchUserGroups = (userGroups) => async dispatch => {
     try {
-        const res = await axios.get('/user');
-        const response = await axios.get(`/universities/${res.data.university}`);
-        const response2 = await axios.get('/user/groups');
-        //Might want to add this line to backend /user/groups route
-        const courseGroups = response2.data.map(course => course.groups).flat();
-        console.log(courseGroups);
+        const res = await axios.get('/user/groups');
+        const courseGroups = res.data.map(course => course.groups).flat();
         dispatch({
-            type: 'FETCH_USER_COURSES',
+            type: 'updateUserGroups',
             payload: {
-                school: response.data.name,
-                userCourses: res.data.courses,
-                schoolCourses: response.data.courses,
-                userGroups: res.data.groups,
+                groups: [...userGroups],
                 courseGroups
-            },
-        });
+            }
+        })
     } catch (err) {
         console.log(err.message);
     }

@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useGlobalContext } from '../../context/studyappContext';
+import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -72,10 +73,9 @@ const useStyles = makeStyles(theme => ({
 
 const MyCourses = () => {
     const { enqueueSnackbar } = useSnackbar();
-    const { isLoading, userCourse } = useGlobalContext();
-
+    const { isLoading, userCourse, userGroups, dispatch } = useGlobalContext();
+    const {groups} = userGroups;
     const { school, userCourses, schoolCourses } = userCourse;
-
     const classes = useStyles();
     const [selectId, setSelectId] = useState('');
     const [course, setCourse] = useState('');
@@ -88,17 +88,35 @@ const MyCourses = () => {
         setSelectId('');
     };
 
-    const removeCourse = id => {
-        setMyCourses(myCourses.filter(c => c._id !== id));
-    };
+    // const handleCourseUpdate = async () => {
+    //     // if user haven't changed anything
+    //     if (JSON.stringify(myCourses) === JSON.stringify(userCourses)) return;
 
-    const handleCourseUpdate = async () => {
-        // if user haven't changed anything
+    //     const courses = [...myCourses].map(c => c._id);
+    //     try {
+    //         const res = await axios.post('/user/courses', courses);
+    //         if (res.status === 200) {
+    //             enqueueSnackbar('Updated successfully', {
+    //                 variant: 'success',
+    //                 autoHideDuration: '5000',
+    //             });
+    //         } else {
+    //             enqueueSnackbar(res.messages, {
+    //                 variant: 'Error',
+    //                 autoHideDuration: '5000',
+    //             });
+    //         }
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+    const handleAddCourses = async () => {
         if (JSON.stringify(myCourses) === JSON.stringify(userCourses)) return;
-
         const courses = [...myCourses].map(c => c._id);
         try {
             const res = await axios.post('/user/courses', courses);
+            actions.fetchUserGroups(res.data.user.groups)(dispatch);
+            dispatch({type: 'updateUserCourses', payload: res.data.user.courses});
             if (res.status === 200) {
                 enqueueSnackbar('Updated successfully', {
                     variant: 'success',
@@ -113,7 +131,27 @@ const MyCourses = () => {
         } catch (err) {
             console.log(err);
         }
-    };
+    }
+
+    const handleRemove = async (id) => {
+        try {
+            let groupIds;
+            if (groups && groups.length) {
+                // This line filters user groups selecting only the group id's 
+                // eslint-disable-next-line no-sequences
+                groupIds = groups.reduce((arr, o) => (o.course === id && arr.push(o._id), arr), []);
+            } else {
+                groupIds = groups.map(group => group._id);
+            }
+            const res = await axios.delete(`/user/courses/${id}`, {data: {groupsRemoved: groupIds}});
+
+            actions.fetchUserGroups(res.data.groups)(dispatch);
+            dispatch({type: 'updateUserCourses', payload: res.data.courses});
+            setMyCourses(myCourses.filter(c => c._id !== id));
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     if (isLoading) return <LinearProgress />;
 
@@ -134,7 +172,7 @@ const MyCourses = () => {
                             <div className={classes.btn_group}>
                                 <IconButton
                                     edge="end"
-                                    onClick={() => removeCourse(c._id)}
+                                    onClick={() => handleRemove(c._id)}
                                 >
                                     <DeleteIcon />
                                 </IconButton>
@@ -189,7 +227,7 @@ const MyCourses = () => {
                 <Button
                     variant="contained"
                     className={classes.button}
-                    onClick={handleCourseUpdate}
+                    onClick={handleAddCourses}
                 >
                     Update
                 </Button>

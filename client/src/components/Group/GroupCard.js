@@ -68,9 +68,9 @@ const GroupCard = (props) => {
                         </Typography>
                     </Grid>
                   </CardContent>
-                  <CardActions onClick={() => {
+                  <CardActions onClick={async () => {
                     setIsUpdating(true);
-                    props.handleCardPress(props.data._id);
+                    await props.handleCardPress(props.data._id);
                   }}>
                     <Button disabled={isUpdating} className={classes.button}>
                       {props.actionText}
