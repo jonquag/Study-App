@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem } from '@material-ui/core';
+import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { groups } from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
 import GroupCard from '../../components/Group/GroupCard';
-import axios from 'axios';
+
+import { useGlobalContext } from '../../context/studyappContext';
 
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -47,25 +48,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Groups = () => {
 
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const [modalStyle] = React.useState(getModalStyle);
-    const [openModal, setOpen] = useState(false);
-    const [courses, setCourses] = useState([]);
-    const [groupName, setGroupName] = useState('');
-    const [courseId, setCourseId] = useState('');
+  const [modalStyle] = React.useState(getModalStyle);
+  const [openModal, setOpen] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [groupName, setGroupName] = useState('');
+  const [courseId, setCourseId] = useState('');
 
-     // fetch all the users courses
-     const fetchUserCourses = async () => {
-      try {
-          const courseResponse = await axios.get('/user/courses');
+  const { userCourse } = useGlobalContext();
 
-          setCourses(courseResponse.data);
-
-      } catch (err) {
-          console.log(err);
-      }
-  };
 
   const handleOpen = () => {
     setOpen(true)
@@ -76,7 +68,9 @@ const Groups = () => {
   };
 
   useEffect(() => {
-    fetchUserCourses();
+
+    setCourses(userCourse.userCourses);
+
   }, []);
 
     const body = (
@@ -85,51 +79,47 @@ const Groups = () => {
       <p>
         Add group name and select your course.
       </p>
-        <Formik initialValues={{ course: '' }}>
-        
-        <Form className={classes.form}>
-        <FormHelperText>Add a new group name</FormHelperText>
-        <Field
-          component={TextField}
-          name="group_name"
-          type="text"
-          variant="outlined"
-          defaultValue=""
-          fullWidth="true"
-          onChange={(e) => setGroupName(e.target.value)}
-        >
-        </Field>
-        <FormHelperText>Course</FormHelperText>
-        <Field
+      <Formik initialValues={{ course: ''}}>
+      
+      <Form className={classes.form}>
+      <FormHelperText>Add a new group name</FormHelperText>
+      <Field
         component={TextField}
-        name="course"
+        name="group_name"
         type="text"
-        select
         variant="outlined"
         defaultValue=""
         fullWidth="true"
-        >
-        { 
-        courses.map(course => {
-          return (
-            <MenuItem
-                key={course._id}
-                value={course._id}
-                onChange={() => setCourseId(course._id)}
-                >
-                {course.name}
-            </MenuItem>
-          );
-        })}
-        </Field>
-        <Button
-          className={classes.button}
-          style={{marginTop: "20px"}}
-        >
-          Create New Group
-        </Button>                    
-        </Form>     
-        </Formik>             
+        onChange={(e) => setGroupName(e.target.value)}
+      >
+      </Field>
+      <FormHelperText>Course</FormHelperText>
+      <Select
+      variant="outlined"
+      fullWidth="true"
+      defaultValue=""
+      >
+      { 
+      courses.map(course => {
+        return (
+          <MenuItem
+              key={course._id}
+              value={course._id}
+              onClick={() => setCourseId(course._id)}
+              >
+              {course.name}
+          </MenuItem>
+        );
+      })}
+      </Select>
+      <Button
+        className={classes.button}
+        style={{marginTop: "20px"}}
+      >
+        Create New Group
+      </Button>                    
+      </Form>     
+      </Formik>             
     </div>
     );
 
