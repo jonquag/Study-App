@@ -35,16 +35,20 @@ router.post('/login', validateEntryReq, async function (req, res, next) {
 router.post('/register', validateEntryReq, async function (req, res, next) {
     const { email, password, courses, university } = req.body;
 
+    const userInfo = { email, password, courses, university };
+    if (!university) delete userInfo['university'];
+
     try {
         const hashedPw = await bcrypt.hash(password, 10).catch(() => {
             throw new GeneralError('Failed to hash password.');
         });
-        const user = new User({ email, password: hashedPw, courses, university });
-        const userDoc = await user.save().catch((err) => {
+        userInfo.password = hashedPw;
+        const user = new User(userInfo);
+        const userDoc = await user.save(user).catch((err) => {
+            console.log(err.Error);
             if (!err.errors || (err.errors.email && err.errors.email.reason)) {
                 throw new GeneralError('Error connecting to database.');
             } else {
-                console.log('hey');
                 throw new Conflict('Email already in use.');
             }
         });

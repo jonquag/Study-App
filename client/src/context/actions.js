@@ -36,6 +36,7 @@ export const login = values => async dispatch => {
 export const logout = () => async dispatch => {
     try {
         const res = await axios.delete('/auth/logout');
+
         if (res.status === 204) {
             dispatch({ type: 'LOGOUT' });
         }

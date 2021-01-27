@@ -16,16 +16,14 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { NavLink, useHistory } from 'react-router-dom';
-
 import logo from '../../images/logo_study.png';
 import { useStyles } from './NavbarStyles';
 import { useGlobalContext } from '../../context/studyappContext';
+import * as actions from '../../context/actions';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { logout } from '../../context/actions';
 
 const Navbar = () => {
     const classes = useStyles();
-
     const history = useHistory();
 
     const { profile, dispatch } = useGlobalContext();
@@ -140,7 +138,7 @@ const Navbar = () => {
                             open={open}
                             onClose={() => setAnchorEl(null)}
                         >
-                            <MenuItem onClick={() => logout()(dispatch)}>
+                            <MenuItem onClick={handleLogout}>
                                 <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
