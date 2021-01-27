@@ -37,10 +37,6 @@ const Drawer = props => {
                 </Grid>
                 <Divider className={classes.divider} />
                 {chatList.map(cg => {
-                    let activeChat = null;
-                    if (cg.id === chatId) {
-                        activeChat = <div className={classes.active_line}></div>;
-                    }
                     return (
                         <React.Fragment key={cg.id}>
                             <Grid
@@ -53,7 +49,6 @@ const Drawer = props => {
                                 }
                                 onClick={() => setChatId(cg.id)}
                             >
-                                {activeChat}
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar
                                         alt="chat_group_img"

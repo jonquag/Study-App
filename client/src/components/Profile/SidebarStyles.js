@@ -76,6 +76,7 @@ export const useStyles = makeStyles(theme => ({
         flexWrap: 'nowrap',
         alignItems: 'center',
         backgroundColor: '#e6edff',
+        borderLeft: '7px solid #2967ff',
     },
     group_member: {
         display: 'flex',
@@ -98,12 +99,6 @@ export const useStyles = makeStyles(theme => ({
         opacity: 0.10414,
         height: 1,
         background: '#2967ff',
-    },
-    active_line: {
-        width: 8,
-        height: '100%',
-        backgroundColor: '#2967ff',
-        marginLeft: theme.spacing(0.1),
     },
     accordion: {
         display: 'flex',

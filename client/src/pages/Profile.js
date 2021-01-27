@@ -24,7 +24,7 @@ const Profile = () => {
     const classes = useStyles();
 
     return (
-        <Grid>
+        <Grid container>
             <Grid container className={classes.container}>
                 <Grid item container sm={3} className={classes.sidebar}>
                     <Sidebar />
