@@ -8,7 +8,7 @@ import { useStyles } from './SidebarStyles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-const Drawer = props => {
+const Sidebar = props => {
     const classes = useStyles();
     const location = useLocation();
 
@@ -191,4 +191,4 @@ const Drawer = props => {
     );
 };
 
-export default Drawer;
+export default Sidebar;

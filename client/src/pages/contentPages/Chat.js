@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Forum = () => {
+const Chat = () => {
     const classes = useStyles();
     return (
         <Grid>
@@ -35,4 +35,4 @@ const Forum = () => {
     );
 };
 
-export default Forum;
+export default Chat;
