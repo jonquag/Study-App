@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select } from '@material-ui/core';
+import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select, TextField } from '@material-ui/core';
 import {
   baseStyle,
   activeStyle,
@@ -16,11 +16,9 @@ import Navbar from '../layout/Navbar';
 import GroupCard from '../../components/Group/GroupCard';
 import defaultImage from '../../images/upload_placeholder.png';
 
+import TestComponent from '../../components/TestComponent';
+
 import { useGlobalContext } from '../../context/studyappContext';
-
-import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
-
 
 const useStyles = makeStyles((theme) => ({
 
@@ -40,9 +38,11 @@ const useStyles = makeStyles((theme) => ({
       position: 'fixed',
       width: 475,
       backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      borderRadius: 4,
+      outline: 'none'
+
     },
 
     groupImageContainer: {
@@ -88,42 +88,11 @@ const Groups = () => {
   const [groupName, setGroupName] = useState('');
   const [courseId, setCourseId] = useState('');
   const [userProfile, setProfile] = useState([])
+  const [groupError, setGroupErrors] = useState('');
 
   const [uploading, setUploading] = useState(false);
   const [groupPicture, setGroupPicture] = useState('')
 
-  const onDrop = useCallback(async (droppedFiles) => {
-    if (droppedFiles.length) {
-        setUploading(true);
-
-        const form = new FormData();
-        form.append('image', droppedFiles[0]);
-        const res = await axios.post('/upload', form)
-            .catch((err) => console.log(err));
-        console.log(res.data)
-        if (res && res.data) {
-            setGroupPicture(res.data.imageUrl)
-        }
-    }
-  }, []);
-
-  const {
-    getRootProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
-
-  const style = useMemo(() => ({
-    ...baseStyle,
-    ...(isDragActive ? activeStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
-  }), [
-    isDragActive,
-    isDragReject,
-    isDragAccept
-  ]);
 
   const handleOpen = () => {
     setOpen(true)
@@ -131,19 +100,45 @@ const Groups = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setGroupPicture('');
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if(!checkGroupExists()) {
+
+      //const data = { groupName: groupName };
+      //const response = postData(data);
+    }
+
+    
+
+  };
+
+  const postData = async (data) => {
+    try {
+        const response = await axios.post('/user/groups', data);
+        return response
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+const checkGroupExists = async () => {
+  try {
+      const data = { groupName: groupName };
+      const res = await axios.post('/user/groups/exists', data);
+      res.data.groupExists === true ? setGroupErrors("A group with this name already exists!") : setGroupErrors('')
+  } catch (err) {
+      console.log(err);
+  }
+};
 
   useEffect(() => {
     setCourses(userCourse.userCourses);
     setProfile(profile);
-    setUploading(false)
-
   }, []);
-
-  useEffect(() => {
-    setUploading(false)
-  }, [groupPicture]);
 
     const body = (
       <div style={modalStyle} className={classes.paper}>
@@ -151,39 +146,19 @@ const Groups = () => {
       <p>
         Add group name and select your course.
       </p>
-      <Formik initialValues={{ course: ''}}>
-      
-      <Form className={classes.form}>
-      <FormHelperText>Add a new group name</FormHelperText>
-      <Field
-        component={TextField}
+      <form className={classes.form} onSubmit={handleSubmit}>
+      <FormHelperText>{groupError ? <span style={{color: "#fc2525"}}>{groupError}</span> : 'Please enter a group name'}</FormHelperText>
+      <TextField
         name="group_name"
-        type="text"
-        variant="outlined"
-        defaultValue=""
         fullWidth="true"
-        onChange={(e) => setGroupName(e.target.value)}
+        value={groupName}
+        variant="outlined"
+        onChange={e => setGroupName(e.target.value)}
       >
-      </Field>
-      
-      <Box className={classes.groupImageContainer}>
-      <FormHelperText>Drag and Drop Group Picture </FormHelperText>
-            <Tooltip
-                title='Drag and drop profile picture'
-                arrow placement='right'
-            >
-                <Box {...getRootProps({style})}>
-                    <img
-                        alt='Profile Pic'
-                        src={groupPicture.length ? groupPicture : defaultImage}
-                        className={uploading ? classes.uploading : classes.large}
-                    />
-                </Box>
-            </Tooltip>
-        </Box>
-
+      </TextField>
       <FormHelperText>Course</FormHelperText>
       <Select
+      name="course"
       variant="outlined"
       fullWidth="true"
       defaultValue=""
@@ -202,13 +177,15 @@ const Groups = () => {
       })}
       </Select>
       <Button
+        type="submit"
         className={classes.button}
         style={{marginTop: "20px"}}
       >
         Create New Group
       </Button>                    
-      </Form>     
-      </Formik>             
+      </form>     
+            
+          
     </div>
     );
 
