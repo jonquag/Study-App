@@ -112,12 +112,8 @@ const Signup = () => {
                                 component={RouterLink}
                                 to="/login"
                             >
-                                <Button
-                                    variant="contained"
-                                    className={classes.button}
-                                    style={{ marginTop: 0 }}
-                                >
-                                    login
+                                <Button variant="text" color="primary">
+                                    Login
                                 </Button>
                             </Link>
                         </Hidden>

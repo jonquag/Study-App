@@ -56,11 +56,11 @@ const Login = () => {
                                 to="/sign-up"
                             >
                                 <Button
-                                    variant="contained"
-                                    className={classes.button}
+                                    variant="text"
+                                    color="primary"
                                     style={{ marginTop: 0 }}
                                 >
-                                    get started
+                                    Get Started
                                 </Button>
                             </Link>
                         </Hidden>
@@ -116,8 +116,8 @@ const Login = () => {
                                 />
                                 <Typography variant="body2">Forget password?</Typography>
                                 <Button
-                                    variant="contained"
-                                    className={classes.button}
+                                    variant="text"
+                                    color="primary"
                                     disabled={isSubmitting}
                                     onClick={submitForm}
                                 >

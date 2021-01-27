@@ -15,7 +15,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';

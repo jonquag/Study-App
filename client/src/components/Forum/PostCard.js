@@ -56,7 +56,7 @@ const PostCard = props => {
                     alt="alt img"
                     height="140"
                     image={props.post.image}
-                    title="Contemplative Reptile"
+                    title={props.post.title}
                     className={classes.cardImage}
                 />
                 <CardContent className={classes.cardInfo}>

@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     button: {
-        height: '3rem',
         width: '100%',
     },
 }));
@@ -69,7 +68,7 @@ const GroupCard = props => {
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button className={classes.button} ariant="text" color="primary">
+                    <Button className={classes.button} variant="text" color="primary">
                         Join Group
                     </Button>
                 </CardActions>
