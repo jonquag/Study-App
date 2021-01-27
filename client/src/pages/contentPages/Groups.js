@@ -1,14 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select } from '@material-ui/core';
+import {
+  baseStyle,
+  activeStyle,
+  acceptStyle,
+  rejectStyle,
+} from '../../components/Group/GroupPicture.styles';
+import { Tooltip, Box} from '@material-ui/core';
+import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { groups } from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
 import GroupCard from '../../components/Group/GroupCard';
+import defaultImage from '../../images/upload_placeholder.png';
 
 import { useGlobalContext } from '../../context/studyappContext';
 
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -32,6 +44,25 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+
+    groupImageContainer: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: "10px",
+      paddingBottom: "10px"
+    },
+    large: {
+      height: "300px",
+      width: "400px",
+    },
+    uploading: {
+      opacity: 0.5,
+      height: "300px",
+      width: "400px"
+    },
     
   }));
 
@@ -49,15 +80,50 @@ const useStyles = makeStyles((theme) => ({
 const Groups = () => {
 
   const classes = useStyles();
+  const { userCourse, profile } = useGlobalContext();
 
   const [modalStyle] = React.useState(getModalStyle);
   const [openModal, setOpen] = useState(false);
   const [courses, setCourses] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [courseId, setCourseId] = useState('');
+  const [userProfile, setProfile] = useState([])
 
-  const { userCourse } = useGlobalContext();
+  const [uploading, setUploading] = useState(false);
+  const [groupPicture, setGroupPicture] = useState('')
 
+  const onDrop = useCallback(async (droppedFiles) => {
+    if (droppedFiles.length) {
+        setUploading(true);
+
+        const form = new FormData();
+        form.append('image', droppedFiles[0]);
+        const res = await axios.post('/upload', form)
+            .catch((err) => console.log(err));
+        console.log(res.data)
+        if (res && res.data) {
+            setGroupPicture(res.data.imageUrl)
+        }
+    }
+  }, []);
+
+  const {
+    getRootProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
+
+  const style = useMemo(() => ({
+    ...baseStyle,
+    ...(isDragActive ? activeStyle : {}),
+    ...(isDragAccept ? acceptStyle : {}),
+    ...(isDragReject ? rejectStyle : {})
+  }), [
+    isDragActive,
+    isDragReject,
+    isDragAccept
+  ]);
 
   const handleOpen = () => {
     setOpen(true)
@@ -65,13 +131,19 @@ const Groups = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setGroupPicture('');
   };
 
   useEffect(() => {
-
     setCourses(userCourse.userCourses);
+    setProfile(profile);
+    setUploading(false)
 
   }, []);
+
+  useEffect(() => {
+    setUploading(false)
+  }, [groupPicture]);
 
     const body = (
       <div style={modalStyle} className={classes.paper}>
@@ -93,6 +165,23 @@ const Groups = () => {
         onChange={(e) => setGroupName(e.target.value)}
       >
       </Field>
+      
+      <Box className={classes.groupImageContainer}>
+      <FormHelperText>Drag and Drop Group Picture </FormHelperText>
+            <Tooltip
+                title='Drag and drop profile picture'
+                arrow placement='right'
+            >
+                <Box {...getRootProps({style})}>
+                    <img
+                        alt='Profile Pic'
+                        src={groupPicture.length ? groupPicture : defaultImage}
+                        className={uploading ? classes.uploading : classes.large}
+                    />
+                </Box>
+            </Tooltip>
+        </Box>
+
       <FormHelperText>Course</FormHelperText>
       <Select
       variant="outlined"
