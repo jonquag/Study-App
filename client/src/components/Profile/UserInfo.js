@@ -149,12 +149,6 @@ const UserInfo = () => {
                             >
                                 Submit
                             </Button>
-                            <Button variant="outlined" color="primary">
-                                Test2
-                            </Button>
-                            <Button variant="outlined" color="secondary">
-                                Test1
-                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
