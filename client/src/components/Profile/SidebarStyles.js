@@ -5,7 +5,7 @@ export const useStyles = makeStyles(theme => ({
         textDecoration: 'none',
         color: 'black',
         padding: '1em 0 0 2em',
-        fontSize: 18,
+        fontSize: '1.125rem',
         opacity: '50%',
     },
     profilePic: {
@@ -21,7 +21,7 @@ export const useStyles = makeStyles(theme => ({
     },
     profileName: {
         paddingTop: '1em',
-        fontSize: 22,
+        fontSize: '1.375rem',
     },
     list_container: {
         display: 'block',
@@ -50,7 +50,7 @@ export const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         paddingLeft: theme.spacing(4),
         '& p': {
-            fontSize: 22,
+            fontSize: '1.375rem',
         },
     },
     badge: {
@@ -59,7 +59,7 @@ export const useStyles = makeStyles(theme => ({
         '& span': {
             width: 40,
             height: 24,
-            fontSize: 14,
+            fontSize: '0.875rem',
             background: theme.palette.primary.gradient,
         },
     },
@@ -92,7 +92,7 @@ export const useStyles = makeStyles(theme => ({
         borderRadius: 18,
     },
     group_name: {
-        fontSize: 18,
+        fontSize: '1.125rem',
         fontWeight: 500,
     },
     divider: {
@@ -117,7 +117,7 @@ export const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         '& p': {
-            fontSize: 18,
+            fontSize: '1.125rem',
         },
     },
     icons: {

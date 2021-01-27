@@ -25,7 +25,7 @@ export const useStyles = makeStyles(theme => ({
         display: 'flex',
         '& > *': {
             display: 'flex',
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 500,
             cursor: 'pointer',
         },
@@ -44,7 +44,7 @@ export const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(3),
         '& span': {
             width: 30,
-            fontSize: 12,
+            fontSize: '0.75rem',
             background: theme.palette.primary.gradient,
         },
     },
