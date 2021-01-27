@@ -21,6 +21,7 @@ import logo from '../../images/logo_study.png';
 import { useStyles } from './NavbarStyles';
 import { useGlobalContext } from '../../context/studyappContext';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { logout } from '../../context/actions';
 
 const Navbar = () => {
     const classes = useStyles();
@@ -28,7 +29,6 @@ const Navbar = () => {
     const history = useHistory();
 
     const { profile, dispatch } = useGlobalContext();
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
