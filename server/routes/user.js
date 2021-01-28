@@ -269,6 +269,42 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
     }
 });
 
+// create a new group from a course they are enrolled in 
+router.post('/groups', verifyAuth, async function (req, res, next) {
+
+    const userId = req.body.userId;
+    const imageUrl = req.body.imageUrl;
+    const courseId = req.body.courseId;
+    const groupName = req.body.groupName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+    try {
+
+        const createGroup = new Group({
+            name: groupName,
+            members: [userId],
+            image: imageUrl,
+            course: courseId, 
+            admin: userId
+        });
+
+        createGroup.save(function (err, resp) {
+            if (err) {
+                res.send({
+                    message: 'error creating group'
+                  });
+              } else {
+                res.send({
+                  data: resp
+                });
+              }
+        })
+        
+    } catch(err) {
+        next(err);
+    }   
+
+});
+
+
 
 // delete a user from a group
 router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
