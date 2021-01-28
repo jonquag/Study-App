@@ -16,6 +16,10 @@ const GroupSchema = new Schema({
         ref: 'User'
     }],
     course: {type: Schema.Types.ObjectId, ref: 'User'},
+    image: {
+        type: String,
+        default: ''
+    }
 });
 
 module.exports = mongoose.model('Group', GroupSchema);
