@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Badge, Divider, Avatar, Button } from '@material-ui/core';
 import { NavLink, useLocation } from 'react-router-dom';
-
-import profilePic from '../../static/images/profilePicSample.png';
 import { chatList, courseGroupList } from '../../data/mockData';
 import { useStyles } from './SidebarStyles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { useGlobalContext } from '../../context/studyappContext';
+import DragzonePicture from '../DragzonePicture';
+import * as actions from '../../context/actions';
 
 const Drawer = props => {
     const classes = useStyles();
     const location = useLocation();
+    const { profile, dispatch } = useGlobalContext();
 
     const [courseList, setCourseList] = useState(
         courseGroupList.map(cgl => ({ ...cgl, expand: false }))
@@ -126,19 +128,22 @@ const Drawer = props => {
             container
             direction="column"
             alignItems="center"
+            justify="space-between"
             item
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={3}>
-                <img
-                    src={profilePic}
-                    alt="Ashly Sanford"
-                    className={classes.profilePic}
-                />
+            <Grid
+                container
+                item
+                direction="column"
+                alignItems="center"
+                style={{ marginTop: '3em' }}
+            >
+                <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
-                    Ashly Sanford
+                    {profile.firstName + ' ' + profile.lastName}
                 </Typography>
             </Grid>
 
@@ -185,9 +190,14 @@ const Drawer = props => {
                     Notifications
                 </NavLink>
             </Grid>
-            <Grid container direction="column" item justify="flex-end" sm={4}>
+            <Grid container item>
                 <Grid item>
-                    <Typography>Logout</Typography>
+                    <Button
+                        className={classes.logoutStyles}
+                        onClick={() => actions.logout()(dispatch)}
+                    >
+                        Logout
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

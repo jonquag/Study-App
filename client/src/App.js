@@ -32,7 +32,11 @@ function App() {
                             <Route exact path="/login" component={Login} />
 
                             <Layout>
-                                <ProtectedRoute exact path="/profile" component={Profile} />
+                                <ProtectedRoute
+                                    exact
+                                    path="/profile"
+                                    component={Profile}
+                                />
                                 <ProtectedRoute
                                     path="/profile/:profileContent"
                                     component={Profile}

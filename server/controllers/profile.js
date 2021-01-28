@@ -6,7 +6,7 @@ async function updateProfile(req, res, next) {
     try {
         //find profile
         let profile = await Profile.findOne({ user: req.body.userId });
-        console.log(profile);
+
         const { firstName, lastName, phone, location, imageUrl } = req.body;
 
         //if profile found then update
