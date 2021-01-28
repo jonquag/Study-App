@@ -9,12 +9,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         <Route
             {...rest}
             render={props => {
-                if (isAuth && !isLoading) return (
-                <>
-                <Navbar />
-                <Component {...props} />
-                </>
-                );
+                if (isAuth && !isLoading) 
+                    return (
+                        <>
+                            <Navbar />
+                            <Component {...props} />
+                        </>
+                    );
                 else
                     return (
                         <Redirect

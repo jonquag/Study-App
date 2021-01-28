@@ -33,6 +33,7 @@ const Login = (props) => {
     const locState = props.location.state;
     let redirectPath = '/profile';
 
+    //locState only exists if redirected from ProtectedRoute
     if (locState && locState.from)
         redirectPath = locState.from.pathname;
 
