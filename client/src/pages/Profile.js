@@ -4,11 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 // Custom component imports
+import Sidebar from '../components/Profile/Sidebar';
 import UserInfo from '../components/Profile/UserInfo';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
-import Sidebar from '../components/Profile/Sidebar';
 import MyCourses from '../components/Profile/MyCourses';
+import ProfileSidePane from './ProfileSidePane';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -25,10 +26,10 @@ const Profile = () => {
     return (
         <Grid container>
             <Grid container className={classes.container}>
-                <Grid item container sm={3} className={classes.sidebar}>
-                    <Sidebar />
-                </Grid>
-                <Grid item container sm={9} className={classes.contentContainer}>
+                <Sidebar>
+                    <ProfileSidePane />
+                </Sidebar>
+                <Grid item container sm={12} md={9} className={classes.contentContainer}>
                     <Switch>
                         <Route exact path="/profile">
                             <UserInfo />

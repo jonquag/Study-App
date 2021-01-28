@@ -3,6 +3,8 @@ import React from 'react';
 import Sidebar from '../../components/Profile/Sidebar';
 import { makeStyles } from '@material-ui/core/styles';
 
+import ForumSidePanel from './ForumSidePanel';
+
 const useStyles = makeStyles(theme => ({
     container: {
         height: 'calc(100vh - 100px)',
@@ -16,10 +18,10 @@ const Forum = () => {
     const classes = useStyles();
     return (
         <Grid container className={classes.container}>
-            <Grid item container sm={3} className={classes.sidebar}>
-                <Sidebar />
-            </Grid>
-            <Grid item container sm={9} className={classes.contentContainer}>
+            <Sidebar>
+                <ForumSidePanel />
+            </Sidebar>
+            <Grid item container sm={12} md={9} className={classes.contentContainer}>
                 <Typography variant="h2">Forum Page</Typography>
             </Grid>
         </Grid>
