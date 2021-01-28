@@ -8,8 +8,7 @@ import Profile from './pages/Profile';
 import Signup from './pages/auth/Sign-up';
 import Login from './pages/auth/Login';
 import ProtectedRoute from './pages/routing/ProtectedRoute';
-import MatchRoute from './pages/routing/MatchRoute';
-//import NotFoundRoute from './pages/NotFound';
+import NotFoundRoute from './pages/NotFound';
 import Chat from './pages/contentPages/Chat';
 import Forum from './pages/contentPages/Forum';
 import Groups from './pages/contentPages/Groups';
@@ -32,32 +31,17 @@ function App() {
                             />
                             <Route exact path="/sign-up" component={Signup} />
                             <Route exact path="/login" component={Login} />
-                            <MatchRoute>
-                                <Layout>
-                                    <ProtectedRoute exact path="/profile" component={Profile} />
-                                    <ProtectedRoute
-                                        path="/profile/:profileContent"
-                                        component={Profile}
-                                    />
-                                    <ProtectedRoute path="/forum" component={Forum} />
-                                    <ProtectedRoute path="/groups" component={Groups} />
-                                    <ProtectedRoute path="/chat" component={Chat} />
-                                </Layout>
-                            </MatchRoute>
-                            
-                            {/* Any other unknown paths redirects to sign-up. */}
-                            
-                            {/* <Route
-                                path="*"
-                                render={props => (
-                                    <Redirect
-                                        to={{
-                                            pathname: '/sign-up',
-                                            state: { from: props.location },
-                                        }}
-                                    />
-                                )}
-                            /> */}
+                            <Layout>
+                                <ProtectedRoute exact path="/profile" component={Profile} />
+                                <ProtectedRoute
+                                    path="/profile/:profileContent"
+                                    component={Profile}
+                                />
+                                <ProtectedRoute path="/forum" component={Forum} />
+                                <ProtectedRoute path="/groups" component={Groups} />
+                                <ProtectedRoute path="/chat" component={Chat} />
+                                <Route path="*" component={NotFoundRoute} />
+                            </Layout>
                         </Switch>
                     </BrowserRouter>
                 </CssBaseline>

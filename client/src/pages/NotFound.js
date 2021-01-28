@@ -12,7 +12,9 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.common.white,
         height: '100vh',
         width: '100vw'
-    }
+    },
+    icon: { fontSize: '300px' },
+    text: { paddingTop: "60px" },
 }));
 
 const NotFound = () => {
@@ -20,12 +22,12 @@ const NotFound = () => {
 
     return (
         <div className={classes.root}>
-            <SentimentVeryDissatisfiedIcon style={{fontSize: '300px'}}/>
-            <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
+            <SentimentVeryDissatisfiedIcon className={classes.icon}/>
+            <Typography variant="h1" color="textPrimary" className={classes.text}>
                 404
             </Typography>
-            <Typography variant="h6" color="textPrimary" style={{ paddingTop: "60px"}}>
-                The Page you are looking for doesn't exist or another error occured.
+            <Typography variant="h6" color="textPrimary" className={classes.text}>
+                The page you are looking for doesn't exist or another error occured.
             </Typography>
         </div>
     )

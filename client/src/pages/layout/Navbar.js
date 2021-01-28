@@ -29,6 +29,7 @@ const Navbar = () => {
     const history = useHistory();
 
     const { profile, dispatch } = useGlobalContext();
+    
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 

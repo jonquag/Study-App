@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import Navbar from './Navbar';
 import * as actions from '../../context/actions';
 import { useGlobalContext } from '../../context/studyappContext';
 
@@ -13,7 +12,6 @@ const Layout = ({ children }) => {
 
     return (
         <>
-            <Navbar />
             {children}
         </>
     );

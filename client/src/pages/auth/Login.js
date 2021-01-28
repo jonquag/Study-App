@@ -25,12 +25,18 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().required('Required'),
 });
 
-const Login = () => {
+const Login = (props) => {
     const classes = useStyles();
     const { isAuth, dispatch } = useGlobalContext();
     const { enqueueSnackbar } = useSnackbar();
 
-    if (isAuth) return <Redirect to="/profile" />;
+    const locState = props.location.state;
+    let redirectPath = '/profile';
+
+    if (locState && locState.from)
+        redirectPath = locState.from.pathname;
+
+    if (isAuth) return <Redirect to={redirectPath} />;
 
     return (
         <div className={classes.root}>
