@@ -15,6 +15,7 @@ import { groups } from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
 import GroupCard from '../../components/Group/GroupCard';
 import defaultImage from '../../images/upload_placeholder.png';
+import { useSnackbar } from 'notistack';
 
 import { useGlobalContext } from '../../context/studyappContext';
 
@@ -79,6 +80,7 @@ const Groups = () => {
 
   const classes = useStyles();
   const { userCourse, profile } = useGlobalContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [modalStyle] = React.useState(getModalStyle);
   const [openModal, setOpen] = useState(false);
@@ -99,11 +101,12 @@ const Groups = () => {
 
         const form = new FormData();
         form.append('image', droppedFiles[0]);
-        const res = await axios.post('/upload', form)
+        const res = await axios.post('/upload/single', form)
             .catch((err) => console.log(err));
-        console.log(res.data)
         if (res && res.data) {
             setGroupPicture(res.data.imageUrl)
+            setUploading(false)
+  
         }
     }
   }, []);
@@ -126,42 +129,55 @@ const Groups = () => {
     isDragAccept
   ]);
 
-
   const handleOpen = () => {
-    setOpen(true)
+    setOpen(true);
+    setGroupPicture('');
   };
 
   const handleClose = () => {
     setOpen(false);
+    setGroupPicture('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if(formValid) {
 
-      //const data = { groupName: groupName };
-      //const response = postData(data);
-    } 
+      const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
+      const response = await axios.post('/user/groups', data);
+
+      if(response.data) {
+        enqueueSnackbar('Group Created Successfully.', {
+          variant: 'success',
+          autoHideDuration: '5000',
+        });
+        setOpen(false)
+      } else {
+        enqueueSnackbar('Error Creating Group.', {
+          variant: 'Error',
+          autoHideDuration: '5000',
+        });
+      }
+      
+    } else {
+      enqueueSnackbar('Error Creating Group.', {
+          variant: 'Error',
+          autoHideDuration: '5000',
+      });
+    }
 
   };
 
   const handleOnChange = async (e) => {
-    checkGroupExists(e.target.value)
+    checkGroupExists(e.target.value.toLowerCase())
+    
   }
-
-  const postData = async (data) => {
-    try {
-        const response = await axios.post('/user/groups', data);
-        return response
-
-    } catch (err) {
-        console.log(err);
-    }
-};
 
 const checkGroupExists = async (name) => {
   try {
+
+      setGroupName(name)
 
       if(groupNames.includes(name) !== true) {
         setGroupErrors('');
@@ -195,6 +211,7 @@ const getUserGroups = async () => {
     setCourses(userCourse.userCourses);
     setProfile(profile);
     getUserGroups()
+    setUploading(false)
   }, []);
 
     const body = (
