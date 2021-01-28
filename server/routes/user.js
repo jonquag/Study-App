@@ -198,38 +198,6 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
     
 });
 
-// check if group with name already exists
-router.post('/groups/exists', verifyAuth, async function (req, res, next) {
-    try {
-        const userDoc = await User.findById({ _id: req.body.userId })
-            .populate({ 
-                path: 'courses', model: 'Course',
-                populate: {
-                    path: 'groups'
-                }      
-            })
-            .catch((err) => {
-                throw new GeneralError('Error returning groups a user can join');
-            });
-        if (userDoc && userDoc.courses) {
-            const groupNames = []
-            userDoc.courses.forEach(course => {
-                course.groups.forEach(group => {
-                    groupNames.push(group.name)
-                })
-            })
-            const exists = (grp) => grp.toLowerCase() === req.body.groupName.toLowerCase(); 
-            res.status(201);
-            res.json({ groupExists: groupNames.some(exists) })
-
-        } else {
-            res.sendStatus(500);
-        }
-    } catch (err) {
-        next(err);
-    }
-   
-});
 
 // add a new user to a group from a course they are enrolled in
 router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
