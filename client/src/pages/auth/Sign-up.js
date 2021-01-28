@@ -229,12 +229,15 @@ const Signup = () => {
                                     })}
                                 </Select>
                                 <Grid className={classes.add_course}>
-                                    <Button startIcon={<AddIcon />} onClick={addCourse}>
+                                    <Button
+                                        color="secondary"
+                                        startIcon={<AddIcon />}
+                                        onClick={addCourse}
+                                    >
                                         Add course
                                     </Button>
                                 </Grid>
                                 <Button
-                                    variant="text"
                                     color="primary"
                                     className={classes.button}
                                     disabled={isSubmitting}

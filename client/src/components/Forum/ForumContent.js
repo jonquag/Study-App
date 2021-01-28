@@ -51,12 +51,7 @@ const ForumContent = () => {
                 </Grid>
 
                 <Grid item container sm={3}>
-                    <Button
-                        className={classes.button}
-                        onClick={addPost}
-                        variant="text"
-                        color="primary"
-                    >
+                    <Button className={classes.button} onClick={addPost} color="primary">
                         Add Post
                     </Button>
                 </Grid>

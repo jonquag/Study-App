@@ -177,7 +177,7 @@ const MyCourses = () => {
                     })}
                 </Select>
                 <Grid className={classes.add_btn}>
-                    <Button startIcon={<AddIcon />} onClick={addCourse}>
+                    <Button color="secondary" startIcon={<AddIcon />} onClick={addCourse}>
                         Add course
                     </Button>
                 </Grid>

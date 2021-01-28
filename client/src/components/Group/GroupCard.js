@@ -68,7 +68,7 @@ const GroupCard = props => {
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button className={classes.button} variant="text" color="primary">
+                    <Button className={classes.button} color="primary">
                         Join Group
                     </Button>
                 </CardActions>

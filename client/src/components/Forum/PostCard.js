@@ -10,6 +10,9 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        borderRadius: 10,
     },
     actionArea: {
         height: 120,
@@ -21,8 +24,7 @@ const useStyles = makeStyles(theme => ({
         display: 'grid',
         gridTemplateRows: '1fr',
         justify: 'space-between',
-
-        padding: 0,
+        paddingRight: theme.spacing(2),
     },
     cardImage: {
         width: 100,
@@ -49,7 +51,7 @@ const PostCard = props => {
     const classes = useStyles();
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} variant="outlined">
             <CardActionArea className={classes.actionArea}>
                 <CardMedia
                     component="img"

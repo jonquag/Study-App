@@ -116,7 +116,6 @@ const Login = () => {
                                 />
                                 <Typography variant="body2">Forget password?</Typography>
                                 <Button
-                                    variant="text"
                                     color="primary"
                                     disabled={isSubmitting}
                                     onClick={submitForm}

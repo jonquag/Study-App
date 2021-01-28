@@ -142,7 +142,6 @@ const UserInfo = () => {
                     <Grid container>
                         <Grid item>
                             <Button
-                                variant="text"
                                 color="primary"
                                 className={classes.button}
                                 onClick={handleSubmit}
