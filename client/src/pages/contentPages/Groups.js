@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select, TextField } from '@material-ui/core';
 import {
   baseStyle,
@@ -15,8 +15,6 @@ import { groups } from '../../data/mockData.js'
 import Navbar from '../layout/Navbar';
 import GroupCard from '../../components/Group/GroupCard';
 import defaultImage from '../../images/upload_placeholder.png';
-
-import TestComponent from '../../components/TestComponent';
 
 import { useGlobalContext } from '../../context/studyappContext';
 
@@ -89,9 +87,11 @@ const Groups = () => {
   const [courseId, setCourseId] = useState('');
   const [userProfile, setProfile] = useState([])
   const [groupError, setGroupErrors] = useState('');
+  const [groupNames, setGroupNames] = useState([]);
 
   const [uploading, setUploading] = useState(false);
-  const [groupPicture, setGroupPicture] = useState('')
+  const [groupPicture, setGroupPicture] = useState('');
+  const [formValid, setFormValid] = useState(false)
 
 
   const handleOpen = () => {
@@ -104,16 +104,18 @@ const Groups = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if(!checkGroupExists()) {
+
+    if(formValid) {
 
       //const data = { groupName: groupName };
       //const response = postData(data);
-    }
-
-    
+    } 
 
   };
+
+  const handleOnChange = async (e) => {
+    checkGroupExists(e.target.value)
+  }
 
   const postData = async (data) => {
     try {
@@ -125,19 +127,41 @@ const Groups = () => {
     }
 };
 
-const checkGroupExists = async () => {
+const checkGroupExists = async (name) => {
   try {
-      const data = { groupName: groupName };
-      const res = await axios.post('/user/groups/exists', data);
-      res.data.groupExists === true ? setGroupErrors("A group with this name already exists!") : setGroupErrors('')
+
+      if(groupNames.includes(name) !== true) {
+        setGroupErrors('');
+        setFormValid(true);
+        return false;
+      } else {
+        setGroupErrors("A group with this name already exists!");
+        setFormValid(false);
+        return true;
+      }
+
   } catch (err) {
       console.log(err);
   }
 };
 
+const getUserGroups = async () => {
+  const res = await axios.get('/user/groups')
+  const groupNames = []
+  res.data.forEach(course => {
+    course.groups.forEach(group => {
+      groupNames.push(group.name.toLowerCase())
+    })
+ 
+  })
+  setGroupNames(groupNames)
+  console.log(groupNames)
+}
+
   useEffect(() => {
     setCourses(userCourse.userCourses);
     setProfile(profile);
+    getUserGroups()
   }, []);
 
     const body = (
@@ -151,9 +175,8 @@ const checkGroupExists = async () => {
       <TextField
         name="group_name"
         fullWidth="true"
-        value={groupName}
         variant="outlined"
-        onChange={e => setGroupName(e.target.value)}
+        onChange={handleOnChange}
       >
       </TextField>
       <FormHelperText>Course</FormHelperText>
