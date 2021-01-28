@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select, TextField } from '@material-ui/core';
 import {
   baseStyle,
@@ -92,6 +92,21 @@ const Groups = () => {
   const [uploading, setUploading] = useState(false);
   const [groupPicture, setGroupPicture] = useState('');
   const [formValid, setFormValid] = useState(false)
+
+  const onDrop = useCallback(async (droppedFiles) => {
+    if (droppedFiles.length) {
+        setUploading(true);
+
+        const form = new FormData();
+        form.append('image', droppedFiles[0]);
+        const res = await axios.post('/upload', form)
+            .catch((err) => console.log(err));
+        console.log(res.data)
+        if (res && res.data) {
+            setGroupPicture(res.data.imageUrl)
+        }
+    }
+  }, []);
 
   const {
     getRootProps,
@@ -197,6 +212,24 @@ const getUserGroups = async () => {
         onChange={handleOnChange}
       >
       </TextField>
+
+      <Box className={classes.groupImageContainer}>
+            <FormHelperText>Drag and Drop Group Picture </FormHelperText>
+                  <Tooltip
+                      title='Drag and drop profile picture'
+                      arrow placement='right'
+                  >
+                      <Box {...getRootProps({style})}>
+                          <img
+                              alt='Profile Pic'
+                              src={groupPicture.length ? groupPicture : defaultImage}
+                              className={uploading ? classes.uploading : classes.large}
+                          />
+                      </Box>
+                  </Tooltip>
+              </Box>
+
+
       <FormHelperText>Course</FormHelperText>
       <Select
       name="course"
