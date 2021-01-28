@@ -10,7 +10,7 @@ const PostSchema = new Schema({
     name: {
         type: String,
     },
-    avatar: {
+    postAvatar: {
         type: String,
     },
     title: {

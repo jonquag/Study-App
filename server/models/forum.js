@@ -10,7 +10,7 @@ const ForumSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
     },
-    post: [
+    posts: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Post',
