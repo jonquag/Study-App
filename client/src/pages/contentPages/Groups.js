@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Grid, Typography, Container, Button, Modal, FormHelperText, MenuItem, Select, TextField } from '@material-ui/core';
 import {
   baseStyle,
@@ -92,6 +92,24 @@ const Groups = () => {
   const [uploading, setUploading] = useState(false);
   const [groupPicture, setGroupPicture] = useState('');
   const [formValid, setFormValid] = useState(false)
+
+  const {
+    getRootProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
+
+  const style = useMemo(() => ({
+    ...baseStyle,
+    ...(isDragActive ? activeStyle : {}),
+    ...(isDragAccept ? acceptStyle : {}),
+    ...(isDragReject ? rejectStyle : {})
+  }), [
+    isDragActive,
+    isDragReject,
+    isDragAccept
+  ]);
 
 
   const handleOpen = () => {
