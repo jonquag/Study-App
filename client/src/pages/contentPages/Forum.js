@@ -1,11 +1,11 @@
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import React from 'react';
-import Sidebar from '../../components/Profile/Sidebar';
 import { makeStyles } from '@material-ui/core/styles';
+import ForumContent from '../../components/Forum/ForumContent';
 
 const useStyles = makeStyles(theme => ({
     container: {
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 103px)',
         marginTop: 3,
     },
     contentContainer: {
@@ -15,14 +15,15 @@ const useStyles = makeStyles(theme => ({
 
 const Forum = () => {
     const classes = useStyles();
+
     return (
         <Grid>
             <Grid container className={classes.container}>
-                <Grid item container sm={3} className={classes.sidebar}>
-                    <Sidebar />
-                </Grid>
+                {/* Sidebar container */}
+                <Grid item container sm={3} className={classes.sidebar}></Grid>
+                {/* Content container */}
                 <Grid item container sm={9} className={classes.contentContainer}>
-                    <Typography variant="h2">Forum Page</Typography>
+                    <ForumContent />
                 </Grid>
             </Grid>
         </Grid>
