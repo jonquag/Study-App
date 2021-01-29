@@ -102,10 +102,10 @@ const Groups = () => {
         const form = new FormData();
         form.append('image', droppedFiles[0]);
         const res = await axios.post('/upload/single', form)
-            .catch((err) => console.log(err));
+          .catch((err) => console.log(err));
         if (res && res.data) {
-            setGroupPicture(res.data.imageUrl)
-            setUploading(false)
+          setGroupPicture(res.data.imageUrl)
+          setUploading(false)
         }
     }
   }, []);
@@ -177,17 +177,17 @@ const Groups = () => {
 const checkGroupExists = async (name) => {
   try {
 
-      setGroupName(name)
+    setGroupName(name)
 
-      if(groupNames.includes(name) !== true) {
-        setGroupErrors('');
-        setFormValid(true);
-        return false;
-      } else {
-        setGroupErrors("A group with this name already exists!");
-        setFormValid(false);
-        return true;
-      }
+    if(groupNames.includes(name) !== true) {
+      setGroupErrors('');
+      setFormValid(true);
+      return false;
+    } else {
+      setGroupErrors("A group with this name already exists!");
+      setFormValid(false);
+      return true;
+    }
 
   } catch (err) {
       console.log(err);
@@ -204,7 +204,6 @@ const getUserGroups = async () => {
  
   })
   setGroupNames(groupNames)
-  console.log(groupNames)
 }
 
   useEffect(() => {
@@ -231,20 +230,20 @@ const getUserGroups = async () => {
       </TextField>
 
       <Box className={classes.groupImageContainer}>
-            <FormHelperText>Drag and Drop Group Picture </FormHelperText>
-                  <Tooltip
-                      title='Drag and drop profile picture'
-                      arrow placement='right'
-                  >
-                      <Box {...getRootProps({style})}>
-                          <img
-                              alt='Profile Pic'
-                              src={groupPicture.length ? groupPicture : defaultImage}
-                              className={uploading ? classes.uploading : classes.large}
-                          />
-                      </Box>
-                  </Tooltip>
-              </Box>
+        <FormHelperText>Drag and Drop Group Picture </FormHelperText>
+          <Tooltip
+            title='Drag and drop profile picture'
+            arrow placement='right'
+          >
+          <Box {...getRootProps({style})}>
+            <img
+              alt='Profile Pic'
+              src={groupPicture.length ? groupPicture : defaultImage}
+              className={uploading ? classes.uploading : classes.large}
+            />
+          </Box>
+          </Tooltip>
+      </Box>
 
 
       <FormHelperText>Course</FormHelperText>
@@ -258,11 +257,11 @@ const getUserGroups = async () => {
       courses.map(course => {
         return (
           <MenuItem
-              key={course._id}
-              value={course._id}
-              onClick={() => setCourseId(course._id)}
-              >
-              {course.name}
+            key={course._id}
+            value={course._id}
+            onClick={() => setCourseId(course._id)}
+            >
+            {course.name}
           </MenuItem>
         );
       })}
