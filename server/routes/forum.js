@@ -44,4 +44,8 @@ router.delete(
     commentController.deleteComment
 );
 
+// PUT forum/post/comment/:postId
+// Edit a comment using comment id
+router.put('/post/comment/:commentId', auth, commentController.editComment);
+
 module.exports = router;

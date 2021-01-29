@@ -78,3 +78,27 @@ exports.deleteComment = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.editComment = async (req, res, next) => {
+    const { commentId } = req.params;
+    const { userId, text } = req.body;
+
+    try {
+        const comment = await Comment.findById(commentId);
+        if (!comment) throw new NotFound('No comment found');
+
+        // check if a user is editing his/her own comment
+        if (comment.user.toString() !== userId)
+            throw new Unauthorized('Cannot edit comment');
+
+        if (text) comment.text = text;
+
+        const response = await comment.save();
+        if (!response) throw new GeneralError('Error editing comment');
+
+        res.status(200).json({ comment });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
