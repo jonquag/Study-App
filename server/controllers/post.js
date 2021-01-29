@@ -101,3 +101,31 @@ exports.editPost = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.addUpvote = async (req, res, next) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
+    console.log(postId);
+    try {
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFound('No post found');
+
+        // make sure a user can up vote a post only once.
+        const votesArr = post.votes.filter(
+            vote => vote.user.toString() === userId
+        );
+
+        if (votesArr.length > 0)
+            throw new Unauthorized('Cannot up vote more than once');
+
+        post.votes.unshift({ user: userId });
+
+        const response = await post.save();
+        if (!response) throw new GeneralError('Error voting');
+
+        res.status(200).json({ post });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};

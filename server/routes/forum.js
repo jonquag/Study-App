@@ -27,6 +27,10 @@ router.delete('/post/:forumId/:postId', auth, postController.deletePost);
 // Edit a post using post id
 router.put('/post/:postId', auth, postController.editPost);
 
+// PUT /forum/post/vote/:postId
+// Adds user id to votes array in post
+router.put('/post/vote/:postId', auth, postController.addUpvote);
+
 // POST forum/post/comment/:postId
 // Creates a comment for a post
 router.post(
