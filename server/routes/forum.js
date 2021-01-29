@@ -31,6 +31,10 @@ router.put('/post/:postId', auth, postController.editPost);
 // Adds user id to votes array in post
 router.put('/post/vote/:postId', auth, postController.addUpvote);
 
+// PUT /forum/post/unvote/:postId
+// Remove upvote from a post
+router.put('/post/unvote/:postId', auth, postController.removeUpvote);
+
 // POST forum/post/comment/:postId
 // Creates a comment for a post
 router.post(

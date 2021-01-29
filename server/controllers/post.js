@@ -105,7 +105,7 @@ exports.editPost = async (req, res, next) => {
 exports.addUpvote = async (req, res, next) => {
     const { postId } = req.params;
     const { userId } = req.body;
-    console.log(postId);
+
     try {
         const post = await Post.findById(postId);
         if (!post) throw new NotFound('No post found');
@@ -122,6 +122,32 @@ exports.addUpvote = async (req, res, next) => {
 
         const response = await post.save();
         if (!response) throw new GeneralError('Error voting');
+
+        res.status(200).json({ post });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
+
+exports.removeUpvote = async (req, res, next) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFound('No post found');
+
+        const voteArr = post.votes.filter(
+            vote => vote.user.toString() === userId
+        );
+        if (voteArr.length === 0)
+            throw new GeneralError('Post has not yet been voted');
+
+        post.votes = post.votes.filter(vote => vote.user.toString() !== userId);
+
+        const response = await post.save();
+        if (!response) throw GeneralError('Error in unvoting');
 
         res.status(200).json({ post });
     } catch (err) {
