@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
 const userSchema = mongoose.Schema({
     email: {
@@ -40,10 +39,12 @@ const userSchema = mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Course',
     },
-    groups: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Group',
-    }],
+    groups: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Group',
+        },
+    ],
 });
 
 module.exports = mongoose.model('User', userSchema);

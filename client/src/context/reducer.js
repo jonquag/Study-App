@@ -1,10 +1,10 @@
-import Profile from '../models/Profile';
+import Profile from '../constants/Profile';
 
 export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
-    profile: Profile,
+    profile: {},
 };
 
 export const reducer = (state, action) => {
@@ -15,12 +15,12 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 isAuth: true,
-                isLoading: false,
             };
-        case 'FETCH_USER_COURSES':
+        case 'FETCH_USER_INFO':
             return {
                 ...state,
-                userCourse: payload,
+                userCourse: payload[1],
+                profile: payload[0],
                 isLoading: false,
             };
         case 'LOGIN_FAIL':
@@ -28,6 +28,12 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 isLoading: true,
+            };
+        case 'LOGOUT':
+            return {
+                ...state,
+                isLoading: true,
+                isAuth: false,
             };
         case 'updateProfile':
             return {

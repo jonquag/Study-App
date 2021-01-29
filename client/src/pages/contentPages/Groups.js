@@ -11,16 +11,14 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { groups } from '../../data/mockData.js'
-import Navbar from '../layout/Navbar';
+import { groups } from '../../data/mockData.js';
 import GroupCard from '../../components/Group/GroupCard';
 import defaultImage from '../../images/upload_placeholder.png';
 import { useSnackbar } from 'notistack';
 
 import { useGlobalContext } from '../../context/studyappContext';
 
-const useStyles = makeStyles((theme) => ({
-
+const useStyles = makeStyles(theme => ({
     cardGrid: {
       paddingTop: theme.spacing(8),
       paddingBottom: theme.spacing(8),
@@ -64,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     
   }));
+
 
   function getModalStyle() {
     const top = 50;
@@ -323,15 +322,15 @@ const getUserGroups = async () => {
           </Grid>       
         </Grid>
 
-        <Container className={classes.cardGrid} maxWidth="md">
-          <Grid container spacing={4}>
-            {groups.map((card) => (
-              <GroupCard key={card.id} data={card} />
-            ))}
-          </Grid>
-        </Container>
+            <Container className={classes.cardGrid} maxWidth="md">
+                <Grid container spacing={4}>
+                    {groups.map(card => (
+                        <GroupCard key={card.id} data={card} />
+                    ))}
+                </Grid>
+            </Container>
         </Grid>
     );
-}
+};
 
 export default Groups;
