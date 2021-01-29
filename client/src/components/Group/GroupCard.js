@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Typography, Card, CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-
+import groupPicture from '../../images/study_group.png';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -54,7 +54,7 @@ const GroupCard = (props) => {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image={props.data.image}
+                    image={props.data.image || groupPicture}
                     title={props.data.name}
                   />
                   <CardContent className={classes.cardContent}>
