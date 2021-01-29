@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 
 const auth = require('../middleware/verifyAuth');
 const postController = require('../controllers/post');
+const commentController = require('../controllers/comment');
 
 const router = express.Router();
 
@@ -25,5 +26,14 @@ router.delete('/post/:forumId/:postId', auth, postController.deletePost);
 // PUT forum/post/:postId
 // Edit a post using post id
 router.put('/post/:postId', auth, postController.editPost);
+
+// POST forum/post/comment/:postId
+// Creates a comment for a post
+router.post(
+    '/post/comment/:postId',
+    auth,
+    [check('text', 'Text is required').notEmpty()],
+    commentController.addComment
+);
 
 module.exports = router;
