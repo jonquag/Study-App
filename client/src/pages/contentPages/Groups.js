@@ -250,7 +250,7 @@ const getUserGroups = async () => {
       <Select
       name="course"
       variant="outlined"
-      fullWidth="true"
+      fullWidth={true}
       defaultValue=""
       >
       { 
