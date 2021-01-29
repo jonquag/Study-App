@@ -228,3 +228,38 @@ export const courseGroupList = [
         ],
     },
 ];
+
+export const posts = [
+    {
+        id: 1,
+        title: 'Supporting Cisco Data Center System Devices',
+        postDate: 'Yesterday',
+        postedBy: 'Ethan Rosenberg',
+        image:
+            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611091521/group_images/ad6c2fcc62ecc2eb14182d8bc43bcd266071bf88_x562go.png',
+    },
+    {
+        id: 2,
+        title: 'Google Analytics: Google Analytics Individual Qualification',
+        postDate: 'Today',
+        postedBy: 'Amha Desta',
+        image:
+            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611091521/group_images/ad6c2fcc62ecc2eb14182d8bc43bcd266071bf88_x562go.png',
+    },
+    {
+        id: 3,
+        title: 'Search-advertising: Google AdWords Search Advertising',
+        postDate: '3 days ago',
+        postedBy: 'Time Gambit',
+        image:
+            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611091521/group_images/ad6c2fcc62ecc2eb14182d8bc43bcd266071bf88_x562go.png',
+    },
+    {
+        id: 4,
+        title: 'Magento Certified Developer',
+        postDate: 'Last week',
+        postedBy: 'Jon Quag',
+        image:
+            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611091521/group_images/ad6c2fcc62ecc2eb14182d8bc43bcd266071bf88_x562go.png',
+    },
+];
