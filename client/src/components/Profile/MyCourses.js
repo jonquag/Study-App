@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: theme.palette.common.white,
         },
         '& p': {
-            fontSize: 12,
+            fontSize: '0.75rem',
             margin: theme.spacing(2.5, 0, 0.5, 0),
         },
     },
