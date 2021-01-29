@@ -3,36 +3,29 @@ import React from 'react';
 import Sidebar from '../../components/Profile/Sidebar';
 import { makeStyles } from '@material-ui/core/styles';
 
+import ChatSidePanel from './ChatSidePanel';
+
 const useStyles = makeStyles(theme => ({
     container: {
-        marginTop: 3,
+        height: 'calc(100vh - 100px)',
     },
-    sidebar: {},
     contentContainer: {
         backgroundColor: theme.palette.common.white,
     },
 }));
 
-const Forum = () => {
+const Chat = () => {
     const classes = useStyles();
     return (
-        <Grid>
-            <Grid container className={classes.container}>
-                <Grid
-                    item
-                    container
-                    direction="column"
-                    sm={3}
-                    className={classes.sidebar}
-                >
-                    <Sidebar />
-                </Grid>
-                <Grid item container sm={9} className={classes.contentContainer}>
-                    <Typography variant="h2">Chat Page</Typography>
-                </Grid>
+        <Grid container className={classes.container}>
+            <Sidebar>
+                <ChatSidePanel />
+            </Sidebar>
+            <Grid item container sm={12} md={9} className={classes.contentContainer}>
+                <Typography variant="h2">Chat Page</Typography>
             </Grid>
         </Grid>
     );
 };
 
-export default Forum;
+export default Chat;

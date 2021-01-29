@@ -23,7 +23,8 @@ const GroupSchema = new Schema({
     forum: {
         type: Schema.Types.ObjectId,
         ref: 'Forum',
-    },
+    },    
+    image: {type: String},
 });
 
 module.exports = mongoose.model('Group', GroupSchema);
