@@ -56,11 +56,11 @@ const Login = () => {
                                 to="/sign-up"
                             >
                                 <Button
-                                    variant="contained"
-                                    className={classes.button}
+                                    variant="text"
+                                    color="primary"
                                     style={{ marginTop: 0 }}
                                 >
-                                    get started
+                                    Get Started
                                 </Button>
                             </Link>
                         </Hidden>
@@ -74,7 +74,7 @@ const Login = () => {
                             password: '',
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={async (values, { setSubmitting, setErrors }) => {
+                        onSubmit={(values, { setSubmitting, setErrors }) => {
                             actions
                                 .login(values)(dispatch)
                                 .then(res => {
@@ -89,7 +89,7 @@ const Login = () => {
                                             autoHideDuration: '5000',
                                         });
                                     } else {
-                                        console.log(res)
+                                        console.log(res);
                                         handleAuthErrors(res, setErrors);
                                     }
                                 });
@@ -116,8 +116,7 @@ const Login = () => {
                                 />
                                 <Typography variant="body2">Forget password?</Typography>
                                 <Button
-                                    variant="contained"
-                                    className={classes.button}
+                                    color="primary"
                                     disabled={isSubmitting}
                                     onClick={submitForm}
                                 >
@@ -138,7 +137,9 @@ const Login = () => {
                                     component={RouterLink}
                                     to="/sign-up"
                                 >
-                                    <Button variant="outlined">Get started</Button>
+                                    <Button variant="outlined" color="primary">
+                                        Get started
+                                    </Button>
                                 </Link>
                             </div>
                         </Paper>

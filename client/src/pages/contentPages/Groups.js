@@ -124,6 +124,6 @@ const Groups = () => {
           }
         </Grid>
     );
-}
+};
 
 export default Groups;

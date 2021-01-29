@@ -29,6 +29,7 @@ import { useGlobalContext } from '../../context/studyappContext';
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string().min(6).required('Required'),
+    university: Yup.string().required('Please select a school'),
 });
 
 const Signup = () => {
@@ -36,7 +37,7 @@ const Signup = () => {
     const { isAuth, dispatch } = useGlobalContext();
     const { enqueueSnackbar } = useSnackbar();
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isProfLoading, setIsProfLoading] = useState(true);
     const [schools, setSchools] = useState([]);
     const [courseId, setCourseId] = useState('');
     const [courses, setCourses] = useState([{ _id: 1, name: 'Select a school first' }]);
@@ -49,7 +50,7 @@ const Signup = () => {
             const response = await axios.get('/universities');
 
             setSchools(response.data);
-            setIsLoading(false);
+            setIsProfLoading(false);
         } catch (err) {
             console.log(err);
         }
@@ -84,7 +85,7 @@ const Signup = () => {
         [addedCourses]
     );
 
-    if (isLoading) return <LinearProgress />;
+    if (isProfLoading) return <LinearProgress />;
 
     if (isAuth) return <Redirect to="/profile" />;
 
@@ -111,12 +112,8 @@ const Signup = () => {
                                 component={RouterLink}
                                 to="/login"
                             >
-                                <Button
-                                    variant="contained"
-                                    className={classes.button}
-                                    style={{ marginTop: 0 }}
-                                >
-                                    login
+                                <Button variant="text" color="primary">
+                                    Login
                                 </Button>
                             </Link>
                         </Hidden>
@@ -148,7 +145,7 @@ const Signup = () => {
                                             autoHideDuration: '5000',
                                         });
                                     } else {
-                                        handleAuthErrors(res, setErrors)
+                                        handleAuthErrors(res, setErrors);
                                     }
                                 });
                             setTimeout(() => {
@@ -233,7 +230,7 @@ const Signup = () => {
                                 </Select>
                                 <Grid className={classes.add_course}>
                                     <Button
-                                        color="primary"
+                                        color="secondary"
                                         startIcon={<AddIcon />}
                                         onClick={addCourse}
                                     >
@@ -241,7 +238,7 @@ const Signup = () => {
                                     </Button>
                                 </Grid>
                                 <Button
-                                    variant="contained"
+                                    color="primary"
                                     className={classes.button}
                                     disabled={isSubmitting}
                                     onClick={submitForm}
@@ -263,7 +260,9 @@ const Signup = () => {
                                     component={RouterLink}
                                     to="/login"
                                 >
-                                    <Button variant="outlined">Login</Button>
+                                    <Button variant="outlined" color="primary">
+                                        Login
+                                    </Button>
                                 </Link>
                             </div>
                         </Paper>

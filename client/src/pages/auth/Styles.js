@@ -64,10 +64,4 @@ export const useStyles = makeStyles(theme => ({
     add_course: {
         marginTop: 8,
     },
-    button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        marginTop: theme.spacing(4),
-        height: '3rem',
-    },
 }));
