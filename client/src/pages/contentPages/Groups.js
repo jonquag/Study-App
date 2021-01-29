@@ -106,7 +106,6 @@ const Groups = () => {
         if (res && res.data) {
             setGroupPicture(res.data.imageUrl)
             setUploading(false)
-  
         }
     }
   }, []);
@@ -137,6 +136,7 @@ const Groups = () => {
   const handleClose = () => {
     setOpen(false);
     setGroupPicture('');
+    setGroupName('');
   };
 
   const handleSubmit = async (e) => {
