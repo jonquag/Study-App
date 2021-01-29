@@ -18,6 +18,10 @@ const useStyles = makeStyles(theme => ({
         width: 150,
         marginRight: theme.spacing(3),
     },
+    postCard: {
+        maxWidth: '100%',
+        padding: theme.spacing(0, 10, 0, 10),
+    },
 }));
 
 const addPost = () => {
@@ -63,11 +67,10 @@ const ForumContent = () => {
                 container
                 sm={10}
                 justify="flex-start"
-                alignItems="center"
                 direction="column"
                 className={classes.cardContainer}
             >
-                <Grid item>
+                <Grid item className={classes.postCard}>
                     {posts.map(post => (
                         <PostCard key={post.id} post={post} />
                     ))}
