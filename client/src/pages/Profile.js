@@ -34,13 +34,13 @@ const Profile = () => {
                         <Route exact path="/profile">
                             <UserInfo />
                         </Route>
-                        <Route path="/profile/courses">
+                        <Route exact path="/profile/courses">
                             <MyCourses />
                         </Route>
-                        <Route path="/profile/settings">
+                        <Route exact path="/profile/settings">
                             <Settings />
                         </Route>
-                        <Route path="/profile/notifications">
+                        <Route exact path="/profile/notifications">
                             <Notifications />
                         </Route>
                     </Switch>

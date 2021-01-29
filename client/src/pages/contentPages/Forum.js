@@ -1,8 +1,9 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 // import ForumSidebar from '../../components/Forum/ForumSidebar';
-import ForumContent from '../../components/Forum/ForumContent';
+import Sidebar from '../../components/Profile/Sidebar';
+//import ForumContent from '../../components/Forum/ForumContent';
 
 import ForumSidePanel from './ForumSidePanel';
 
