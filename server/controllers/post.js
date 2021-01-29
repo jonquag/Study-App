@@ -1,4 +1,4 @@
-const { GeneralError, NotFound } = require('../utils/errors');
+const { GeneralError, NotFound, Unauthorized } = require('../utils/errors');
 const { validationResult } = require('express-validator');
 
 const Profile = require('../models/profile');
@@ -41,5 +41,37 @@ exports.creatForumPost = async (req, res, next) => {
     } catch (err) {
         console.log(err.message);
         next(error);
+    }
+};
+
+exports.deletePost = async (req, res, next) => {
+    const { forumId, postId } = req.params;
+
+    try {
+        const forum = await Forum.findById(forumId);
+        if (!forum) throw new NotFound('No forum found');
+
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFound('No post found');
+
+        const forumPost = forum.posts.find(fp => fp.toString() === postId);
+        if (!forumPost) throw new NotFound('No post in forum found');
+
+        // check if useres are deleteing their own posts
+        if (post.user.toString() !== req.body.userId)
+            throw new Unauthorized('Cannot delete post');
+
+        forum.posts = forum.posts.filter(fp => fp.toString() !== postId);
+
+        const forumRes = await forum.save();
+        if (!forumRes) throw new GeneralError('Error saving forum');
+
+        const postRes = await post.remove();
+        if (!postRes) throw new GeneralError('Error deleting post');
+
+        res.status(200).json({ forum });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
     }
 };

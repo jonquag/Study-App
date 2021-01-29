@@ -18,4 +18,8 @@ router.post(
     postController.creatForumPost
 );
 
+// DELETE forum/post/:forumId/:postId
+// Removes a post from a forum and deletes the post from db.
+router.delete('/post/:forumId/:postId', auth, postController.deletePost);
+
 module.exports = router;
