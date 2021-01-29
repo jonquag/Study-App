@@ -224,7 +224,7 @@ const getUserGroups = async () => {
       <FormHelperText>{groupError ? <span style={{color: "#fc2525"}}>{groupError}</span> : 'Please enter a group name'}</FormHelperText>
       <TextField
         name="group_name"
-        fullWidth="true"
+        fullWidth={true}
         variant="outlined"
         onChange={handleOnChange}
       >
