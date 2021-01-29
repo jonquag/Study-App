@@ -36,4 +36,12 @@ router.post(
     commentController.addComment
 );
 
+// DELETE forum/post/comment/:postId/:commentId
+// Removes a comment from a post and deletes it from db.
+router.delete(
+    '/post/comment/:postId/:commentId',
+    auth,
+    commentController.deleteComment
+);
+
 module.exports = router;
