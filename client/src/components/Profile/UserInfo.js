@@ -18,9 +18,6 @@ const useStyles = makeStyles(theme => ({
         padding: '2em 0 0 2em',
     },
     button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        height: 54,
         marginLeft: '1.2em',
         marginTop: '1em',
         width: 300,
@@ -144,7 +141,11 @@ const UserInfo = () => {
                     </Grid>
                     <Grid container>
                         <Grid item>
-                            <Button className={classes.button} onClick={handleSubmit}>
+                            <Button
+                                color="primary"
+                                className={classes.button}
+                                onClick={handleSubmit}
+                            >
                                 Submit
                             </Button>
                         </Grid>
