@@ -22,4 +22,8 @@ router.post(
 // Removes a post from a forum and deletes the post from db.
 router.delete('/post/:forumId/:postId', auth, postController.deletePost);
 
+// PUT forum/post/:postId
+// Edit a post using post id
+router.put('/post/:postId', auth, postController.editPost);
+
 module.exports = router;

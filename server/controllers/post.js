@@ -75,3 +75,28 @@ exports.deletePost = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.editPost = async (req, res, next) => {
+    const { postId } = req.params;
+    const { userId, title, text, postAvatar } = req.body;
+    try {
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFound('No post found');
+
+        // check if useres are editing their own posts
+        if (post.user.toString() !== userId)
+            throw new Unauthorized('Cannot edit post');
+
+        if (title) post.title = title;
+        if (text) post.text = text;
+        if (postAvatar) post.postAvatar = postAvatar;
+
+        const response = await post.save();
+        if (!response) throw new GeneralError('Error editing post');
+
+        res.status(200).json({ post });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
