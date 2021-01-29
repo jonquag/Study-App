@@ -280,7 +280,7 @@ const getUserGroups = async () => {
 
     return (
         <Grid>
-        <Navbar />
+       
         <Grid container>
           <Grid 
           item
