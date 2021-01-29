@@ -128,4 +128,11 @@ export const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
         marginTop: 16,
     },
+    button: {
+        margin: '2em',
+        textTransform: 'none',
+        fontWeight: 'bold',
+        fontSize: 16,
+        letterSpacing: 0.5,
+    },
 }));

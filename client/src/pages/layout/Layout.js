@@ -10,7 +10,9 @@ const Layout = ({ children }) => {
     const { dispatch, isLoading, isAuth } = useGlobalContext();
 
     useEffect(() => {
-        actions.fetchProfile()(dispatch);
+        actions.fetchProfile()(dispatch).then((userGroups) => {
+            actions.fetchUserGroups(userGroups)(dispatch)
+        });
     }, [dispatch]);
 
     if (!isAuth) return <Redirect to="/login" />;

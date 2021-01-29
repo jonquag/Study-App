@@ -26,9 +26,38 @@ export const theme = createMuiTheme({
     },
     palette: {
         primary: {
-            main: '#4B00FF',
+            main: '#FFF',
             light: '#2574FF',
             gradient: 'linear-gradient(45deg, #2574FF, #4B00FF)',
+        },
+        secondary: {
+            main: '#2968FF',
+        },
+    },
+    overrides: {
+        MuiButton: {
+            textPrimary: {
+                color: '#FFF',
+                background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
+                textTransform: 'none',
+                fontSize: 14,
+                padding: 20,
+                height: '3rem',
+            },
+            outlinedPrimary: {
+                color: '#FFF',
+                textTransform: 'none',
+                fontSize: 14,
+                padding: 20,
+                height: '3rem',
+            },
+            outlinedSecondary: {
+                color: '#2968FF',
+                textTransform: 'none',
+                fontSize: 14,
+                padding: 20,
+                height: '3rem',
+            },
         },
     },
 });
