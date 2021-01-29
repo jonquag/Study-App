@@ -12,12 +12,9 @@ router.get('/', verifyAuth, async function (req, res, next) {
     const userId = req.body.userId;
     const userDoc = await User.findById(userId)
         .populate({ path: 'courses', model: 'Course' })
-        .select('-password')
-        .catch(() => {
-            return next(new GeneralError('Error Establishing a Database Connection'));
-        });
+        .select('-password');
 
-    return res.send(userDoc);
+    return userDoc ? res.send(userDoc) : res.sendStatus(400);
 });
 
 // Gets all the current users courses

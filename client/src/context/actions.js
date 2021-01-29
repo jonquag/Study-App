@@ -5,7 +5,6 @@ export const register = values => async dispatch => {
         const res = await axios.post('auth/register', values).catch(err => {
             throw err.response;
         });
-
         if (res.status === 201) {
             dispatch({ type: 'REGISTER_SUCCESS' });
             return res;

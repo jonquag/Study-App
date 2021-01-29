@@ -193,7 +193,7 @@ const Drawer = props => {
             <Grid container item>
                 <Grid item>
                     <Button
-                        className={classes.logoutStyles}
+                        className={classes.button}
                         onClick={() => actions.logout()(dispatch)}
                     >
                         Logout

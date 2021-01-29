@@ -15,7 +15,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
@@ -61,10 +60,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
         marginTop: theme.spacing(4),
-        height: '3rem',
     },
     add_btn: {
         marginTop: 8,
@@ -181,12 +177,13 @@ const MyCourses = () => {
                     })}
                 </Select>
                 <Grid className={classes.add_btn}>
-                    <Button color="primary" startIcon={<AddIcon />} onClick={addCourse}>
+                    <Button color="secondary" startIcon={<AddIcon />} onClick={addCourse}>
                         Add course
                     </Button>
                 </Grid>
                 <Button
-                    variant="contained"
+                    variant="text"
+                    color="primary"
                     className={classes.button}
                     onClick={handleCourseUpdate}
                 >
