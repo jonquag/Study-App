@@ -12,6 +12,7 @@ const PostSchema = new Schema({
     },
     postAvatar: {
         type: String,
+        default: '',
     },
     title: {
         type: String,

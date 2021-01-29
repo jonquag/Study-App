@@ -14,7 +14,7 @@ exports.creatForumPost = async (req, res, next) => {
         });
 
     const forumId = req.params.forumId;
-    const { title, text, userId } = req.body;
+    const { title, text, userId, postAvatar } = req.body;
 
     try {
         const forum = await Forum.findById(forumId);
@@ -27,6 +27,7 @@ exports.creatForumPost = async (req, res, next) => {
             user: userId,
             title,
             text,
+            postAvatar,
             name: `${profile.firstName} ${profile.lastName}`,
         });
 
