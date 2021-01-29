@@ -75,7 +75,11 @@ const GroupCard = props => {
                     setIsUpdating(true);
                     await props.handleCardPress(props.data._id);
                   }}>
-                    <Button disabled={isUpdating} className={classes.button}>
+                    <Button 
+                        disabled={isUpdating} 
+                        className={classes.button} 
+                        color='primary'
+                    >
                       {props.actionText}
                     </Button>
                 </CardActions>
