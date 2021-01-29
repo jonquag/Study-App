@@ -40,18 +40,6 @@ router.get('/:groupId', auth, async (req, res, next) => {
     }
 });
 
-// POST forum/post
-// Creates a post using userId
-// router.post(
-//     '/post',
-//     auth,
-//     [
-//         check('title', 'Title is required').notEmpty(),
-//         check('text', 'Text is required').notEmpty(),
-//     ],
-//     postController.creatPost
-// );
-
 // POST forum/post/:forumId
 // Creates a post in a forum
 router.post(
