@@ -11,6 +11,7 @@ const userRouter = require('./routes/user');
 const uploadRouter = require('./routes/upload');
 const profileRouter = require('./routes/profile');
 const authRouter = require('./routes/auth');
+const forumRouter = require('./routes/forum');
 
 const { json, urlencoded } = express;
 
@@ -30,6 +31,7 @@ app.use('/universities', universityRouter);
 app.use('/user', userRouter);
 app.use('/profile', profileRouter);
 app.use('/upload', uploadRouter);
+app.use('/forum', forumRouter);
 
 app.use(handleErrors);
 

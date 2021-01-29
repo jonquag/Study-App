@@ -25,9 +25,8 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 const Navbar = () => {
     const classes = useStyles();
     const history = useHistory();
-
+  
     const { profile, dispatch } = useGlobalContext();
-    
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -43,7 +42,7 @@ const Navbar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default" elevation={2}>
+            <AppBar position="relative" color="default" elevation={2}>
                 <Toolbar className={classes.toolbar}>
                     <div className={classes.logo_study}>
                         <Link

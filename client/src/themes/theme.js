@@ -3,25 +3,24 @@ import { createMuiTheme } from '@material-ui/core';
 export const theme = createMuiTheme({
     typography: {
         fontFamily: 'Poppins',
-        fontSize: 12,
+        fontSize: '0.75rem',
         h1: {
-            // could customize the h1 variant as well
-            fontSize: '36px',
+            fontSize: '2.25rem',
         },
 
         h5: {
-            fontSize: 20,
+            fontSize: '1.25rem',
             fontWeight: 500,
             letterSpacing: -0.5,
         },
         h3: {
             fontFamily: 'Montserrat',
-            fontSize: 26,
+            fontSize: '1.625rem',
             fontWeight: 500,
             letterSpacing: -1,
         },
         h6: {
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 500,
         },
     },
