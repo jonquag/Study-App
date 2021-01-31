@@ -84,10 +84,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatSidePanel = () => {
+const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
     const classes = useStyles();
-    const [chatId, setChatId] = useState(null);
-
+    
     return (
         <Grid container className={classes.list_container}>
             <Grid item className={classes.chat_head}>
@@ -95,18 +94,18 @@ const ChatSidePanel = () => {
                 <Badge badgeContent={12} className={classes.badge} />
             </Grid>
             <Divider className={classes.divider} />
-            {chatList.map(cg => {
+            {chatList.map((cg, index)=> {
                 return (
                     <React.Fragment key={cg.id}>
                         <Grid
                             item
                             container
                             className={
-                                cg.id === chatId
+                                index === chatIndex
                                     ? classes.chat_list_active
                                     : classes.chat_list
                             }
-                            onClick={() => setChatId(cg.id)}
+                            onClick={() => setChatIndex(index)}
                         >
                             <Grid item className={classes.avatar_container}>
                                 <Avatar
