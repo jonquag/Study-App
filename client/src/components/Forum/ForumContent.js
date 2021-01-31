@@ -32,14 +32,7 @@ const ForumContent = () => {
     const classes = useStyles();
 
     return (
-        <Grid
-            container
-            direction="column"
-            className={classes.container}
-            alignContent="center"
-            item
-            sm={12}
-        >
+        <Grid container direction="column" alignContent="center" item sm={12}>
             <Grid
                 item
                 container

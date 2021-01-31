@@ -7,7 +7,7 @@ import { chatList } from '../../data/mockData';
 const useStyles = makeStyles(theme => ({
     list_container: {
         display: 'block',
-        height: 'calc(100vh - 103px)',
+        height: 'calc(100vh - 100px)',
         overflowY: 'auto',
         '&::-webkit-scrollbar': {
             width: '0.6rem',
@@ -23,6 +23,9 @@ const useStyles = makeStyles(theme => ({
         },
         '&::-webkit-scrollbar-thumb:hover': {
             background: '#ccc',
+        },
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
         },
     },
     chat_head: {

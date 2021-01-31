@@ -14,6 +14,9 @@ import ProfileSidePanel from './ProfileSidePanel';
 const useStyles = makeStyles(theme => ({
     container: {
         height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
+        },
     },
     contentContainer: {
         backgroundColor: theme.palette.common.white,
@@ -25,7 +28,7 @@ const Profile = () => {
 
     return (
         <Grid container>
-            <Grid container className={classes.container}>
+            <Grid item container className={classes.container}>
                 <Sidebar>
                     <ProfileSidePanel />
                 </Sidebar>

@@ -9,6 +9,9 @@ import * as actions from '../../context/actions';
 const useStyles = makeStyles(theme => ({
     header: {
         margin: theme.spacing(8, 0, 8, 0),
+        [theme.breakpoints.down('sm')]: {
+            margin: theme.spacing(0, 0, 8, 0),
+        },
     },
     inputStyles: {
         fontWeight: '600',
@@ -27,6 +30,9 @@ const useStyles = makeStyles(theme => ({
     },
     container: {
         padding: theme.spacing(0, 0, 0, 11),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0, 0, 0, 6),
+        },
     },
 }));
 
@@ -70,14 +76,7 @@ const UserInfo = () => {
                 <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
-                <Grid
-                    item
-                    container
-                    sm={10}
-                    alignContent="flex-start"
-                    justify="flex-start"
-                    spacing={4}
-                >
+                <Grid item container sm={10} spacing={4}>
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>
                             First Name
