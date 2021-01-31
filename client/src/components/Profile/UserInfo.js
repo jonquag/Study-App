@@ -7,6 +7,9 @@ import { useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
+    header: {
+        margin: theme.spacing(8, 0, 8, 0),
+    },
     inputStyles: {
         fontWeight: '600',
         width: 300,
@@ -63,18 +66,10 @@ const UserInfo = () => {
 
     return (
         <Grid container direction="column" className={classes.container}>
-            <Grid
-                item
-                container
-                alignContent="center"
-                sm={2}
-                className={classes.headerContainer}
-            >
+            <form noValidate autoComplete="off">
                 <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
-            </Grid>
-            <form noValidate autoComplete="off">
                 <Grid
                     item
                     container

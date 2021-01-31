@@ -48,11 +48,13 @@ const useStyles = makeStyles(theme => ({
     },
     icons: {
         color: '#2968ff',
+        fontSize: 22,
     },
     group_list: {
-        color: theme.palette.primary.main,
+        color: '#2574FF',
         cursor: 'pointer',
         marginTop: 16,
+        fontSize: '0.9375rem',
     },
 }));
 

@@ -9,7 +9,7 @@ import UserInfo from '../components/Profile/UserInfo';
 import Settings from '../components/Profile/Settings';
 import Notifications from '../components/Profile/Notifications';
 import MyCourses from '../components/Profile/MyCourses';
-import ProfileSidePane from './ProfileSidePane';
+import ProfileSidePanel from './ProfileSidePanel';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -27,7 +27,7 @@ const Profile = () => {
         <Grid container>
             <Grid container className={classes.container}>
                 <Sidebar>
-                    <ProfileSidePane />
+                    <ProfileSidePanel />
                 </Sidebar>
                 <Grid item container sm={12} md={9} className={classes.contentContainer}>
                     <Switch>

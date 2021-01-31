@@ -1,9 +1,11 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 
-import profilePic from '../static/images/profilePicSample.png';
+import DragzonePicture from '../components/DragzonePicture';
+import { useGlobalContext } from '../context/studyappContext';
+import * as actions from '../context/actions';
 
 const useStyles = makeStyles(theme => ({
     linkStyles: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
     drawer: {
         background: '#F9F9FC',
+        height: '100%',
     },
     linkContainer: {
         paddingTop: '2em',
@@ -28,29 +31,40 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '1em',
         fontSize: '1.375rem',
     },
+    button: {
+        margin: '2em',
+        textTransform: 'none',
+        fontWeight: 'bold',
+        fontSize: '1rem',
+        letterSpacing: 0.5,
+    },
 }));
 
-const ProfileSidePane = () => {
+const ProfileSidePanel = () => {
     const classes = useStyles();
+    const { profile, dispatch } = useGlobalContext();
 
     return (
         <Grid
             container
             direction="column"
             alignItems="center"
+            justify="space-between"
             item
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={3}>
-                <img
-                    src={profilePic}
-                    alt="Ashly Sanford"
-                    className={classes.profilePic}
-                />
+            <Grid
+                container
+                item
+                direction="column"
+                alignItems="center"
+                style={{ marginTop: '3em' }}
+            >
+                <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
-                    Ashly Sanford
+                    {profile.firstName + ' ' + profile.lastName}
                 </Typography>
             </Grid>
 
@@ -97,13 +111,18 @@ const ProfileSidePane = () => {
                     Notifications
                 </NavLink>
             </Grid>
-            <Grid container direction="column" item justify="flex-end" sm={4}>
+            <Grid container item>
                 <Grid item>
-                    <Typography>Logout</Typography>
+                    <Button
+                        className={classes.button}
+                        onClick={() => actions.logout()(dispatch)}
+                    >
+                        Logout
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
     );
 };
 
-export default ProfileSidePane;
+export default ProfileSidePanel;
