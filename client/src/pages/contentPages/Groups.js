@@ -60,7 +60,7 @@ const Groups = () => {
 
     return (
         <Grid>
-            {groups.length && (
+            {groups.length ? (
                 <>
                     <Grid container>
                         <Grid item justify="center" direction="row" container sm={12}>
@@ -86,7 +86,7 @@ const Groups = () => {
                         </Grid>
                     </Container>
                 </>
-            )}
+            ) : null}
             {suggestedGroups.length && (
                 <>
                     <Grid container>

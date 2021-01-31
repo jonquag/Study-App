@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justify: 'flex-start',
         padding: theme.spacing(8, 0, 0, 11),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0, 0, 0, 6),
+        },
     },
     university: {
         marginBottom: theme.spacing(3),
