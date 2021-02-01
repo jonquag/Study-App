@@ -227,7 +227,7 @@ const Groups = () => {
         <Box {...getRootProps({style})}>
           <img
             alt='Profile Pic'
-            src={groupPicture.length ? groupPicture : defaultImage}
+            src={groupPicture ? groupPicture : defaultImage}
             className={uploading ? classes.uploading : classes.large}
           />
         </Box>
