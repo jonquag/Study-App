@@ -148,6 +148,8 @@ const Groups = () => {
         const response = await axios.post('/user/groups', data);
 
         setGroupName('');
+        setCourseId('');
+        setGroupPicture('');
   
         if(response.data) {
 
