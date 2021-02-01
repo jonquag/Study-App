@@ -5,7 +5,8 @@ const User = require('../models/user');
 const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
 const Group = require('../models/Group');
-require('../models/courses');
+const Course = require('../models/courses');
+//require('../models/courses');
 
 // Get the logged in user
 router.get('/', verifyAuth, async function (req, res, next) {
@@ -187,6 +188,7 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
                 throw new GeneralError('Error returning groups to join');
             });
         if (userDoc && userDoc.courses) {
+            console.log(userDoc.d)
             res.send(userDoc.courses);
         } else {
             res.sendStatus(500);
@@ -240,31 +242,42 @@ router.post('/groups', verifyAuth, async function (req, res, next) {
     const imageUrl = req.body.imageUrl;
     const courseId = req.body.courseId;
     const groupName = req.body.groupName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+
+    const session = await Group.startSession();
+    session.startTransaction();
+
     try {
 
-        const createGroup = new Group({
-            name: groupName,
-            members: [userId],
-            image: imageUrl,
-            course: courseId, 
-            admin: userId
-        });
+       
+            const instance = (await Group.create([{
+                name: groupName,
+                members: [userId],
+                image: imageUrl,
+                course: courseId, 
+                admin: userId
+            }], {session}))[0];
 
-        createGroup.save(function (err, resp) {
-            if (err) {
-                res.send({
-                    message: 'error creating group'
-                  });
-              } else {
-                res.send({
-                  data: resp
-                });
-              }
-        })
-        
+            const userUpdate = await User.findByIdAndUpdate(userId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
+            .session(session)
+
+            const courseUpdate = await Course.findByIdAndUpdate(courseId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
+            .session(session)
+
+            await session.commitTransaction();
+            session.endSession();
+            res.status(201);
+            res.send({
+                data: instance
+            });
+
+
     } catch(err) {
+        console.log(err)
+        await session.abortTransaction();
+        session.endSession();
         next(err);
-    }   
+    }
+
 
 });
 
