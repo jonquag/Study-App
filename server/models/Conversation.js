@@ -7,6 +7,7 @@ const ConversationSchema = new Schema({
     group: {
         type: Schema.Types.ObjectId,
         required: true,
+        ref: 'Group',
     },
     title: {
         type: String,
@@ -23,7 +24,7 @@ const ConversationSchema = new Schema({
                 type: Date,
                 default: Date.now,
             },
-            text: { type: String },
+            text: { type: String, required: true },
         },
     ],
 });
