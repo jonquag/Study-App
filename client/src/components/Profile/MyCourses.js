@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(0, 0, 0, 6),
         },
+        [theme.breakpoints.down('xs')]: {
+            padding: theme.spacing(0, 1, 0, 1),
+        },
     },
     university: {
         marginBottom: theme.spacing(3),

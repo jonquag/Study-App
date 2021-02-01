@@ -22,10 +22,11 @@ const useStyles = makeStyles(theme => ({
     },
     drawer: {
         background: '#F9F9FC',
-        height: '100vh',
+        height: 'calc(100vh - 100px)',
         [theme.breakpoints.down('sm')]: {
             paddingTop: theme.spacing(6),
             background: '#FFF',
+            height: '100vh',
         },
     },
     linkContainer: {

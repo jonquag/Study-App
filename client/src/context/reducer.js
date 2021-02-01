@@ -20,6 +20,7 @@ export const reducer = (state, action) => {
                 userCourse: payload[1],
                 profile: payload[0],
                 isLoading: false,
+                isAuth: true,
             };
         case 'LOGIN_FAIL':
         case 'REGISTER_FAIL':
@@ -42,15 +43,15 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 userGroups: payload,
-            }
+            };
         case 'updateUserCourses':
             return {
                 ...state,
                 userCourse: {
                     ...state.userCourse,
                     userCourses: [...payload],
-                }
-            }
+                },
+            };
         default:
             throw new Error('No action type found!');
     }

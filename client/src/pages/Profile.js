@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     },
     contentContainer: {
         backgroundColor: theme.palette.common.white,
+        [theme.breakpoints.down('sm')]: {
+            minHeight: 'calc(100vh - 200px)',
+        },
     },
 }));
 
