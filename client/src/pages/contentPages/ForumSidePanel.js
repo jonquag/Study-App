@@ -6,6 +6,13 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import { courseGroupList } from '../../data/mockData';
 
 const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+            backgroundColor: '#FFF',
+            paddingTop: theme.spacing(6),
+        },
+    },
     chat_head: {
         height: 120,
         display: 'flex',
@@ -77,7 +84,7 @@ const ForumSidePanel = () => {
     };
 
     return (
-        <Grid>
+        <Grid className={classes.container}>
             <Grid item className={classes.chat_head}>
                 <Typography>My Courses</Typography>
                 <Badge badgeContent={3} className={classes.badge} />

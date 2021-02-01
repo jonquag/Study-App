@@ -22,10 +22,17 @@ const useStyles = makeStyles(theme => ({
     },
     drawer: {
         background: '#F9F9FC',
-        height: '100%',
+        height: '100vh',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: theme.spacing(6),
+            background: '#FFF',
+        },
     },
     linkContainer: {
         paddingTop: '2em',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: 0,
+        },
     },
     profileName: {
         paddingTop: '1em',
