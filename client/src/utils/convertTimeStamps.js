@@ -1,12 +1,12 @@
 // msToTimeAgo takes in milliseconds elapsed since the UNIX epoch
 // and converts it to one of x seconds ago, x minutes ago, x days ago, x years ago
 export const msToTimeAgo = (ms) => {
-    console.log(typeof(ms))
+    
     if (isNaN(ms)) return 'Not a number';
-    var d=new Date();  // Gets the current time
-    var nowTs = Math.floor(d.getTime()/1000); // getTime() returns milliseconds, and we need seconds, hence the Math.floor and division by 1000
-    var seconds = nowTs-ms ;
-    console.log(seconds)
+
+    const d = new Date();
+    const nowTs = Math.floor(d.getTime()/1000);
+    const seconds = nowTs-ms;
     // years ago
     if (seconds > 365.2425*24*3600) {
         const y = Math.floor(seconds / (365.2425*24*3600))
@@ -42,4 +42,4 @@ export const msToTimeAgo = (ms) => {
     }
     //seconds ago
     return Math.floor(seconds) + ' seconds ago';
-}
+};

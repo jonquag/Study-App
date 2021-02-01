@@ -127,6 +127,19 @@ export const groups = [
 
 export const chatList = [
     {
+        id: 5,
+        imgUrl:
+            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625343/Chat%20list/193deaef3e3000f66363095b961a3c0f21610445_mmreha.png',
+        chatGroup: 'The Student Room',
+        members: 62,
+        messages: [{
+            user: '2',
+            content: 'Thanks!!!',
+            profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+            timeStamp: 1200195609
+        },]
+    },
+    {
         id: 1,
         imgUrl:
             'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625342/Chat%20list/942c5bf36ca7da71662e79da86d6a9c6480af771_aycuto.png',
@@ -269,19 +282,6 @@ export const chatList = [
             content: 'Thanks!!!',
             profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
             timeStamp: 1600195609
-        },]
-    },
-    {
-        id: 5,
-        imgUrl:
-            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625343/Chat%20list/193deaef3e3000f66363095b961a3c0f21610445_mmreha.png',
-        chatGroup: 'The Student Room',
-        members: 62,
-        messages: [{
-            user: '2',
-            content: 'Thanks!!!',
-            profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
-            timeStamp: 1200195609
         },]
     },
     {

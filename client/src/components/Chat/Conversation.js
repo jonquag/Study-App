@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-    Box,
     Grid,
     Container,
     List,
@@ -33,13 +32,6 @@ const useStyles = makeStyles(theme => ({
             background: '#ccc',
         },
     },
-    anchored: {
-        position: 'absolute',
-        bottom: 0,
-        height: 'calc(100vh - 343px)',
-        overflowY: 'auto',
-        backgroundColor: theme.palette.common.white,
-    },
     left_msg: {
         display: 'flex',
         justifyContent: 'flex-start'
@@ -52,8 +44,13 @@ const useStyles = makeStyles(theme => ({
 
 const Conversation = ({messages}) => {
     const classes = useStyles();
+    const lastRef = useRef(null);
     const { profile } = useGlobalContext();
     const { user } = profile;
+
+    useEffect(() => {
+        lastRef.current.scrollIntoView();
+    }, [messages]);
 
     return (
         <Grid className={classes.list_container}>
@@ -69,6 +66,7 @@ const Conversation = ({messages}) => {
                             );
                         })
                     }
+                    <ListItem ref={lastRef}/>
                 </List>
             </Container>
         </Grid>
