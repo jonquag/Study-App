@@ -6,7 +6,7 @@ import PostCard from './PostCard';
 
 import Modal from '@material-ui/core/Modal';
 
-import ForumModal2 from './ForumModal2';
+import ForumModal from './ForumModal';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -77,7 +77,7 @@ const ForumContent = () => {
                         aria-labelledby="simple-modal-forum"
                         aria-describedby="simple-modal-to-open-forum"
                     >
-                        <ForumModal2 handleClose={handleClose} />
+                        <ForumModal handleClose={handleClose} />
                     </Modal>
                 </Grid>
             </Grid>
