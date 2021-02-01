@@ -9,13 +9,6 @@ const ConversationSchema = new Schema({
         required: true,
         ref: 'Group',
     },
-    title: {
-        type: String,
-        required: true,
-    },
-    image: {
-        type: String,
-    },
     // individual message information
     messages: [
         {
