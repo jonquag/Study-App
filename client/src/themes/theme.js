@@ -8,12 +8,20 @@ export const theme = createMuiTheme({
             // could customize the h1 variant as well
             fontSize: '36px',
         },
+        h2: {
+            fontSize: 22,
+            fontWeight: 'bold',
+        },
+        h4: {
+            fontSize: 16,
+            opacity: '50%',
+        },
 
         h5: {
             fontSize: 20,
             fontWeight: 500,
             letterSpacing: -0.5,
-},
+        },
         h3: {
             fontFamily: 'Montserrat',
             fontSize: 26,
