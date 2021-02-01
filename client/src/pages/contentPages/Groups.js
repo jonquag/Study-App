@@ -146,11 +146,15 @@ const Groups = () => {
         const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
         
         const response = await axios.post('/user/groups', data);
+
+        setGroupName('');
   
         if(response.data) {
 
           groups.push(response.data.data)
           actions.fetchUserGroups(groups)(dispatch);
+
+          
 
           enqueueSnackbar('Group Created Successfully.', {
             variant: 'success',
@@ -170,6 +174,7 @@ const Groups = () => {
             autoHideDuration: '5000',
         });
       }
+
   
     };
     
