@@ -12,13 +12,13 @@ const Layout = ({ children }) => {
         actions.fetchProfile()(dispatch);
     }, [dispatch]);
 
-    if (isAuth)
-        SocketManager.startSocket();
-
-    if (!isAuth) {
+    useEffect(() => {
         SocketManager.closeSocket();
-        return <Redirect to="/login" />
-    };
+    }, [SocketManager])
+
+    if (isAuth) SocketManager.startSocket();
+
+    if (!isAuth) return <Redirect to="/login" />;
 
     if (isLoading) return <LinearProgress />;
 
