@@ -88,8 +88,8 @@ const Groups = () => {
     const [groupError, setGroupErrors] = useState('');
     const [uploading, setUploading] = useState(false);
     const [groupPicture, setGroupPicture] = useState('');
-    const [formValid, setFormValid] = useState(false);
     const [groupName, setGroupName] = useState('');
+    const [groupNameValid, setGroupNameValid] = useState('');
     const [courseId, setCourseId] = useState('');
 
 
@@ -141,7 +141,7 @@ const Groups = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       
-      if(formValid) {
+      if(isFormValid()) {
   
         const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
         
@@ -155,8 +155,6 @@ const Groups = () => {
 
           groups.push(response.data.data)
           actions.fetchUserGroups(groups)(dispatch);
-
-          
 
           enqueueSnackbar('Group Created Successfully.', {
             variant: 'success',
@@ -176,13 +174,16 @@ const Groups = () => {
             autoHideDuration: '5000',
         });
       }
-
   
     };
     
     const handleOnChange = (e) => {
       checkGroupExists(e.target.value.toLowerCase())
       
+    }
+
+    const isFormValid = () => {
+      return (groupNameValid && courseId) ? true : false
     }
   
   const checkGroupExists = (name) => {
@@ -196,11 +197,11 @@ const Groups = () => {
   
       if(allGroupNames.includes(name) !== true) {
         setGroupErrors('');
-        setFormValid(true);
+        setGroupNameValid(true);
         return false;
       } else {
         setGroupErrors("A group with this name already exists!");
-        setFormValid(false);
+        setGroupNameValid(false);
         return true;
       }
   
