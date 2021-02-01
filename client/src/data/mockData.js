@@ -137,35 +137,99 @@ export const chatList = [
                 user: '1',
                 content: 'Hi there!',
                 profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611078933/xhnkpbrtcc9xzrvohqyc.png',
-                timeStamp: '1 day ago'
+                timeStamp: 1612195692
             },
             {
                 user: '2',
                 content: 'Hi @Ethan I\'m curious, have you done your homework. Where could I find it?',
                 profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
-                timeStamp: '2 hours ago'
+                timeStamp: 1600195609
             }, 
             {
                 user: '600edd6ee112c2fd62c568f6',
                 content: 'Nope you cant find it anywhere',
                 profileImg: '',
-                timeStamp: '20 min ago'
+                timeStamp: 1610195609
             },
             {
                 user: '2',
                 content: 'Thanks!!!',
                 profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
-                timeStamp: '2 hours ago'
+                timeStamp: 1611824921
+            },
+            {
+                user: '1',
+                content: 'Hi there!',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611078933/xhnkpbrtcc9xzrvohqyc.png',
+                timeStamp: 1612024921
+            },
+            {
+                user: '2',
+                content: 'Hi @Ethan I\'m curious, have you done your homework. Where could I find it?',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+                timeStamp: 1612024921
+            }, 
+            {
+                user: '600edd6ee112c2fd62c568f6',
+                content: 'Nope you cant find it anywhere',
+                profileImg: '',
+                timeStamp: 1612124921
+            },
+            {
+                user: '2',
+                content: 'Thanks!!!',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+                timeStamp: 1612173600
+            },
+            {
+                user: '1',
+                content: 'Hi there!',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611078933/xhnkpbrtcc9xzrvohqyc.png',
+                timeStamp: 1612195692
+            },
+            {
+                user: '2',
+                content: 'Hi @Ethan I\'m curious, have you done your homework. Where could I find it?',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+                timeStamp: 1600195609
+            }, 
+            {
+                user: '600edd6ee112c2fd62c568f6',
+                content: 'Nope you cant find it anywhere',
+                profileImg: '',
+                timeStamp: 1610195609
+            },
+            {
+                user: '2',
+                content: 'Thanks!!!',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+                timeStamp: 1611824921
+            },
+            {
+                user: '1',
+                content: 'Hi there!',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611078933/xhnkpbrtcc9xzrvohqyc.png',
+                timeStamp: 1612024921
+            },
+            {
+                user: '2',
+                content: 'Hi @Ethan I\'m curious, have you done your homework. Where could I find it?',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+                timeStamp: 1612024921
+            }, 
+            {
+                user: '600edd6ee112c2fd62c568f6',
+                content: 'Nope you cant find it anywhere',
+                profileImg: '',
+                timeStamp: 1612124921
+            },
+            {
+                user: '2',
+                content: 'Thanks!!!',
+                profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+                timeStamp: 1612173600
             },
         ]
-    },
-    {
-        id: 2,
-        imgUrl:
-            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625342/Chat%20list/a4f3d829d74a2182d2b810a66532ec7e7026719b_urp7wb.png',
-        chatGroup: 'Biology course',
-        members: 126,
-        messages: []
     },
     {
         id: 3,
@@ -173,15 +237,39 @@ export const chatList = [
             'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625342/Chat%20list/4e2b1988bac6a27993c24965e1c56c64ebd585dd_j6dinl.png',
         chatGroup: 'Development Talks',
         members: 54,
-        messages: []
+        messages: [{
+            user: '2',
+            content: 'Thanks!!!',
+            profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+            timeStamp: 1610195609
+        },]
     },
+    {
+        id: 2,
+        imgUrl:
+            'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625342/Chat%20list/a4f3d829d74a2182d2b810a66532ec7e7026719b_urp7wb.png',
+        chatGroup: 'Biology course',
+        members: 126,
+        messages: [{
+            user: '2',
+            content: 'Thanks!!!',
+            profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+            timeStamp: 1611295609
+        },]
+    },
+    
     {
         id: 4,
         imgUrl:
             'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625342/Chat%20list/4343eb44dc10bcaaffeb3ca0af5722e0cdf02b25_sllw7t.png',
         chatGroup: 'Preparing Tests and Exams',
         members: 465,
-        messages: []
+        messages: [{
+            user: '2',
+            content: 'Thanks!!!',
+            profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+            timeStamp: 1600195609
+        },]
     },
     {
         id: 5,
@@ -189,7 +277,12 @@ export const chatList = [
             'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611625343/Chat%20list/193deaef3e3000f66363095b961a3c0f21610445_mmreha.png',
         chatGroup: 'The Student Room',
         members: 62,
-        messages: []
+        messages: [{
+            user: '2',
+            content: 'Thanks!!!',
+            profileImg: 'https://res.cloudinary.com/dsy6pzcbh/image/upload/v1611739133/rrb7ze0jyo9b8ul0aslt.jpg',
+            timeStamp: 1200195609
+        },]
     },
     {
         id: 6,

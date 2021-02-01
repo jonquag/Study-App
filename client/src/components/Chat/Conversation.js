@@ -1,6 +1,8 @@
 import React from 'react';
 import {
+    Box,
     Grid,
+    Container,
     List,
     ListItem,
 } from '@material-ui/core';
@@ -31,6 +33,21 @@ const useStyles = makeStyles(theme => ({
             background: '#ccc',
         },
     },
+    anchored: {
+        position: 'absolute',
+        bottom: 0,
+        height: 'calc(100vh - 343px)',
+        overflowY: 'auto',
+        backgroundColor: theme.palette.common.white,
+    },
+    left_msg: {
+        display: 'flex',
+        justifyContent: 'flex-start'
+    },
+    right_msg: {
+        display: 'flex',
+        justifyContent: 'flex-end'
+    }
 }));
 
 const Conversation = ({messages}) => {
@@ -39,15 +56,22 @@ const Conversation = ({messages}) => {
     const { user } = profile;
 
     return (
-        <List className={classes.list_container}>
-            {
-                messages.map(message => (
-                    <ListItem>
-                        <Message msg={message} isReceived={message.user !== user._id}/>
-                    </ListItem>
-                ))
-            }
-        </List>
+        <Grid className={classes.list_container}>
+            <Container>
+                <List>
+                    {
+                        messages.map(message => {
+                            const isReceived = message.user !== user._id;
+                            return (
+                                <ListItem className={isReceived ? classes.left_msg : classes.right_msg}>
+                                    <Message msg={message} isReceived={isReceived} />
+                                </ListItem>
+                            );
+                        })
+                    }
+                </List>
+            </Container>
+        </Grid>
     )
 };
 

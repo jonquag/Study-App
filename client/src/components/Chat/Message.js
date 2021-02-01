@@ -6,12 +6,11 @@ import {
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { msToTimeAgo } from '../../utils/convertTimeStamps';
 
 const useStyles = makeStyles(theme => ({
     container: {
-        display: 'flex',
-        justifyContent: 'center',
-        maxWidth: 400
+        padding: theme.spacing(1)
     },
     received_container: {
         background: theme.palette.primary.gradient,
@@ -33,7 +32,8 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         width: 'auto',
-        maxWidth: 300,
+        maxWidth: 500,
+        justifySelf: 'flex-end'
     },
     contentText: {
         alignItems: 'center',
@@ -41,12 +41,20 @@ const useStyles = makeStyles(theme => ({
     },
     avatar: {
         width: 60,
-        height: 60
+        height: 60,
+        marginRight: theme.spacing(2)
     },
-    timestamp: {
+    left_timestamp: {
         fontSize: 12,
         opacity: 0.29,
-        padding: 5
+        paddingTop: 5,
+        alignSelf: 'flex-start'
+    },
+    right_timestamp: {
+        fontSize: 12,
+        opacity: 0.29,
+        paddingTop: 5,
+        alignSelf: 'flex-end'
     }
 }));
 
@@ -54,18 +62,18 @@ const Message = ({msg, isReceived}) => {
     const classes = useStyles();
 
     return (
-        <Box display='flex' flexDirection='row' className={classes.message_container}>
+        <Box display='flex' flexDirection='row' className={classes.container}>
             {isReceived && <Avatar className={classes.avatar} src={msg.profileImg}/>}
-            <Container>
+            <Box display='flex' flexDirection='column'>
                 <Container className={isReceived ? classes.received_container : classes.sent_container}>
                     <Typography className={classes.contentText} variant='h6' color={isReceived ? 'primary' : 'secondary'}>
                         {msg.content}
                     </Typography>
                 </Container>
-                <Typography className={classes.timestamp}>
-                    {msg.timeStamp}
+                <Typography className={isReceived ? classes.left_timestamp : classes.right_timestamp}>
+                    {msToTimeAgo(msg.timeStamp)}
                 </Typography>
-            </Container>
+            </Box>
         </Box>
     );
 };

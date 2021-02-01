@@ -19,7 +19,7 @@ const GroupSchema = new Schema({
             ref: 'User',
         },
     ],
-    course: { type: Schema.Types.ObjectId, ref: 'User' },
+    course: { type: Schema.Types.ObjectId, ref: 'Course' },
     forum: {
         type: Schema.Types.ObjectId,
         ref: 'Forum',

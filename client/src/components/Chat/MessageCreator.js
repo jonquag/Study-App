@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     Grid,
+    Container,
     IconButton,
     TextField
 } from '@material-ui/core';
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     },
     textContainer: {
         width: '60%',
-        maxHeight: 120,
+        maxHeight: 100,
         overflowY: 'auto',
         '&::-webkit-scrollbar': {
             width: '0.6rem',
@@ -46,12 +47,14 @@ const useStyles = makeStyles(theme => ({
     },
     text: {
         height: 100,
+        padding: 10
     },
     iconAdornments: {
         fontSize: theme.spacing(3)
     },
     sendButton: {
-        margin: theme.spacing(3)
+        margin: theme.spacing(3),
+        width: 110
     },
 }));
 
@@ -59,7 +62,7 @@ const MessageCreator = () => {
     const classes = useStyles();
 
     return (
-        <Grid className={classes.container}>
+        <Container className={classes.container}>
             <Box className={classes.textContainer}>
             <TextField
                 fullWidth={true}
@@ -68,7 +71,7 @@ const MessageCreator = () => {
                 disableUnderline={true}
                 InputProps={{
                     classes: {input: classes.text},
-                    disableUnderline: true
+                    disableUnderline: true,
                 }}
             />
             </Box>
@@ -82,14 +85,14 @@ const MessageCreator = () => {
                         className={classes.iconAdornments}
                     />
                 </IconButton>
-                <IconButton>
+                <IconButton >
                     <InsertDriveFileOutlinedIcon
                         className={classes.iconAdornments}
                     />
                 </IconButton>
-                <Button className={classes.sendButton} variant='outlined'>Send</Button>
+                <Button className={classes.sendButton} variant='outlined' color='secondary'>Send</Button>
             </Box>
-        </Grid>
+        </Container>
     );
 };
 

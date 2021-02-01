@@ -28,16 +28,27 @@ const useStyles = makeStyles(theme => ({
 const Chat = () => {
     const classes = useStyles();
     const [chatIndex, setChatIndex] = useState(0);
+    const [cList, setCList ] = useState(chatList);
+
+    React.useEffect(() => {
+        const sorted = chatList.sort((a, b) => {
+            const k1 = a.messages.length === 0 ? 0 : a.messages[a.messages.length - 1].timeStamp
+            const k2 = b.messages.length === 0 ? 0 : b.messages[b.messages.length - 1].timeStamp
+            return k2 - k1
+        })
+        console.log(chatList)
+        setCList([...sorted]);
+    }, []); 
 
     return (
         <Grid container className={classes.container}>
             <Sidebar>
-                <ChatSidePanel chatList={chatList} chatIndex={chatIndex} setChatIndex={setChatIndex} />
+                <ChatSidePanel chatList={cList} chatIndex={chatIndex} setChatIndex={setChatIndex} />
             </Sidebar>
             <Grid item container sm={12} md={9} className={classes.contentContainer}>
-                <ConversationHeader chat={chatList[chatIndex]}/>
+                <ConversationHeader chat={cList[chatIndex]}/>
                 <Divider className={classes.divider}/>
-                <Conversation messages={chatList[chatIndex].messages}/>
+                <Conversation messages={cList[chatIndex].messages}/>
                 <Divider className={classes.divider}/>
                 <MessageCreator />
             </Grid>

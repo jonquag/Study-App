@@ -91,7 +91,7 @@ const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
         <Grid container className={classes.list_container}>
             <Grid item className={classes.chat_head}>
                 <Typography>All Chats</Typography>
-                <Badge badgeContent={12} className={classes.badge} />
+                <Badge badgeContent={chatList.length} className={classes.badge} />
             </Grid>
             <Divider className={classes.divider} />
             {chatList.map((cg, index)=> {

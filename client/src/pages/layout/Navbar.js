@@ -26,7 +26,7 @@ const Navbar = () => {
     const classes = useStyles();
     const history = useHistory();
   
-    const { profile, dispatch } = useGlobalContext();
+    const { profile, userGroups, dispatch } = useGlobalContext();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -100,7 +100,7 @@ const Navbar = () => {
                                 >
                                     Chats
                                 </NavLink>
-                                <Badge badgeContent={12} className={classes.badge} />
+                                <Badge badgeContent={userGroups.groups.length} className={classes.badge} />
                             </ListItem>
                         </List>
                     </div>
