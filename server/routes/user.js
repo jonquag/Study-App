@@ -248,28 +248,32 @@ router.post('/groups', verifyAuth, async function (req, res, next) {
 
     try {
 
-       
-            const instance = (await Group.create([{
-                name: groupName,
-                members: [userId],
-                image: imageUrl,
-                course: courseId, 
-                admin: userId
-            }], {session}))[0];
+        const instance = (await Group.create([{
+            name: groupName,
+            members: [userId],
+            image: imageUrl,
+            course: courseId, 
+            admin: userId
+        }], {session}))[0];
 
-            const userUpdate = await User.findByIdAndUpdate(userId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
-            .session(session)
+        const userUpdate = await User.findByIdAndUpdate(userId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
+        .session(session)
+        .catch((err) => {
+            throw new GeneralError('Error updating User Groups');
+        });
 
-            const courseUpdate = await Course.findByIdAndUpdate(courseId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
-            .session(session)
+        const courseUpdate = await Course.findByIdAndUpdate(courseId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
+        .session(session)
+        .catch((err) => {
+            throw new GeneralError('Error updating Course Groups');
+        });
 
-            await session.commitTransaction();
-            session.endSession();
-            res.status(201);
-            res.send({
-                data: instance
-            });
-
+        await session.commitTransaction();
+        session.endSession();
+        res.status(201);
+        res.send({
+            data: instance
+        });
 
     } catch(err) {
         console.log(err)
@@ -277,7 +281,6 @@ router.post('/groups', verifyAuth, async function (req, res, next) {
         session.endSession();
         next(err);
     }
-
 
 });
 
