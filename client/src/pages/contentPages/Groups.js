@@ -11,14 +11,13 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { groups } from '../../data/mockData.js';
 import GroupCard from '../../components/Group/GroupCard';
 import defaultImage from '../../images/upload_placeholder.png';
 import { useSnackbar } from 'notistack';
-
 import { useGlobalContext } from '../../context/studyappContext';
+import * as actions from '../../context/actions';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     cardGrid: {
       paddingTop: theme.spacing(8),
       paddingBottom: theme.spacing(8),
@@ -75,213 +74,268 @@ const useStyles = makeStyles(theme => ({
     };
   }
 
+
+
 const Groups = () => {
+    const classes = useStyles();
+    const {userGroups, userCourse, profile, dispatch} = useGlobalContext();
 
-  const classes = useStyles();
-  const { userCourse, profile } = useGlobalContext();
-  const { enqueueSnackbar } = useSnackbar();
+    const {groups, courseGroups} = userGroups;
+    const [suggestedGroups, setSuggestedGroups] = React.useState([]);
 
-  const [modalStyle] = React.useState(getModalStyle);
-  const [openModal, setOpen] = useState(false);
-  const [courses, setCourses] = useState([]);
-  const [groupName, setGroupName] = useState('');
-  const [courseId, setCourseId] = useState('');
-  const [userProfile, setProfile] = useState([])
-  const [groupError, setGroupErrors] = useState('');
-  const [groupNames, setGroupNames] = useState([]);
+    //my changes
+    const { enqueueSnackbar } = useSnackbar();
+    const [modalStyle] = React.useState(getModalStyle);
+    const [openModal, setOpen] = useState(false);
+    const [groupError, setGroupErrors] = useState('');
+    const [uploading, setUploading] = useState(false);
+    const [groupPicture, setGroupPicture] = useState('');
+    const [formValid, setFormValid] = useState(false);
+    const [groupName, setGroupName] = useState('');
+    const [groupNames, setGroupNames] = useState([]);
+    const [courseId, setCourseId] = useState('');
+    //end
 
-  const [uploading, setUploading] = useState(false);
-  const [groupPicture, setGroupPicture] = useState('');
-  const [formValid, setFormValid] = useState(false)
+    //my dragzone changes
 
-  const onDrop = useCallback(async (droppedFiles) => {
-    if (droppedFiles.length) {
-        setUploading(true);
+    const onDrop = useCallback(async (droppedFiles) => {
+      if (droppedFiles.length) {
+          setUploading(true);
+  
+          const form = new FormData();
+          form.append('image', droppedFiles[0]);
+          const res = await axios.post('/upload/single', form)
+            .catch((err) => console.log(err));
+          if (res && res.data) {
+            setGroupPicture(res.data.imageUrl)
+            setUploading(false)
+          }
+      }
+    }, []);
+  
+    const {
+      getRootProps,
+      isDragActive,
+      isDragAccept,
+      isDragReject,
+    } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
+  
+    const style = useMemo(() => ({
+      ...baseStyle,
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {})
+    }), [
+      isDragActive,
+      isDragReject,
+      isDragAccept
+    ]);
 
-        const form = new FormData();
-        form.append('image', droppedFiles[0]);
-        const res = await axios.post('/upload/single', form)
-          .catch((err) => console.log(err));
-        if (res && res.data) {
-          setGroupPicture(res.data.imageUrl)
-          setUploading(false)
-        }
-    }
-  }, []);
-
-  const {
-    getRootProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({onDrop, maxFiles: 1, accept: 'image/*'});
-
-  const style = useMemo(() => ({
-    ...baseStyle,
-    ...(isDragActive ? activeStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
-  }), [
-    isDragActive,
-    isDragReject,
-    isDragAccept
-  ]);
-
-  const handleOpen = () => {
-    setOpen(true);
-    setGroupPicture('');
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setGroupPicture('');
-    setGroupName('');
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleOpen = () => {
+      setOpen(true);
+      setGroupPicture('');
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+      setGroupPicture('');
+      setGroupName('');
+      setGroupErrors('');
+    };
     
-    if(formValid) {
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      if(formValid) {
+  
+        //const data = { groupName: groupName, imageUrl: groupPicture };
+        console.log('course ID => ' + courseId)
+        const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
+        
+        const response = await axios.post('/user/groups', data);
+        console.log("resp: " + response.data.data)
+  
+        if(response.data) {
 
-      const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
-      const response = await axios.post('/user/groups', data);
+          //courseGroups.push(response.data.data)
+          groups.push(response.data.data)
+          actions.fetchUserGroups(userGroups)(dispatch);
 
-      if(response.data) {
-        enqueueSnackbar('Group Created Successfully.', {
-          variant: 'success',
-          autoHideDuration: '5000',
-        });
-        setOpen(false)
+          //const currGroups = [...groups, response.data.data];
+          //const newUserGroups = {courseGroups: [...courseGroups, response.data.data], groups: currGroups};
+       // dispatch({type: 'updateUserGroups', payload: groups});
+
+          enqueueSnackbar('Group Created Successfully.', {
+            variant: 'success',
+            autoHideDuration: '5000',
+          });
+          setOpen(false)
+        } else {
+          enqueueSnackbar('Error Creating Group.', {
+            variant: 'Error',
+            autoHideDuration: '5000',
+          });
+        }
+        
       } else {
         enqueueSnackbar('Error Creating Group.', {
-          variant: 'Error',
-          autoHideDuration: '5000',
+            variant: 'Error',
+            autoHideDuration: '5000',
         });
       }
-      
-    } else {
-      enqueueSnackbar('Error Creating Group.', {
-          variant: 'Error',
-          autoHideDuration: '5000',
-      });
-    }
-
-  };
-
-  const handleOnChange = async (e) => {
-    checkGroupExists(e.target.value.toLowerCase())
+  
+    };
     
+    const handleOnChange = async (e) => {
+      checkGroupExists(e.target.value.toLowerCase())
+      
+    }
+  
+  const checkGroupExists = async (name) => {
+    try {
+      
+      const allGroupNames = [...groups, ...courseGroups].map(group => {
+        return group.name.toLowerCase();
+      })
+
+      setGroupName(name)
+  
+      if(allGroupNames.includes(name) !== true) {
+        setGroupErrors('');
+        setFormValid(true);
+        return false;
+      } else {
+        setGroupErrors("A group with this name already exists!");
+        setFormValid(false);
+        return true;
+      }
+  
+    } catch (err) {
+        console.log(err);
+    }
+  };
+  
+  const getUserGroups = async () => {
+    //const res = await axios.get('/user/groups')
+    const groupNames = []
+    userGroups.courseGroups.forEach(group => {
+        groupNames.push(group.name.toLowerCase())
+    })
+    setGroupNames(groupNames)
   }
 
-const checkGroupExists = async (name) => {
-  try {
 
-    setGroupName(name)
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+    <h2>Create a new group</h2>
+    <p>
+      Add group name and select your course.
+    </p>
+    <form className={classes.form} onSubmit={handleSubmit}>
+    <FormHelperText>{groupError ? <span style={{color: "#fc2525"}}>{groupError}</span> : 'Please enter a group name'}</FormHelperText>
+    <TextField
+      name="group_name"
+      fullWidth={true}
+      variant="outlined"
+      onChange={handleOnChange}
+    >
+    </TextField>
 
-    if(groupNames.includes(name) !== true) {
-      setGroupErrors('');
-      setFormValid(true);
-      return false;
-    } else {
-      setGroupErrors("A group with this name already exists!");
-      setFormValid(false);
-      return true;
+    <Box className={classes.groupImageContainer}>
+      <FormHelperText>Drag and Drop Group Picture </FormHelperText>
+        <Tooltip
+          title='Drag and drop profile picture'
+          arrow placement='right'
+        >
+        <Box {...getRootProps({style})}>
+          <img
+            alt='Profile Pic'
+            src={groupPicture.length ? groupPicture : defaultImage}
+            className={uploading ? classes.uploading : classes.large}
+          />
+        </Box>
+        </Tooltip>
+    </Box>
+
+
+    <FormHelperText>Course</FormHelperText>
+    <Select
+    name="course"
+    variant="outlined"
+    fullWidth={true}
+    defaultValue=""
+    >
+    { 
+    userCourse.userCourses.map(course => {
+      return (
+        <MenuItem
+          key={course._id}
+          value={course._id}
+          onClick={() => setCourseId(course._id)}
+          >
+          {course.name}
+        </MenuItem>
+      );
+    })}
+    </Select>
+    <Button
+      type="submit"
+      className={classes.button}
+      style={{marginTop: "20px"}}
+    >
+      Create New Group
+    </Button>                    
+    </form>     
+          
+        
+  </div>
+  );
+
+
+
+    //end
+
+    //filter out courses which the user has joined as suggestions
+    React.useEffect(() => {
+      const suggested = courseGroups.filter((group) => {
+        return !groups.some((joinedGroup) => {
+          return joinedGroup._id === group._id;
+        });
+      });
+      setSuggestedGroups(suggested)
+    }, [courseGroups, userGroups, groups]);
+
+    const handleJoinGroup = async (id) => {
+      try {
+        const res = await axios.post(`/user/groups/${id}`, {groupId: id});
+        const currGroups = [...groups, res.data];
+        const newUserGroups = {courseGroups: [...courseGroups], groups: currGroups};
+        dispatch({type: 'updateUserGroups', payload: newUserGroups});
+      } catch (err) {
+        console.log(err);
+      }
     }
 
-  } catch (err) {
-      console.log(err);
-  }
-};
-
-const getUserGroups = async () => {
-  const res = await axios.get('/user/groups')
-  const groupNames = []
-  res.data.forEach(course => {
-    course.groups.forEach(group => {
-      groupNames.push(group.name.toLowerCase())
-    })
- 
-  })
-  setGroupNames(groupNames)
-}
-
-  useEffect(() => {
-    setCourses(userCourse.userCourses);
-    setProfile(profile);
-    getUserGroups()
-    setUploading(false)
-  }, []);
-
-    const body = (
-      <div style={modalStyle} className={classes.paper}>
-      <h2>Create a new group</h2>
-      <p>
-        Add group name and select your course.
-      </p>
-      <form className={classes.form} onSubmit={handleSubmit}>
-      <FormHelperText>{groupError ? <span style={{color: "#fc2525"}}>{groupError}</span> : 'Please enter a group name'}</FormHelperText>
-      <TextField
-        name="group_name"
-        fullWidth={true}
-        variant="outlined"
-        onChange={handleOnChange}
-      >
-      </TextField>
-
-      <Box className={classes.groupImageContainer}>
-        <FormHelperText>Drag and Drop Group Picture </FormHelperText>
-          <Tooltip
-            title='Drag and drop profile picture'
-            arrow placement='right'
-          >
-          <Box {...getRootProps({style})}>
-            <img
-              alt='Profile Pic'
-              src={groupPicture.length ? groupPicture : defaultImage}
-              className={uploading ? classes.uploading : classes.large}
-            />
-          </Box>
-          </Tooltip>
-      </Box>
-
-
-      <FormHelperText>Course</FormHelperText>
-      <Select
-      name="course"
-      variant="outlined"
-      fullWidth={true}
-      defaultValue=""
-      >
-      { 
-      courses.map(course => {
-        return (
-          <MenuItem
-            key={course._id}
-            value={course._id}
-            onClick={() => setCourseId(course._id)}
-            >
-            {course.name}
-          </MenuItem>
-        );
-      })}
-      </Select>
-      <Button
-        type="submit"
-        className={classes.button}
-        style={{marginTop: "20px"}}
-      >
-        Create New Group
-      </Button>                    
-      </form>     
-            
-          
-    </div>
-    );
+    const handleLeaveGroup = async (id) => {
+      try {
+        const res = await axios.delete(`/user/groups/${id}`, {groupId: id});
+        const [currentGroups, updatedCourseGroups] = [[...groups], [...userGroups.courseGroups]];
+        const myGroups = currentGroups.filter((group) => group._id !== res.data._id);
+        const index = updatedCourseGroups.findIndex(group => group._id === res.data._id);
+        updatedCourseGroups[index] = res.data;
+        const newUserGroups = {courseGroups: updatedCourseGroups, groups: myGroups}
+        dispatch({type: 'updateUserGroups', payload: newUserGroups});
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
     return (
         <Grid>
-       
-        <Grid container>
+
+          {/* start of my new group */}
+
+          <Grid container>
           <Grid 
           item
           direction="row"
@@ -294,12 +348,7 @@ const getUserGroups = async () => {
           direction="row"
           container
           md={4}>
-            <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
-                Sugggested For You.
-            </Typography>
-            <Typography variant="h6" color="textSecondary" style={{ paddingTop: "20px"}}>
-                Groups you might be interested in!
-            </Typography>
+           
           </Grid>
           <Grid 
           item
@@ -320,15 +369,81 @@ const getUserGroups = async () => {
               {body}
           </Modal>
           </Grid>       
-        </Grid>
 
-            <Container className={classes.cardGrid} maxWidth="md">
-                <Grid container spacing={4}>
-                    {groups.map(card => (
-                        <GroupCard key={card.id} data={card} />
-                    ))}
+        </Grid>
+        
+        {/* end of my new group */}
+
+
+
+
+          {groups.length &&
+            <>
+              <Grid container >
+                <Grid 
+                item
+                justify="center"
+                direction="row"
+                container
+                sm={12} >
+                    <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
+                      Your Groups
+                    </Typography>
                 </Grid>
-            </Container>
+              </Grid>
+              <Container className={classes.cardGrid} maxWidth="md">
+                <Grid container spacing={4}>
+                  {groups.map((card) => (
+                    <GroupCard 
+                    key={card._id}
+                    actionText="Leave Group"
+                    data={card} 
+                    handleCardPress={handleLeaveGroup}
+                    />
+                  ))}
+                </Grid>
+              </Container>
+              </>
+          }
+          {suggestedGroups.length &&
+            <>
+              <Grid container >
+                  <Grid 
+                  item
+                  justify="center"
+                  direction="row"
+                  container
+                  sm={12} >
+                      <Typography variant="h1" color="textPrimary" style={{ paddingTop: "60px"}}>
+                          Sugggested For You.
+                      </Typography>
+                  </Grid>
+                  <Grid 
+                  item
+                  justify="center"
+                  direction="row"
+                  container
+                  sm={12}>
+                      <Typography variant="h6" color="textSecondary" style={{ paddingTop: "20px"}}>
+                          Groups you might be interested in!
+                      </Typography>
+                  </Grid>
+              </Grid>
+
+              <Container className={classes.cardGrid} maxWidth="md">
+                <Grid container spacing={4}>
+                  {suggestedGroups.map((card) => (
+                    <GroupCard 
+                    key={card._id}
+                    actionText="Join Group"
+                    data={card} 
+                    handleCardPress={handleJoinGroup}
+                    />
+                  ))}
+                </Grid>
+              </Container>
+            </>
+          }
         </Grid>
     );
 };

@@ -6,6 +6,7 @@ const { NotFound } = require('../utils/errors');
 const Profile = require('../models/profile');
 const User = require('../models/user');
 const updateProfile = require('../controllers/profile');
+require('../models/Group');
 
 // Returns current user profile based on ID
 router.get('/', auth, async (req, res, next) => {
@@ -21,6 +22,10 @@ router.get('/', auth, async (req, res, next) => {
             .populate({
                 path: 'courses',
                 model: 'Course',
+            })
+            .populate({
+                path: 'groups',
+                model: 'Group',
             })
             .populate({
                 path: 'university',
