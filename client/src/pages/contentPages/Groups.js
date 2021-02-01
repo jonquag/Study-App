@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
     
   }));
 
-
   function getModalStyle() {
     const top = 50;
     const left = 50;
@@ -78,12 +77,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Groups = () => {
     const classes = useStyles();
-    const {userGroups, userCourse, profile, dispatch} = useGlobalContext();
+    const {userGroups, userCourse, dispatch} = useGlobalContext();
 
     const {groups, courseGroups} = userGroups;
     const [suggestedGroups, setSuggestedGroups] = React.useState([]);
 
-    //my changes
     const { enqueueSnackbar } = useSnackbar();
     const [modalStyle] = React.useState(getModalStyle);
     const [openModal, setOpen] = useState(false);
@@ -92,11 +90,8 @@ const Groups = () => {
     const [groupPicture, setGroupPicture] = useState('');
     const [formValid, setFormValid] = useState(false);
     const [groupName, setGroupName] = useState('');
-    const [groupNames, setGroupNames] = useState([]);
     const [courseId, setCourseId] = useState('');
-    //end
 
-    //my dragzone changes
 
     const onDrop = useCallback(async (droppedFiles) => {
       if (droppedFiles.length) {
@@ -148,12 +143,9 @@ const Groups = () => {
       
       if(formValid) {
   
- 
-        console.log('course ID => ' + courseId)
         const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
         
         const response = await axios.post('/user/groups', data);
-        console.log("resp: " + response.data.data)
   
         if(response.data) {
 
@@ -209,16 +201,6 @@ const Groups = () => {
         console.log(err);
     }
   };
-  
-  const getUserGroups = async () => {
-    //const res = await axios.get('/user/groups')
-    const groupNames = []
-    userGroups.courseGroups.forEach(group => {
-        groupNames.push(group.name.toLowerCase())
-    })
-    setGroupNames(groupNames)
-  }
-
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -252,7 +234,6 @@ const Groups = () => {
         </Tooltip>
     </Box>
 
-
     <FormHelperText>Course</FormHelperText>
     <Select
     name="course"
@@ -280,15 +261,9 @@ const Groups = () => {
     >
       Create New Group
     </Button>                    
-    </form>     
-          
-        
+    </form>        
   </div>
   );
-
-
-
-    //end
 
     //filter out courses which the user has joined as suggestions
     React.useEffect(() => {
@@ -327,9 +302,6 @@ const Groups = () => {
 
     return (
         <Grid>
-
-          {/* start of my new group */}
-
           <Grid container>
           <Grid 
           item
@@ -364,13 +336,7 @@ const Groups = () => {
               {body}
           </Modal>
           </Grid>       
-
         </Grid>
-        
-        {/* end of my new group */}
-
-
-
 
           {groups.length &&
             <>
