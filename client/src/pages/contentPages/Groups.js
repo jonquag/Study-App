@@ -148,7 +148,7 @@ const Groups = () => {
       
       if(formValid) {
   
-        //const data = { groupName: groupName, imageUrl: groupPicture };
+ 
         console.log('course ID => ' + courseId)
         const data = { groupName: groupName, imageUrl: groupPicture , courseId: courseId};
         
@@ -157,13 +157,8 @@ const Groups = () => {
   
         if(response.data) {
 
-          //courseGroups.push(response.data.data)
           groups.push(response.data.data)
           actions.fetchUserGroups(userGroups)(dispatch);
-
-          //const currGroups = [...groups, response.data.data];
-          //const newUserGroups = {courseGroups: [...courseGroups, response.data.data], groups: currGroups};
-       // dispatch({type: 'updateUserGroups', payload: groups});
 
           enqueueSnackbar('Group Created Successfully.', {
             variant: 'success',
