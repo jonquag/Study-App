@@ -6,12 +6,14 @@ const PostSchema = new Schema({
     // user creating this specific post
     user: {
         type: Schema.Types.ObjectId,
+        ref: 'User',
     },
     name: {
         type: String,
     },
     postAvatar: {
         type: String,
+        default: '',
     },
     title: {
         type: String,

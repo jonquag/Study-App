@@ -3,7 +3,11 @@ const { Schema } = mongoose;
 
 const ForumSchema = new Schema({
     // name of the forum
-    name: { type: String, required: true },
+    name: {
+        type: String,
+        required: true,
+        ref: 'User',
+    },
 
     // user creating the forum
     user: {
