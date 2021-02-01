@@ -14,7 +14,9 @@ exports.creatForumPost = async (req, res, next) => {
         });
 
     const forumId = req.params.forumId;
+
     const { title, text, userId, postAvatar } = req.body;
+
 
     try {
         const forum = await Forum.findById(forumId);
@@ -44,6 +46,7 @@ exports.creatForumPost = async (req, res, next) => {
         next(error);
     }
 };
+
 
 exports.deletePost = async (req, res, next) => {
     const { forumId, postId } = req.params;

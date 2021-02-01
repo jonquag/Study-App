@@ -1,16 +1,19 @@
-import {
-    Grid,
-    Typography,
-    Card,
-    CardContent,
-    CardMedia,
-    CardActions,
-    Button,
+import React from 'react';
+import { 
+  Grid, 
+  Typography, 
+  Card, 
+  CardContent, 
+  CardMedia, 
+  CardActions, 
+  Button 
 } from '@material-ui/core';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import groupPicture from '../../images/study_group.png';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
+
     card: {
         height: '100%',
         display: 'flex',
@@ -43,33 +46,41 @@ const formatGroupCount = num => {
 
 const GroupCard = props => {
     const classes = useStyles();
+    const [isUpdating, setIsUpdating] = React.useState(false);
 
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.cardMedia}
-                    image={props.data.image}
+                    image={props.data.image || groupPicture}
                     title={props.data.name}
                 />
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h6" style={{ fontWeight: 600 }}>
-                        {props.data.title}
+                      {props.data.name}
                     </Typography>
                     <Grid container direction="row" style={{ paddingTop: '10px' }}>
                         <PeopleAltOutlinedIcon color="disabled" fontSize="small" />
-                        <Typography
-                            variant="body1"
-                            color="textSecondary"
-                            style={{ paddingLeft: '5px' }}
+                        <Typography 
+                            variant="body1" 
+                            color="textSecondary" 
+                            style={{ paddingLeft: "5px"}} 
                         >
-                            {formatGroupCount(props.data.members)} members
+                            {formatGroupCount(props.data.members.length)} members
                         </Typography>
                     </Grid>
-                </CardContent>
-                <CardActions>
-                    <Button className={classes.button} color="primary">
-                        Join Group
+                  </CardContent>
+                  <CardActions onClick={async () => {
+                    setIsUpdating(true);
+                    await props.handleCardPress(props.data._id);
+                  }}>
+                    <Button 
+                        disabled={isUpdating} 
+                        className={classes.button} 
+                        color='primary'
+                    >
+                      {props.actionText}
                     </Button>
                 </CardActions>
             </Card>

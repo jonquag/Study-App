@@ -6,16 +6,25 @@ const GroupSchema = new Schema({
         type: String,
         required: true,
     },
-    admin: {type: Schema.Types.ObjectId, ref: 'User'},
-    moderators: [{
+    admin: { type: Schema.Types.ObjectId, ref: 'User' },
+    moderators: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
+    members: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
+    course: { type: Schema.Types.ObjectId, ref: 'User' },
+    forum: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-    }],
-    members: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'User'
-    }],
-    course: {type: Schema.Types.ObjectId, ref: 'User'},
+        ref: 'Forum',
+    },    
+    image: {type: String},
 });
 
 module.exports = mongoose.model('Group', GroupSchema);
