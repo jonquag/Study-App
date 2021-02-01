@@ -5,9 +5,8 @@ import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
 
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import ForumModal from './ForumModal';
+
+import ForumModal2 from './ForumModal2';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -73,20 +72,12 @@ const ForumContent = () => {
                         Add Post
                     </Button>
                     <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        className={classes.modal}
                         open={open}
                         onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
+                        aria-labelledby="simple-modal-forum"
+                        aria-describedby="simple-modal-to-open-forum"
                     >
-                        <Fade in={open}>
-                            <ForumModal />
-                        </Fade>
+                        <ForumModal2 handleClose={handleClose} />
                     </Modal>
                 </Grid>
             </Grid>

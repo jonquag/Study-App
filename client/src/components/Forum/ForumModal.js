@@ -19,12 +19,6 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
     input: {
         width: 200,
     },
@@ -40,7 +34,7 @@ const handleSubmit = () => {
     console.log('submitted');
 };
 
-const ForumModal = () => {
+const ForumModal = props => {
     const classes = useStyles();
     return (
         <Grid
@@ -54,7 +48,7 @@ const ForumModal = () => {
         >
             <Grid item m={8}>
                 <div className={classes.paper}>
-                    <Button>{/* <CloseIcon fontSize="medium" /> */}</Button>
+                    <Button onClick={props.handleClose}>X</Button>
                     <h3 variant="h5" id="transition-modal-title" align="center">
                         {' '}
                         Add Forum Post
