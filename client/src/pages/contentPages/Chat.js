@@ -21,12 +21,14 @@ const Chat = () => {
 
     React.useEffect(() => {
         const sorted = chatList.sort((a, b) => {
-            const aMostRecent = a.messages.length === 0 ? 0 : a.messages[a.messages.length - 1].timeStamp;
-            const bMostRecent = b.messages.length === 0 ? 0 : b.messages[b.messages.length - 1].timeStamp;
+            const aMostRecent = 
+                a.messages.length === 0 ? 0 : a.messages[a.messages.length - 1].timeStamp;
+            const bMostRecent = 
+                b.messages.length === 0 ? 0 : b.messages[b.messages.length - 1].timeStamp;
             return bMostRecent - aMostRecent;
         })
         setCList([...sorted]);
-    }, []); 
+    }, []);
 
     return (
         <Grid container className={classes.container}>

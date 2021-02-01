@@ -16,9 +16,6 @@ import MessageCreator from './MessageCreator';
 
 
 const useStyles = makeStyles(theme => ({
-    container: {
-        height: 'calc(100vh - 100px)',
-    },
     contentContainer: {
         backgroundColor: theme.palette.common.white,
         display: 'block',
@@ -67,7 +64,9 @@ export const ChatContent = ({chat}) => {
                 />
                 <Box flexGrow={1} flexDirection='column'>
                     <Typography variant='h5'>{chat.chatGroup}</Typography>
-                    <Typography className={classes.members} variant='h7'>{chat.members + ' Members'}</Typography>
+                    <Typography className={classes.members} variant='h7'>
+                        {chat.members + ' Members'}
+                    </Typography>
                 </Box>
                 <IconButton item>
                     <MoreHorizIcon className={classes.dot_icon} />

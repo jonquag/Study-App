@@ -60,7 +60,13 @@ const Conversation = ({messages}) => {
                         messages.map(message => {
                             const isReceived = message.user !== user._id;
                             return (
-                                <ListItem className={isReceived ? classes.left_msg : classes.right_msg}>
+                                <ListItem 
+                                    className={
+                                        isReceived ? 
+                                        classes.left_msg : 
+                                        classes.right_msg
+                                    }
+                                >
                                     <Message msg={message} isReceived={isReceived} />
                                 </ListItem>
                             );

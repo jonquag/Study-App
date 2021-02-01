@@ -89,7 +89,13 @@ const MessageCreator = () => {
                         className={classes.iconAdornments}
                     />
                 </IconButton>
-                <Button className={classes.sendButton} variant='outlined' color='secondary'>Send</Button>
+                <Button 
+                    className={classes.sendButton} 
+                    variant='outlined' 
+                    color='secondary'
+                >
+                    Send
+                </Button>
             </Box>
         </Container>
     );

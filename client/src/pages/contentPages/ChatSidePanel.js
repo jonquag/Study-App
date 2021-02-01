@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-import { chatList } from '../../data/mockData';
 
 const useStyles = makeStyles(theme => ({
     list_container: {

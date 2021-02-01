@@ -62,15 +62,35 @@ const Message = ({msg, isReceived}) => {
     const classes = useStyles();
 
     return (
-        <Box display='flex' flexDirection='row' className={classes.container}>
+        <Box 
+            display='flex' 
+            flexDirection='row' 
+            className={classes.container}
+        >
             {isReceived && <Avatar className={classes.avatar} src={msg.profileImg}/>}
             <Box display='flex' flexDirection='column'>
-                <Container className={isReceived ? classes.received_container : classes.sent_container}>
-                    <Typography className={classes.contentText} variant='h6' color={isReceived ? 'primary' : 'secondary'}>
+                <Container 
+                    className={
+                        isReceived ? 
+                        classes.received_container : 
+                        classes.sent_container
+                    }
+                >
+                    <Typography 
+                        className={classes.contentText} 
+                        variant='h6' 
+                        color={isReceived ? 'primary' : 'secondary'}
+                    >
                         {msg.content}
                     </Typography>
                 </Container>
-                <Typography className={isReceived ? classes.left_timestamp : classes.right_timestamp}>
+                <Typography 
+                    className={
+                        isReceived ? 
+                        classes.left_timestamp : 
+                        classes.right_timestamp
+                    }
+                >
                     {msToTimeAgo(msg.timeStamp)}
                 </Typography>
             </Box>
