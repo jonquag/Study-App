@@ -158,7 +158,7 @@ const Groups = () => {
         if(response.data) {
 
           groups.push(response.data.data)
-          actions.fetchUserGroups(userGroups)(dispatch);
+          actions.fetchUserGroups(groups)(dispatch);
 
           enqueueSnackbar('Group Created Successfully.', {
             variant: 'success',
