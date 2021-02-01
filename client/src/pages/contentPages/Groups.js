@@ -173,12 +173,12 @@ const Groups = () => {
   
     };
     
-    const handleOnChange = async (e) => {
+    const handleOnChange = (e) => {
       checkGroupExists(e.target.value.toLowerCase())
       
     }
   
-  const checkGroupExists = async (name) => {
+  const checkGroupExists = (name) => {
     try {
       
       const allGroupNames = [...groups, ...courseGroups].map(group => {
