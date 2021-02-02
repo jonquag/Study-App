@@ -20,8 +20,8 @@ router.post(
 );
 
 // DELETE forum/post/:forumId/:postId
-// Removes a post from a forum and deletes the post from db.
-router.delete('/post/:forumId/:postId', auth, postController.deletePost);
+// Disables a post from being viewed in a forum.
+router.put('/post/:forumId/:postId', auth, postController.hidePost);
 
 // PUT forum/post/:postId
 // Edit a post using post id

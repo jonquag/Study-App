@@ -17,7 +17,6 @@ exports.creatForumPost = async (req, res, next) => {
 
     const { title, text, userId, postAvatar } = req.body;
 
-
     try {
         const forum = await Forum.findById(forumId);
         if (!forum) throw new NotFound('No forum found');
@@ -47,8 +46,7 @@ exports.creatForumPost = async (req, res, next) => {
     }
 };
 
-
-exports.deletePost = async (req, res, next) => {
+exports.hidePost = async (req, res, next) => {
     const { forumId, postId } = req.params;
 
     try {
@@ -65,15 +63,12 @@ exports.deletePost = async (req, res, next) => {
         if (post.user.toString() !== req.body.userId)
             throw new Unauthorized('Cannot delete post');
 
-        forum.posts = forum.posts.filter(fp => fp.toString() !== postId);
+        post.isDeleted = true;
 
-        const forumRes = await forum.save();
-        if (!forumRes) throw new GeneralError('Error saving forum');
+        const postRes = await post.save();
+        if (!postRes) throw new GeneralError('Error saving post');
 
-        const postRes = await post.remove();
-        if (!postRes) throw new GeneralError('Error deleting post');
-
-        res.status(200).json({ forum });
+        res.status(200).json({ post });
     } catch (err) {
         console.log(err.message);
         next(err);
