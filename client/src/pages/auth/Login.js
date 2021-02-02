@@ -25,7 +25,7 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().required('Required'),
 });
 
-const Login = (props) => {
+const Login = props => {
     const classes = useStyles();
     const { isAuth, dispatch } = useGlobalContext();
     const { enqueueSnackbar } = useSnackbar();
@@ -34,20 +34,18 @@ const Login = (props) => {
     let redirectPath = '/profile';
 
     //locState only exists if redirected from ProtectedRoute
-    if (locState && locState.from)
-        redirectPath = locState.from.pathname;
+    if (locState && locState.from) redirectPath = locState.from.pathname;
 
     if (isAuth) return <Redirect to={redirectPath} />;
 
     return (
         <div className={classes.root}>
-            <Grid container>
+            <Grid container className={classes.container}>
                 <Grid
                     item
                     container
                     md={6}
                     direction="column"
-                    justify="flex-start"
                     className={classes.formContainer}
                 >
                     <div className={classes.logoContainer}>

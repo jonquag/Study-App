@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { LinearProgress } from '@material-ui/core';
 import { useGlobalContext } from '../../context/studyappContext';
 import Navbar from '../layout/Navbar';
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -16,6 +17,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                             <Component {...props} />
                         </>
                     );
+                else if (isLoading) return <LinearProgress />;
                 else
                     return (
                         <Redirect
