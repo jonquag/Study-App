@@ -5,7 +5,6 @@ export const register = values => async dispatch => {
         const res = await axios.post('auth/register', values).catch(err => {
             throw err.response;
         });
-
         if (res.status === 201) {
             dispatch({ type: 'REGISTER_SUCCESS' });
             return res;
@@ -66,6 +65,7 @@ export const fetchProfile = () => async dispatch => {
                 },
             ],
         });
+        return user.groups;
     } catch (err) {
         if (err.response.status === 401) {
             dispatch({ type: 'LOGIN_FAIL' });
@@ -74,15 +74,21 @@ export const fetchProfile = () => async dispatch => {
     }
 };
 
-export const updateCourses = courses => async dispatch => {
+export const fetchUserGroups = (userGroups) => async dispatch => {
     try {
-        const res = await axios.post('/user/courses', courses);
-        return res;
+        const res = await axios.get('/user/groups');
+        const courseGroups = res.data.map(course => course.groups).flat();
+        dispatch({
+            type: 'updateUserGroups',
+            payload: {
+                groups: [...userGroups],
+                courseGroups
+            }
+        })
     } catch (err) {
         console.log(err.message);
-        return err;
     }
-};
+}
 
 export const updateProfile = userInfo => async dispatch => {
     try {

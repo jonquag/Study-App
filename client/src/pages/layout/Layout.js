@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import Navbar from './Navbar';
 import * as actions from '../../context/actions';
 import { useSocketContext, useGlobalContext } from '../../context/studyappContext';
 
@@ -9,7 +8,9 @@ const Layout = ({ children }) => {
     const { SocketManager } = useSocketContext();
     useEffect(() => {
         if (isLoading) 
-            actions.fetchProfile()(dispatch);
+            actions.fetchProfile()(dispatch).then((userGroups) => {
+                actions.fetchUserGroups(userGroups)(dispatch)
+            });
     }, [isLoading, dispatch]);
 
     useEffect(() => {
@@ -20,7 +21,6 @@ const Layout = ({ children }) => {
 
     return (
         <>
-            <Navbar />
             {children}
         </>
     );

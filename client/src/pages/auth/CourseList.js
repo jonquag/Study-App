@@ -8,9 +8,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         marginTop: theme.spacing(3),
     },
-    button: {
-        textTransform: 'none',
-    },
 }));
 
 const CourseList = React.memo(({ courses, removeCourse }) => {
@@ -20,7 +17,6 @@ const CourseList = React.memo(({ courses, removeCourse }) => {
         <Grid className={classes.root}>
             {courses.map(c => (
                 <Button
-                    className={classes.button}
                     key={c._id}
                     endIcon={<HighlightOffIcon onClick={() => removeCourse(c._id)} />}
                 >

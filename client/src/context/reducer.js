@@ -40,6 +40,19 @@ export const reducer = (state, action) => {
                 ...state,
                 profile: payload,
             };
+        case 'updateUserGroups':
+            return {
+                ...state,
+                userGroups: payload,
+            }
+        case 'updateUserCourses':
+            return {
+                ...state,
+                userCourse: {
+                    ...state.userCourse,
+                    userCourses: [...payload],
+                }
+            }
         default:
             throw new Error('No action type found!');
     }

@@ -57,17 +57,11 @@ export const useStyles = makeStyles(theme => ({
             backgroundColor: theme.palette.common.white,
         },
         '& p': {
-            fontSize: 12,
+            fontSize: '0.75rem',
             margin: theme.spacing(2.5, 0, 0.5, 0),
         },
     },
     add_course: {
         marginTop: 8,
-    },
-    button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        marginTop: theme.spacing(4),
-        height: '3rem',
     },
 }));
