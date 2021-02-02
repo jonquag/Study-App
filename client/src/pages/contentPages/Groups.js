@@ -64,7 +64,7 @@ const Groups = () => {
     const classes = useStyles();
     const {userGroups, userCourse, dispatch} = useGlobalContext();
     const {groups, courseGroups} = userGroups;
-    const [suggestedGroups, setSuggestedGroups] = React.useState([]);
+    const [suggestedGroups, setSuggestedGroups] = useState([]);
 
     const { enqueueSnackbar } = useSnackbar();
     const [openModal, setOpen] = useState(false);
