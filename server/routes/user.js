@@ -5,7 +5,7 @@ const User = require('../models/user');
 const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
 const Group = require('../models/Group');
-require('../models/courses');
+const Course = require('../models/courses');
 
 // Get the logged in user
 router.get('/', verifyAuth, async function (req, res, next) {
@@ -13,11 +13,12 @@ router.get('/', verifyAuth, async function (req, res, next) {
     const userDoc = await User.findById(userId)
         .populate({ path: 'courses', model: 'Course' })
         .select('-password')
+        .populate({ path: 'groups', model: 'Group'})
         .catch(() => {
             return next(new GeneralError('Error Establishing a Database Connection'));
         });
 
-    return res.send(userDoc);
+    return userDoc ? res.send(userDoc) : res.sendStatus(400);
 });
 
 // Gets all the current users courses
@@ -59,20 +60,24 @@ router.put('/courses/:courseId', verifyAuth, async function (req, res, next) {
     }
 });
 
-// updates a user based on selected courses id
-router.post('/courses', verifyAuth, async function (req, res, next) {
-    const userId = req.body.userId;
-
-    try {
-        const user = await User.findByIdAndUpdate(userId, {
-            courses: req.body,
-        });
-        if (!user) return res.status(400).json({ message: 'Can not update user' });
-        res.status(200).json({ user });
-    } catch (err) {
-        console.log(err.message);
-        res.send('Server Error');
-    }
+// updates a user based on selected courses id	
+router.post('/courses', verifyAuth, async function (req, res, next) {	
+    const userId = req.body.userId;	
+    try {	
+        const user = await User.findByIdAndUpdate(
+            userId, 
+            { courses: req.body },
+            { new: true },
+        )
+            .populate({ path: 'courses', model: 'Course' })
+            .populate({ path: 'groups', model: 'Group'});
+        if (!user)	
+            return res.status(400).json({ message: 'Can not update user' });	
+        res.status(200).json({ user });	
+    } catch (err) {	
+        console.log(err.message);	
+        res.send('Server Error');	
+    }	
 });
 
 //Remove a user from a course, removes them from all groups that belong to that course, returns user data
@@ -87,33 +92,38 @@ router.delete('/courses/:courseId', verifyAuth, async function (req, res, next) 
         const opts = { session };
         const userDoc = await User.findByIdAndUpdate(
             userId,
-            { $pull: { courses: courseId } },
+            { 
+                $pull: { courses: courseId },
+                $pullAll: {groups: req.body.groupsRemoved}
+            },
             { useFindAndModify: false, new: true }
         )
-            .populate({ path: 'courses', model: 'Course' })
-            .catch((err) => {
-                if (err.kind == 'ObjectId') {
-                    throw new BadRequest('Invalid Course ID');
-                }
-                throw new GeneralError('Error Establishing a Database Connection');
-            });
+        .populate({ path: 'courses', model: 'Course' })
+        .populate({ path: 'groups', model: 'Group'})
+        .catch((err) => {
+            if (err.kind == "ObjectId") {
+                throw new BadRequest('Invalid Course ID');
+            }
+            throw new GeneralError('Error Establishing a Database Connection');
+        });
         if (userDoc) {
             await Group.updateMany(
-                { course: userId },
+                { course: courseId },
                 { $pull: { members: userId } },
                 opts
-            ).catch((err) => {
+            ).catch(err => {
                 throw new GeneralError('Server Error');
             });
         }
-
+        
         //commit transaction
         await session.commitTransaction();
         session.endSession();
-
+        
         //send updated user data as response
         res.status(201);
         return res.send(userDoc);
+
     } catch (err) {
         await session.abortTransaction();
         session.endSession();
@@ -173,7 +183,7 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
                     path: 'groups',
                 },
             })
-            .catch((err) => {
+            .catch(() => {
                 throw new GeneralError('Error returning groups to join');
             });
         if (userDoc && userDoc.courses) {
@@ -185,6 +195,7 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
         next(err);
     }
 });
+
 
 // add a new user to a group from a course they are enrolled in
 router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
@@ -220,6 +231,55 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
         session.endSession();
         next(err);
     }
+});
+
+// create a new group from a course they are enrolled in 
+router.post('/groups', verifyAuth, async function (req, res, next) {
+
+    const userId = req.body.userId;
+    const imageUrl = req.body.imageUrl;
+    const courseId = req.body.courseId;
+    const groupName = req.body.groupName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+
+    const session = await Group.startSession();
+    session.startTransaction();
+
+    try {
+
+        const instance = (await Group.create([{
+            name: groupName,
+            members: [userId],
+            image: imageUrl,
+            course: courseId, 
+            admin: userId
+        }], {session}))[0];
+
+        const userUpdate = await User.findByIdAndUpdate(userId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
+        .session(session)
+        .catch((err) => {
+            throw new GeneralError('Error updating User Groups');
+        });
+
+        const courseUpdate = await Course.findByIdAndUpdate(courseId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
+        .session(session)
+        .catch((err) => {
+            throw new GeneralError('Error updating Course Groups');
+        });
+
+        await session.commitTransaction();
+        session.endSession();
+        res.status(201);
+        res.send({
+            data: instance
+        });
+
+    } catch(err) {
+        console.log(err)
+        await session.abortTransaction();
+        session.endSession();
+        next(err);
+    }
+
 });
 
 // delete a user from a group

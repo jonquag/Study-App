@@ -1,10 +1,9 @@
-import Profile from '../constants/Profile';
-
 export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
     profile: {},
+    isOpen: false,
 };
 
 export const reducer = (state, action) => {
@@ -15,6 +14,7 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 isAuth: true,
+                isLoading: true,
             };
         case 'FETCH_USER_INFO':
             return {
@@ -22,23 +22,47 @@ export const reducer = (state, action) => {
                 userCourse: payload[1],
                 profile: payload[0],
                 isLoading: false,
+                isAuth: true,
             };
         case 'LOGIN_FAIL':
         case 'REGISTER_FAIL':
             return {
                 ...state,
-                isLoading: true,
+                isLoading: false,
             };
         case 'LOGOUT':
             return {
                 ...state,
-                isLoading: true,
                 isAuth: false,
+                isLoading: false,
             };
         case 'updateProfile':
             return {
                 ...state,
                 profile: payload,
+            };
+        case 'updateUserGroups':
+            return {
+                ...state,
+                userGroups: payload,
+            };
+        case 'updateUserCourses':
+            return {
+                ...state,
+                userCourse: {
+                    ...state.userCourse,
+                    userCourses: [...payload],
+                },
+            };
+        case 'CLOSE_DRAWER':
+            return {
+                ...state,
+                isOpen: false,
+            };
+        case 'OPEN_DRAWER':
+            return {
+                ...state,
+                isOpen: true,
             };
         default:
             throw new Error('No action type found!');

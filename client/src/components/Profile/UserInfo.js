@@ -7,9 +7,19 @@ import { useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
+    header: {
+        margin: theme.spacing(8, 0, 8, 0),
+        [theme.breakpoints.down('sm')]: {
+            margin: theme.spacing(0, 0, 8, 0),
+        },
+    },
     inputStyles: {
         fontWeight: '600',
         width: 300,
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            paddingRight: 24,
+        },
     },
     labelStyles: {
         paddingBottom: '.5em',
@@ -18,15 +28,25 @@ const useStyles = makeStyles(theme => ({
         padding: '2em 0 0 2em',
     },
     button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        height: 54,
         marginLeft: '1.2em',
         marginTop: '1em',
         width: 300,
     },
     container: {
         padding: theme.spacing(0, 0, 0, 11),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0, 0, 0, 6),
+        },
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0, 0, 0, 4),
+            marginBottom: 16,
+        },
+    },
+    listsContainer: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
     },
 }));
 
@@ -66,26 +86,11 @@ const UserInfo = () => {
 
     return (
         <Grid container direction="column" className={classes.container}>
-            <Grid
-                item
-                container
-                alignContent="center"
-                sm={2}
-                className={classes.headerContainer}
-            >
+            <form noValidate autoComplete="off">
                 <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
-            </Grid>
-            <form noValidate autoComplete="off">
-                <Grid
-                    item
-                    container
-                    sm={10}
-                    alignContent="flex-start"
-                    justify="flex-start"
-                    spacing={4}
-                >
+                <Grid item container spacing={4} className={classes.listsContainer}>
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>
                             First Name
@@ -144,7 +149,11 @@ const UserInfo = () => {
                     </Grid>
                     <Grid container>
                         <Grid item>
-                            <Button className={classes.button} onClick={handleSubmit}>
+                            <Button
+                                color="primary"
+                                className={classes.button}
+                                onClick={handleSubmit}
+                            >
                                 Submit
                             </Button>
                         </Grid>

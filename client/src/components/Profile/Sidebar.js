@@ -1,209 +1,102 @@
-import React, { useState } from 'react';
-import { Grid, Typography, Badge, Divider, Avatar, Button } from '@material-ui/core';
-import { NavLink, useLocation } from 'react-router-dom';
-import { chatList, courseGroupList } from '../../data/mockData';
-import { useStyles } from './SidebarStyles';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import React from 'react';
+import { Grid, Hidden, Fab, Drawer, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+
 import { useGlobalContext } from '../../context/studyappContext';
-import DragzonePicture from '../DragzonePicture';
-import * as actions from '../../context/actions';
 
-const Drawer = props => {
+const useStyles = makeStyles(theme => ({
+    fab_icon: {
+        margin: 16,
+    },
+    mobile_container: {
+        backgroundColor: theme.palette.common.white,
+        height: 100,
+    },
+    menu_icon: {
+        fontSize: '1.5rem',
+    },
+    drawer: {
+        width: 350,
+        backgroundColor: '#F9F9FC',
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '0.6rem',
+            height: '12rem',
+        },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 5px grey',
+            borderRadius: 4,
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,.1)',
+            borderRadius: 4,
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+            background: '#ccc',
+        },
+    },
+    icon_btn: {
+        fontSize: '1.75rem',
+        margin: theme.spacing(2),
+        color: theme.palette.secondary.main,
+    },
+}));
+
+const Sidebar = ({ children }) => {
+    const { dispatch, isOpen } = useGlobalContext();
+
     const classes = useStyles();
-    const location = useLocation();
-    const { profile, dispatch } = useGlobalContext();
 
-    const [courseList, setCourseList] = useState(
-        courseGroupList.map(cgl => ({ ...cgl, expand: false }))
-    );
-    const [chatId, setChatId] = useState(null);
-    const [courseId, setCourseId] = useState([]);
-
-    const showGroup = id => {
-        setCourseId([...courseId, id]);
-        const editedCourseList = courseList.map(cl => {
-            if (cl.id === id && !cl.expand) return { ...cl, expand: true };
-            if (cl.id === id && cl.expand) return { ...cl, expand: false };
-            else return { ...cl };
-        });
-        setCourseList(editedCourseList);
+    const handleOpen = () => {
+        dispatch({ type: 'OPEN_DRAWER' });
     };
 
-    if (location.pathname === '/chat')
-        return (
-            <Grid container className={classes.list_container}>
-                <Grid item className={classes.chat_head}>
-                    <Typography>All Chats</Typography>
-                    <Badge badgeContent={12} className={classes.badge} />
-                </Grid>
-                <Divider className={classes.divider} />
-                {chatList.map(cg => {
-                    let activeChat = null;
-                    if (cg.id === chatId) {
-                        activeChat = <div className={classes.active_line}></div>;
-                    }
-                    return (
-                        <React.Fragment key={cg.id}>
-                            <Grid
-                                item
-                                container
-                                className={
-                                    cg.id === chatId
-                                        ? classes.chat_list_active
-                                        : classes.chat_list
-                                }
-                                onClick={() => setChatId(cg.id)}
-                            >
-                                {activeChat}
-                                <Grid item className={classes.avatar_container}>
-                                    <Avatar
-                                        alt="chat_group_img"
-                                        src={cg.imgUrl}
-                                        variant="rounded"
-                                        className={classes.avatar}
-                                    />
-                                </Grid>
-                                <Grid item container className={classes.group_member}>
-                                    <Typography className={classes.group_name}>
-                                        {cg.chatGroup}
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                        {cg.members} members
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            <Divider className={classes.divider} />
-                        </React.Fragment>
-                    );
-                })}
-            </Grid>
-        );
+    const handleClose = () => {
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
 
-    if (location.pathname === '/forum')
-        return (
-            <Grid>
-                <Grid item className={classes.chat_head}>
-                    <Typography>My Courses</Typography>
-                    <Badge badgeContent={3} className={classes.badge} />
-                </Grid>
-                <Grid item className={classes.accordion}>
-                    {courseList.map(cgl => {
-                        let groupList = null;
-                        const isIdThere = courseId.some(id => cgl.id === id);
-                        if (cgl.expand && isIdThere)
-                            groupList = cgl.groups.map(group => {
-                                return (
-                                    <Typography
-                                        key={group.id}
-                                        className={classes.group_list}
-                                        onClick={() => console.log(`${group.name} forum`)}
-                                    >
-                                        {group.name}
-                                    </Typography>
-                                );
-                            });
-                        return (
-                            <div key={cgl.id} className={classes.accordion_container}>
-                                <Grid className={classes.course_name}>
-                                    <Typography>{cgl.name}</Typography>
-                                    <Button onClick={() => showGroup(cgl.id)}>
-                                        {cgl.expand && isIdThere ? (
-                                            <RemoveIcon className={classes.icons} />
-                                        ) : (
-                                            <AddIcon className={classes.icons} />
-                                        )}
-                                    </Button>
-                                </Grid>
-                                <div>{groupList}</div>
-                            </div>
-                        );
-                    })}
-                </Grid>
-            </Grid>
-        );
-
-    return (
-        <Grid
-            container
-            direction="column"
-            alignItems="center"
-            justify="space-between"
-            item
-            className={classes.drawer}
-        >
-            {/* Profile briefing container */}
+    const drawerContent = () => (
+        <div className={classes.drawer}>
             <Grid
                 container
-                item
-                direction="column"
+                justify="flex-end"
                 alignItems="center"
-                style={{ marginTop: '3em' }}
+                style={{ position: 'absolute' }}
             >
-                <DragzonePicture className={classes.profilePic} />
-
-                <Typography className={classes.profileName} align="center">
-                    {profile.firstName + ' ' + profile.lastName}
-                </Typography>
+                <IconButton className={classes.icon_btn} onClick={handleClose}>
+                    <CloseOutlinedIcon />
+                </IconButton>
             </Grid>
+            {children}
+        </div>
+    );
 
-            {/* Profile Links container */}
-            <Grid container item direction="column" className={classes.linkContainer}>
-                <NavLink
-                    to="/profile"
-                    exact
-                    activeStyle={{
-                        opacity: '100%',
-                    }}
-                    className={classes.linkStyles}
-                >
-                    User Info
-                </NavLink>
-                <NavLink
-                    to="/profile/courses"
-                    exact
-                    activeStyle={{
-                        opacity: '100%',
-                    }}
-                    className={classes.linkStyles}
-                >
-                    My Courses
-                </NavLink>
-                <NavLink
-                    to="/profile/settings"
-                    exact
-                    activeStyle={{
-                        opacity: '100%',
-                    }}
-                    className={classes.linkStyles}
-                >
-                    Settings
-                </NavLink>
-                <NavLink
-                    to="/profile/notifications"
-                    exact
-                    activeStyle={{
-                        opacity: '100%',
-                    }}
-                    className={classes.linkStyles}
-                >
-                    Notifications
-                </NavLink>
-            </Grid>
-            <Grid container item>
-                <Grid item>
-                    <Button
-                        className={classes.logoutStyles}
-                        onClick={() => actions.logout()(dispatch)}
-                    >
-                        Logout
-                    </Button>
+    return (
+        <>
+            <Hidden smDown>
+                <Grid item md={3}>
+                    {children}
                 </Grid>
-            </Grid>
-        </Grid>
-
-        //  Container for Profile Summary
+            </Hidden>
+            <Hidden mdUp>
+                <Grid container className={classes.mobile_container}>
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        className={classes.fab_icon}
+                        onClick={handleOpen}
+                    >
+                        <MenuOutlinedIcon className={classes.menu_icon} />
+                    </Fab>
+                </Grid>
+                <Drawer anchor="left" open={isOpen} onClose={handleClose}>
+                    {drawerContent()}
+                </Drawer>
+            </Hidden>
+        </>
     );
 };
 
-export default Drawer;
+export default Sidebar;

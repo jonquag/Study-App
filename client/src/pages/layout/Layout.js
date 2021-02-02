@@ -1,24 +1,26 @@
 import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
-import { LinearProgress } from '@material-ui/core';
 
-import Navbar from './Navbar';
 import * as actions from '../../context/actions';
-import { useGlobalContext } from '../../context/studyappContext';
+import { useSocketContext, useGlobalContext } from '../../context/studyappContext';
 
 const Layout = ({ children }) => {
-    const { dispatch, isLoading, isAuth } = useGlobalContext();
+    const { dispatch, isLoading,  isAuth } = useGlobalContext();
+    const { SocketManager } = useSocketContext();
+    useEffect(() => {
+        if (isLoading) 
+            actions.fetchProfile()(dispatch).then((userGroups) => {
+                actions.fetchUserGroups(userGroups)(dispatch)
+            });
+    }, [isLoading, dispatch]);
 
     useEffect(() => {
-        actions.fetchProfile()(dispatch);
-    }, [dispatch]);
+        SocketManager.closeSocket();
+    }, [SocketManager])
 
-    if (!isAuth) return <Redirect to="/login" />;
-    if (isLoading) return <LinearProgress />;
+    if (isAuth) SocketManager.startSocket();
 
     return (
         <>
-            <Navbar />
             {children}
         </>
     );

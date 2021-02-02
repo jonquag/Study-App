@@ -5,7 +5,7 @@ export const useStyles = makeStyles(theme => ({
         textDecoration: 'none',
         color: 'black',
         padding: '1em 0 0 2em',
-        fontSize: 18,
+        fontSize: '1.125rem',
         opacity: '50%',
     },
     profilePic: {
@@ -21,7 +21,7 @@ export const useStyles = makeStyles(theme => ({
     },
     profileName: {
         paddingTop: '1em',
-        fontSize: 22,
+        fontSize: '1.375rem',
     },
     list_container: {
         display: 'block',
@@ -50,7 +50,7 @@ export const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         paddingLeft: theme.spacing(4),
         '& p': {
-            fontSize: 22,
+            fontSize: '1.375rem',
         },
     },
     badge: {
@@ -59,7 +59,7 @@ export const useStyles = makeStyles(theme => ({
         '& span': {
             width: 40,
             height: 24,
-            fontSize: 14,
+            fontSize: '0.875rem',
             background: theme.palette.primary.gradient,
         },
     },
@@ -76,6 +76,7 @@ export const useStyles = makeStyles(theme => ({
         flexWrap: 'nowrap',
         alignItems: 'center',
         backgroundColor: '#e6edff',
+        borderLeft: '7px solid #2967ff',
     },
     group_member: {
         display: 'flex',
@@ -91,19 +92,13 @@ export const useStyles = makeStyles(theme => ({
         borderRadius: 18,
     },
     group_name: {
-        fontSize: 18,
+        fontSize: '1.125rem',
         fontWeight: 500,
     },
     divider: {
         opacity: 0.10414,
         height: 1,
         background: '#2967ff',
-    },
-    active_line: {
-        width: 8,
-        height: '100%',
-        backgroundColor: '#2967ff',
-        marginLeft: theme.spacing(0.1),
     },
     accordion: {
         display: 'flex',
@@ -122,7 +117,7 @@ export const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         '& p': {
-            fontSize: 18,
+            fontSize: '1.125rem',
         },
     },
     icons: {
@@ -132,5 +127,12 @@ export const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
         cursor: 'pointer',
         marginTop: 16,
+    },
+    button: {
+        margin: '2em',
+        textTransform: 'none',
+        fontWeight: 'bold',
+        fontSize: 16,
+        letterSpacing: 0.5,
     },
 }));

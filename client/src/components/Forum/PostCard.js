@@ -1,5 +1,6 @@
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -20,8 +21,7 @@ const useStyles = makeStyles(theme => ({
         display: 'grid',
         gridTemplateRows: '1fr',
         justify: 'space-between',
-
-        padding: 0,
+        paddingRight: theme.spacing(2),
     },
     cardImage: {
         width: 100,
@@ -31,9 +31,13 @@ const useStyles = makeStyles(theme => ({
     },
     cardTitle: {
         fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: '1.375rem',
         [theme.breakpoints.down('sm')]: {
-            fontSize: 16,
+            fontSize: '1.25rem',
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontWeight: 'normal',
+            fontSize: '1rem',
         },
     },
     cardDesc: {
@@ -51,7 +55,7 @@ const PostCard = props => {
     const classes = useStyles();
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} variant="outlined">
             <CardActionArea className={classes.actionArea}>
                 <CardMedia
                     component="img"

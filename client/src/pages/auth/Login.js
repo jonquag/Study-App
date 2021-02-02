@@ -25,22 +25,27 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().required('Required'),
 });
 
-const Login = () => {
+const Login = props => {
     const classes = useStyles();
     const { isAuth, dispatch } = useGlobalContext();
     const { enqueueSnackbar } = useSnackbar();
 
-    if (isAuth) return <Redirect to="/profile" />;
+    const locState = props.location.state;
+    let redirectPath = '/profile';
+
+    //locState only exists if redirected from ProtectedRoute
+    if (locState && locState.from) redirectPath = locState.from.pathname;
+
+    if (isAuth) return <Redirect to={redirectPath} />;
 
     return (
         <div className={classes.root}>
-            <Grid container>
+            <Grid container className={classes.container}>
                 <Grid
                     item
                     container
                     md={6}
                     direction="column"
-                    justify="flex-start"
                     className={classes.formContainer}
                 >
                     <div className={classes.logoContainer}>
@@ -56,11 +61,11 @@ const Login = () => {
                                 to="/sign-up"
                             >
                                 <Button
-                                    variant="contained"
-                                    className={classes.button}
+                                    variant="text"
+                                    color="primary"
                                     style={{ marginTop: 0 }}
                                 >
-                                    get started
+                                    Get Started
                                 </Button>
                             </Link>
                         </Hidden>
@@ -116,8 +121,7 @@ const Login = () => {
                                 />
                                 <Typography variant="body2">Forget password?</Typography>
                                 <Button
-                                    variant="contained"
-                                    className={classes.button}
+                                    color="primary"
                                     disabled={isSubmitting}
                                     onClick={submitForm}
                                 >
@@ -138,7 +142,9 @@ const Login = () => {
                                     component={RouterLink}
                                     to="/sign-up"
                                 >
-                                    <Button variant="outlined">Get started</Button>
+                                    <Button variant="outlined" color="primary">
+                                        Get started
+                                    </Button>
                                 </Link>
                             </div>
                         </Paper>

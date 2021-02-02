@@ -5,6 +5,14 @@ import Background from '../../images/sign-up.png';
 export const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: theme.palette.common.white,
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+        },
+    },
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            justifyContent: 'center',
+        },
     },
     logoContainer: {
         display: 'flex',
@@ -47,6 +55,11 @@ export const useStyles = makeStyles(theme => ({
         '& h1': {
             marginLeft: theme.spacing(4),
         },
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(4, 2, 4, 2),
+            maxWidth: 450,
+            justifyContent: 'center',
+        },
     },
     form: {
         display: 'flex',
@@ -57,17 +70,11 @@ export const useStyles = makeStyles(theme => ({
             backgroundColor: theme.palette.common.white,
         },
         '& p': {
-            fontSize: 12,
+            fontSize: '0.75rem',
             margin: theme.spacing(2.5, 0, 0.5, 0),
         },
     },
     add_course: {
         marginTop: 8,
-    },
-    button: {
-        color: '#FFF',
-        background: theme.palette.primary.gradient,
-        marginTop: theme.spacing(4),
-        height: '3rem',
     },
 }));

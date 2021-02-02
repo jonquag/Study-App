@@ -91,7 +91,7 @@ const Signup = () => {
 
     return (
         <div className={classes.root}>
-            <Grid container>
+            <Grid container className={classes.container}>
                 <Grid
                     item
                     container
@@ -112,12 +112,8 @@ const Signup = () => {
                                 component={RouterLink}
                                 to="/login"
                             >
-                                <Button
-                                    variant="contained"
-                                    className={classes.button}
-                                    style={{ marginTop: 0 }}
-                                >
-                                    login
+                                <Button variant="text" color="primary">
+                                    Login
                                 </Button>
                             </Link>
                         </Hidden>
@@ -234,7 +230,7 @@ const Signup = () => {
                                 </Select>
                                 <Grid className={classes.add_course}>
                                     <Button
-                                        color="primary"
+                                        color="secondary"
                                         startIcon={<AddIcon />}
                                         onClick={addCourse}
                                     >
@@ -242,7 +238,7 @@ const Signup = () => {
                                     </Button>
                                 </Grid>
                                 <Button
-                                    variant="contained"
+                                    color="primary"
                                     className={classes.button}
                                     disabled={isSubmitting}
                                     onClick={submitForm}
@@ -264,7 +260,9 @@ const Signup = () => {
                                     component={RouterLink}
                                     to="/login"
                                 >
-                                    <Button variant="outlined">Login</Button>
+                                    <Button variant="outlined" color="primary">
+                                        Login
+                                    </Button>
                                 </Link>
                             </div>
                         </Paper>

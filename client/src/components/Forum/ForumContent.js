@@ -12,6 +12,12 @@ const useStyles = makeStyles(theme => ({
     headerContainer: {
         height: 150,
     },
+    headerText: {
+        paddingLeft: '2em',
+        [theme.breakpoints.down('xs')]: {
+            paddingLeft: 8,
+        },
+    },
     divider: {
         marginBottom: 10,
     },
@@ -21,12 +27,21 @@ const useStyles = makeStyles(theme => ({
     button: {
         width: 150,
         marginRight: theme.spacing(3),
+        [theme.breakpoints.down('xs')]: {
+            marginRight: theme.spacing(1),
+        },
+    },
+    postCard: {
+        maxWidth: '100%',
+        padding: theme.spacing(0, 10, 0, 10),
+        [theme.breakpoints.down('xs')]: {
+            padding: theme.spacing(0, 1, 0, 1),
+        },
     },
 }));
 
 const ForumContent = () => {
     const classes = useStyles();
-    // const [posts] = useState();
     const [open, setOpen] = React.useState(false);
 
     // Calling will open modal
@@ -39,24 +54,16 @@ const ForumContent = () => {
     };
 
     return (
-        <Grid
-            container
-            direction="column"
-            className={classes.container}
-            alignContent="center"
-            item
-            sm={12}
-        >
+        <Grid container direction="column" alignContent="center" item sm={12}>
             <Grid
                 item
                 container
-                alignContent="center"
-                alignItems="baseline"
-                direction="row"
+                justify="space-between"
+                alignItems="center"
                 className={classes.headerContainer}
             >
-                <Grid item container sm={9}>
-                    <Typography variant="h1" style={{ paddingLeft: '2em' }}>
+                <Grid item>
+                    <Typography variant="h1" className={classes.headerText}>
                         Forum
                     </Typography>
                 </Grid>
@@ -88,11 +95,10 @@ const ForumContent = () => {
                 container
                 sm={10}
                 justify="flex-start"
-                alignItems="center"
                 direction="column"
                 className={classes.cardContainer}
             >
-                <Grid item>
+                <Grid item className={classes.postCard}>
                     {posts.map(post => (
                         <PostCard key={post.id} post={post} />
                     ))}

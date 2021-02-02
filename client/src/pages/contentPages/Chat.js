@@ -1,38 +1,46 @@
-import { Grid, Typography } from '@material-ui/core';
-import React from 'react';
-import Sidebar from '../../components/Profile/Sidebar';
+import React, { useState } from 'react';
+import { Grid, } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+import { chatList } from '../../data/mockData';
+import Sidebar from '../../components/Profile/Sidebar';
+import ChatContent from '../../components/Chat/ChatContent';
+import ChatSidePanel from './ChatSidePanel';
+
+
+const useStyles = makeStyles((theme) => ({
     container: {
-        marginTop: 3,
-    },
-    sidebar: {},
-    contentContainer: {
-        backgroundColor: theme.palette.common.white,
+        height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
+        },
     },
 }));
 
-const Forum = () => {
+const Chat = () => {
     const classes = useStyles();
+    const [chatIndex, setChatIndex] = useState(0);
+    const [cList, setCList ] = useState(chatList);
+
+    React.useEffect(() => {
+        const sorted = chatList.sort((a, b) => {
+            const aMostRecent = 
+                a.messages.length === 0 ? 0 : a.messages[a.messages.length - 1].timeStamp;
+            const bMostRecent = 
+                b.messages.length === 0 ? 0 : b.messages[b.messages.length - 1].timeStamp;
+            return bMostRecent - aMostRecent;
+        })
+        setCList([...sorted]);
+    }, []);
+
     return (
-        <Grid>
-            <Grid container className={classes.container}>
-                <Grid
-                    item
-                    container
-                    direction="column"
-                    sm={3}
-                    className={classes.sidebar}
-                >
-                    <Sidebar />
-                </Grid>
-                <Grid item container sm={9} className={classes.contentContainer}>
-                    <Typography variant="h2">Chat Page</Typography>
-                </Grid>
-            </Grid>
+        <Grid container className={classes.container}>
+            <Sidebar>
+                <ChatSidePanel chatList={cList} chatIndex={chatIndex} setChatIndex={setChatIndex} />
+            </Sidebar>
+            <ChatContent chat={cList[chatIndex]} />
         </Grid>
     );
 };
 
-export default Forum;
+export default Chat;
