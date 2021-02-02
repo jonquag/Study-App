@@ -91,7 +91,7 @@ const Signup = () => {
 
     return (
         <div className={classes.root}>
-            <Grid container>
+            <Grid container className={classes.container}>
                 <Grid
                     item
                     container

@@ -5,8 +5,16 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 //import { courseGroupList } from '../../data/mockData';
 import axios from 'axios';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+            backgroundColor: '#FFF',
+            paddingTop: theme.spacing(6),
+        },
+    },
     chat_head: {
         height: 120,
         display: 'flex',
@@ -49,16 +57,19 @@ const useStyles = makeStyles(theme => ({
     },
     icons: {
         color: '#2968ff',
+        fontSize: 22,
     },
     group_list: {
-        color: theme.palette.primary.main,
+        color: '#2574FF',
         cursor: 'pointer',
         marginTop: 16,
+        fontSize: '0.9375rem',
     },
 }));
 
 const ForumSidePanel = ({ onGroupUpdate }) => {
     const classes = useStyles();
+    const { dispatch } = useGlobalContext();
 
     const [courseList, setCourseList] = useState([]);
     const [courseId, setCourseId] = useState([]);
@@ -90,12 +101,16 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
     };
 
     const handleOnClick = name => {
+        
+    }
+    const handleDrawerClose = (name) => {
         console.log(name)
         onGroupUpdate(name);
-    }
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
 
     return (
-        <Grid>
+        <Grid className={classes.container}>
             <Grid item className={classes.chat_head}>
                 <Typography>My Courses</Typography>
                 <Badge badgeContent={courseList.length} className={classes.badge} />
@@ -110,7 +125,7 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                                 <Typography
                                     key={group._id}
                                     className={classes.group_list}
-                                    onClick={() => handleOnClick(group.name)}
+                                    onClick={() => handleDrawerClose(group.name)}
                                 >
                                     {group.name}
                                 </Typography>

@@ -5,11 +5,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../../components/Profile/Sidebar';
 import ForumContent from '../../components/Forum/ForumContent';
 
+import Sidebar from '../../components/Profile/Sidebar';
+import ForumContent from '../../components/Forum/ForumContent';
 import ForumSidePanel from './ForumSidePanel';
 
 const useStyles = makeStyles(theme => ({
     container: {
         height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
+        },
     },
     contentContainer: {
         backgroundColor: theme.palette.common.white,
@@ -26,10 +31,10 @@ const Forum = () => {
 
     return (
         <Grid container className={classes.container}>
-            <Grid item container sm={3} className={classes.sidebar}>
-                <ForumSidePanel onGroupUpdate={updateSelectedGroup} /> 
-            </Grid>
-            <Grid item container sm={9} className={classes.contentContainer}>
+            <Sidebar>
+                <ForumSidePanel onGroupUpdate={updateSelectedGroup}/>
+            </Sidebar>
+            <Grid item container sm={12} md={9} className={classes.contentContainer}>
                 <ForumContent name={selectedGroup} />
             </Grid>
         </Grid>
