@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { LinearProgress } from '@material-ui/core';
 import { useGlobalContext } from '../../context/studyappContext';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -10,6 +11,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             {...rest}
             render={props => {
                 if (isAuth && !isLoading) return <Component {...props} />;
+                else if (isLoading) return <LinearProgress />;
                 else
                     return (
                         <Redirect

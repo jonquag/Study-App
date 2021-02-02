@@ -1,5 +1,3 @@
-import Profile from '../constants/Profile';
-
 export const initialState = {
     isLoading: true,
     isAuth: false,
@@ -15,6 +13,7 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 isAuth: true,
+                isLoading: true,
             };
         case 'FETCH_USER_INFO':
             return {
@@ -22,6 +21,7 @@ export const reducer = (state, action) => {
                 userCourse: payload[1],
                 profile: payload[0],
                 isLoading: false,
+                isAuth: true,
             };
         case 'LOGIN_FAIL':
         case 'REGISTER_FAIL':
@@ -32,8 +32,8 @@ export const reducer = (state, action) => {
         case 'LOGOUT':
             return {
                 ...state,
-                isLoading: true,
                 isAuth: false,
+                isLoading: false,
             };
         case 'updateProfile':
             return {
