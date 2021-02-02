@@ -3,6 +3,7 @@ import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { chatList } from '../../data/mockData';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -99,7 +100,14 @@ const useStyles = makeStyles(theme => ({
 
 const ChatSidePanel = () => {
     const classes = useStyles();
+    const { dispatch } = useGlobalContext();
+
     const [chatId, setChatId] = useState(null);
+
+    const handleChatList = id => {
+        setChatId(id);
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
 
     return (
         <div className={classes.container}>
@@ -120,7 +128,7 @@ const ChatSidePanel = () => {
                                         ? classes.chat_list_active
                                         : classes.chat_list
                                 }
-                                onClick={() => setChatId(cg.id)}
+                                onClick={() => handleChatList(cg.id)}
                             >
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar

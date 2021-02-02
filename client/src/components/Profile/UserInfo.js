@@ -16,6 +16,10 @@ const useStyles = makeStyles(theme => ({
     inputStyles: {
         fontWeight: '600',
         width: 300,
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            paddingRight: 24,
+        },
     },
     labelStyles: {
         paddingBottom: '.5em',
@@ -36,6 +40,12 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(0, 0, 0, 4),
             marginBottom: 16,
+        },
+    },
+    listsContainer: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'flex',
+            flexDirection: 'column',
         },
     },
 }));
@@ -80,7 +90,7 @@ const UserInfo = () => {
                 <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
-                <Grid item container sm={10} spacing={4}>
+                <Grid item container spacing={4} className={classes.listsContainer}>
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>
                             First Name

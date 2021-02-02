@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
             padding: theme.spacing(0, 0, 0, 6),
         },
         [theme.breakpoints.down('xs')]: {
-            padding: theme.spacing(0, 1, 0, 1),
+            padding: theme.spacing(0, 2, 0, 2),
         },
     },
     university: {

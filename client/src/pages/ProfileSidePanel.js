@@ -48,9 +48,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ProfileSidePanel = () => {
+const ProfileSidePanel = props => {
     const classes = useStyles();
     const { profile, dispatch } = useGlobalContext();
+
+    const handleDrawerClose = () => {
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
 
     return (
         <Grid
@@ -85,6 +89,7 @@ const ProfileSidePanel = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     User Info
                 </NavLink>
@@ -95,6 +100,7 @@ const ProfileSidePanel = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     My Courses
                 </NavLink>
@@ -105,6 +111,7 @@ const ProfileSidePanel = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     Settings
                 </NavLink>
@@ -115,6 +122,7 @@ const ProfileSidePanel = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     Notifications
                 </NavLink>

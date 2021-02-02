@@ -3,6 +3,7 @@ export const initialState = {
     isAuth: false,
     userCourse: {},
     profile: {},
+    isOpen: false,
 };
 
 export const reducer = (state, action) => {
@@ -51,6 +52,16 @@ export const reducer = (state, action) => {
                     ...state.userCourse,
                     userCourses: [...payload],
                 },
+            };
+        case 'CLOSE_DRAWER':
+            return {
+                ...state,
+                isOpen: false,
+            };
+        case 'OPEN_DRAWER':
+            return {
+                ...state,
+                isOpen: true,
             };
         default:
             throw new Error('No action type found!');

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { courseGroupList } from '../../data/mockData';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -67,6 +68,7 @@ const useStyles = makeStyles(theme => ({
 
 const ForumSidePanel = () => {
     const classes = useStyles();
+    const { dispatch } = useGlobalContext();
 
     const [courseList, setCourseList] = useState(
         courseGroupList.map(cgl => ({ ...cgl, expand: false }))
@@ -81,6 +83,10 @@ const ForumSidePanel = () => {
             else return { ...cl };
         });
         setCourseList(editedCourseList);
+    };
+
+    const handleDrawerClose = () => {
+        dispatch({ type: 'CLOSE_DRAWER' });
     };
 
     return (
@@ -99,7 +105,7 @@ const ForumSidePanel = () => {
                                 <Typography
                                     key={group.id}
                                     className={classes.group_list}
-                                    onClick={() => console.log(`${group.name} forum`)}
+                                    onClick={handleDrawerClose}
                                 >
                                     {group.name}
                                 </Typography>
