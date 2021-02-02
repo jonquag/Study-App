@@ -76,7 +76,6 @@ const Groups = () => {
     const [groupNameValid, setGroupNameValid] = useState('');
     const [courseId, setCourseId] = useState('');
 
-
     const onDrop = useCallback(async (droppedFiles) => {
       if (droppedFiles.length) {
           setUploading(true);
