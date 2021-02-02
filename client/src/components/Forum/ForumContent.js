@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
 
+
 const useStyles = makeStyles(theme => ({
     headerContainer: {
         height: 150,
@@ -28,7 +29,7 @@ const addPost = () => {
     console.log('Add post clicked');
 };
 
-const ForumContent = () => {
+const ForumContent = ({name}) => {
     const classes = useStyles();
 
     return (
@@ -50,7 +51,7 @@ const ForumContent = () => {
             >
                 <Grid item container sm={9}>
                     <Typography variant="h1" style={{ paddingLeft: '2em' }}>
-                        Forum
+                        {name}
                     </Typography>
                 </Grid>
 
@@ -65,7 +66,7 @@ const ForumContent = () => {
             <Grid
                 item
                 container
-                sm={10}
+                sm={8}
                 justify="flex-start"
                 direction="column"
                 className={classes.cardContainer}
