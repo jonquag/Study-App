@@ -19,7 +19,7 @@ router.post(
     postController.creatForumPost
 );
 
-// DELETE forum/post/:forumId/:postId
+// PUT forum/post/:forumId/:postId
 // Disables a post from being viewed in a forum.
 router.put('/post/:forumId/:postId', auth, postController.hidePost);
 
@@ -44,12 +44,12 @@ router.post(
     commentController.addComment
 );
 
-// DELETE forum/post/comment/:postId/:commentId
-// Removes a comment from a post and deletes it from db.
-router.delete(
+// PUT forum/post/comment/:postId/:commentId
+// Disables a comment from being viewed in a post.
+router.put(
     '/post/comment/:postId/:commentId',
     auth,
-    commentController.deleteComment
+    commentController.hideComment
 );
 
 // PUT forum/post/comment/:postId

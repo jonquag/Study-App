@@ -33,7 +33,7 @@ exports.addComment = async (req, res, next) => {
         const commentRes = comment.save();
         if (!commentRes) throw new GeneralError('Error adding a comment');
 
-        post.comments.unshift(comment);
+        post.comments.push(comment);
 
         const postRes = await post.save();
         if (!postRes) throw new GeneralError('Error saving post');
@@ -45,7 +45,7 @@ exports.addComment = async (req, res, next) => {
     }
 };
 
-exports.deleteComment = async (req, res, next) => {
+exports.hideComment = async (req, res, next) => {
     const { postId, commentId } = req.params;
 
     try {
@@ -62,17 +62,14 @@ exports.deleteComment = async (req, res, next) => {
 
         // check if a usere is deleteing his/her own comment
         if (comment.user.toString() !== req.body.userId)
-            throw new Unauthorized('Cannot delete post');
+            throw new Unauthorized('Cannot delete comment');
 
-        post.comments = post.comments.filter(pc => pc.toString() !== commentId);
+        comment.isDeleted = true;
 
-        const postRes = await post.save();
-        if (!postRes) throw new GeneralError('Error saving post');
+        const response = await comment.save();
+        if (!response) throw new GeneralError('Error saving comment');
 
-        const commentRes = await comment.remove();
-        if (!commentRes) throw new GeneralError('Error deleting a comment');
-
-        res.status(200).json({ post });
+        res.status(200).json({ comment });
     } catch (err) {
         console.log(err.message);
         next(err);

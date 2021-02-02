@@ -16,6 +16,10 @@ const CommentSchema = new Schema({
     avatar: {
         type: String,
     },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
     votes: [
         {
             user: { type: Schema.Types.ObjectId },

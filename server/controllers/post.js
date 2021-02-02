@@ -35,7 +35,7 @@ exports.creatForumPost = async (req, res, next) => {
         const response = await post.save();
         if (!response) throw new GeneralError('Error creating post.');
 
-        forum.posts.unshift(post);
+        forum.posts.push(post);
         const forumRes = forum.save();
         if (!forumRes) throw new GeneralError('Error adding a post to a forum');
 
@@ -116,7 +116,7 @@ exports.addUpvote = async (req, res, next) => {
         if (votesArr.length > 0)
             throw new Unauthorized('Cannot up vote more than once');
 
-        post.votes.unshift({ user: userId });
+        post.votes.push({ user: userId });
 
         const response = await post.save();
         if (!response) throw new GeneralError('Error voting');
