@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Badge, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import { courseGroupList } from '../../data/mockData';
+//import { courseGroupList } from '../../data/mockData';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     chat_head: {
@@ -56,51 +57,70 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ForumSidePanel = () => {
+const ForumSidePanel = ({ onGroupUpdate }) => {
     const classes = useStyles();
 
-    const [courseList, setCourseList] = useState(
-        courseGroupList.map(cgl => ({ ...cgl, expand: false }))
-    );
+    const [courseList, setCourseList] = useState([]);
     const [courseId, setCourseId] = useState([]);
+
+    const getGroups = async () => {
+        try {
+          const res = await axios.get('/user/groups/');
+          setCourseList([...res.data].map(cgl => ({ ...cgl, expand: false })));
+
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+    useEffect(() => {
+        getGroups();
+      }, []);
+    
 
     const showGroup = id => {
         setCourseId([...courseId, id]);
         const editedCourseList = courseList.map(cl => {
-            if (cl.id === id && !cl.expand) return { ...cl, expand: true };
-            if (cl.id === id && cl.expand) return { ...cl, expand: false };
+            if (cl._id === id && !cl.expand) return { ...cl, expand: true };
+            if (cl._id === id && cl.expand) return { ...cl, expand: false };
             else return { ...cl };
         });
+      
         setCourseList(editedCourseList);
     };
+
+    const handleOnClick = name => {
+        console.log(name)
+        onGroupUpdate(name);
+    }
 
     return (
         <Grid>
             <Grid item className={classes.chat_head}>
                 <Typography>My Courses</Typography>
-                <Badge badgeContent={3} className={classes.badge} />
+                <Badge badgeContent={courseList.length} className={classes.badge} />
             </Grid>
             <Grid item className={classes.accordion}>
                 {courseList.map(cgl => {
                     let groupList = null;
-                    const isIdThere = courseId.some(id => cgl.id === id);
+                    const isIdThere = courseId.some(id => cgl._id === id);
                     if (cgl.expand && isIdThere)
                         groupList = cgl.groups.map(group => {
                             return (
                                 <Typography
-                                    key={group.id}
+                                    key={group._id}
                                     className={classes.group_list}
-                                    onClick={() => console.log(`${group.name} forum`)}
+                                    onClick={() => handleOnClick(group.name)}
                                 >
                                     {group.name}
                                 </Typography>
                             );
                         });
                     return (
-                        <div key={cgl.id} className={classes.accordion_container}>
+                        <div key={cgl._id} className={classes.accordion_container}>
                             <Grid className={classes.course_name}>
                                 <Typography>{cgl.name}</Typography>
-                                <Button onClick={() => showGroup(cgl.id)}>
+                                <Button onClick={() => showGroup(cgl._id)}>
                                     {cgl.expand && isIdThere ? (
                                         <RemoveIcon className={classes.icons} />
                                     ) : (
