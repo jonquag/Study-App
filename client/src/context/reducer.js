@@ -13,6 +13,7 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 isAuth: true,
+                isLoading: true,
             };
         case 'FETCH_USER_INFO':
             return {
@@ -20,18 +21,19 @@ export const reducer = (state, action) => {
                 userCourse: payload[1],
                 profile: payload[0],
                 isLoading: false,
+                isAuth: true,
             };
         case 'LOGIN_FAIL':
         case 'REGISTER_FAIL':
             return {
                 ...state,
-                isLoading: true,
+                isLoading: false,
             };
         case 'LOGOUT':
             return {
                 ...state,
-                isLoading: true,
                 isAuth: false,
+                isLoading: false,
             };
         case 'updateProfile':
             return {
