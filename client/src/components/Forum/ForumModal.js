@@ -70,7 +70,8 @@ const ForumModal = ({ handleClose }) => {
 
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
-    const [newPost, setNewPost] = useState();
+
+    // const [newPost, setNewPost] = useState();
 
     // const onDrop = useCallback(async droppedFiles => {
     //     if (droppedFiles.length) {
