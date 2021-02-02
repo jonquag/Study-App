@@ -32,59 +32,59 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const PostModal = ({ handlePostModalClose }) => {
+const PostModal = ({ handleClose }) => {
     const classes = useStyles();
 
-    const handleClick = () => {
-        console.log('click');
-    };
-
     return (
-        <Grid container item sm={12} direction="column">
-            <Grid
-                item
-                container
-                direction="column"
-                xs={12}
-                justify="center"
-                alignItems="center"
-            >
-                <div className={classes.wrapper}>
-                    <div className={classes.paper}>
-                        <Grid item>
-                            <Button
-                                onClick={handleClick}
-                                color="primary"
-                                className={classes.close}
-                            >
-                                <CloseIcon />
-                            </Button>
-                        </Grid>
-
-                        <Grid item container justify="center" direction="column">
+        <div>
+            <Grid container item sm={12} direction="column">
+                <Grid
+                    item
+                    container
+                    direction="column"
+                    xs={12}
+                    justify="center"
+                    alignItems="center"
+                >
+                    <div className={classes.wrapper}>
+                        <div className={classes.paper}>
                             <Grid item>
-                                <Typography className={classes.title}>Title</Typography>
-                            </Grid>
-                            <Divider className={classes.divider} />
-
-                            <Grid item>
-                                <Box className={classes.imageContainer}>
-                                    Place image here
-                                </Box>
+                                <Button
+                                    onClick={handleClose}
+                                    color="primary"
+                                    className={classes.close}
+                                >
+                                    <CloseIcon />
+                                </Button>
                             </Grid>
 
-                            <Grid item>
-                                <Typography>Description</Typography>
-                            </Grid>
-                            <Divider className={classes.divider} />
+                            <Grid item container justify="center" direction="column">
+                                <Grid item>
+                                    <Typography className={classes.title}>
+                                        Title
+                                    </Typography>
+                                </Grid>
+                                <Divider className={classes.divider} />
 
-                            <Grid item>For upvotes</Grid>
-                            <Grid item> Render comments here</Grid>
-                        </Grid>
+                                <Grid item>
+                                    <Box className={classes.imageContainer}>
+                                        Place image here
+                                    </Box>
+                                </Grid>
+
+                                <Grid item>
+                                    <Typography>Description</Typography>
+                                </Grid>
+                                <Divider className={classes.divider} />
+
+                                <Grid item>For upvotes</Grid>
+                                <Grid item> Render comments here</Grid>
+                            </Grid>
+                        </div>
                     </div>
-                </div>
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
     );
 };
 

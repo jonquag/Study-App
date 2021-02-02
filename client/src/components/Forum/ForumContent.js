@@ -25,12 +25,29 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const addPost = () => {
-    console.log('Add post clicked');
-};
-
 const ForumContent = () => {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    const [activePost, setActivePost] = React.useState('');
+    const addPost = () => {
+        console.log('Add post clicked');
+    };
+
+    const updateActivePost = postId => {
+        setActivePost(postId);
+        handleOpen();
+        console.log('active post: ' + activePost);
+        console.log('set active post: ' + setActivePost);
+    };
+
+    // Calling will open modal
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    // Calling will close modal
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <Grid
@@ -66,25 +83,29 @@ const ForumContent = () => {
             <Grid
                 item
                 container
-                sm={10}
+                sm={8}
                 justify="flex-start"
                 direction="column"
                 className={classes.cardContainer}
             >
                 <Grid item className={classes.postCard}>
                     {posts.map(post => (
-                        <PostCard key={post.id} post={post} />
+                        <PostCard
+                            key={post.id}
+                            post={post}
+                            onClick={updateActivePost}
+                            setActivePost={setActivePost}
+                        />
                     ))}
                 </Grid>
-                {/* <Button
-                    className={classes.button}
-                    onClick={handleOpen}
-                    variant="text"
-                    color="primary"
-                    type="button"
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="simple-modal-post"
+                    aria-describedby="simple-modal-to-open-post"
                 >
-                    BUTTON
-                </Button> */}
+                    <PostModal handleClose={handleClose} />
+                </Modal>
             </Grid>
         </Grid>
     );

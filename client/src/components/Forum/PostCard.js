@@ -1,11 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Modal } from '@material-ui/core/';
+import { Card } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import PostModal from '../Posts/PostModal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,6 +35,9 @@ const useStyles = makeStyles(theme => ({
     cardTitle: {
         fontWeight: 'bold',
         fontSize: 22,
+        [theme.breakpoints.down('sm')]: {
+            fontSize: 16,
+        },
     },
     cardDesc: {
         fontSize: 14,
@@ -48,52 +50,40 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const PostCard = props => {
+const PostCard = ({ post, setActivePost }) => {
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(false);
-
-    // Calling will open modal
-    const handlePostModalOpen = () => {
-        setOpen(true);
+    const newActivePost = () => {
+        setActivePost(post.id);
     };
-    // Calling will close modal
-    const handlePostModalClose = () => {
-        setOpen(false);
-    };
-
     return (
-        <Card className={classes.root} variant="outlined" onClick={handlePostModalOpen}>
+        <Card
+            className={classes.root}
+            variant="outlined"
+            onClick={setActivePost(post.id)}
+        >
             <CardActionArea className={classes.actionArea}>
                 <CardMedia
                     component="img"
                     alt="alt img"
                     height="140"
-                    image={props.post.image}
-                    title={props.post.title}
+                    image={post.image}
+                    title={post.title}
                     className={classes.cardImage}
                 />
                 <CardContent className={classes.cardInfo}>
                     <div>
                         <Typography className={classes.cardTitle}>
-                            {props.post.title}
+                            {post.title}
                         </Typography>
                     </div>
                     <div className={classes.postDateInfo}>
                         <span className={classes.cardDesc}>
-                            Posted {props.post.postDate} by{' '}
+                            Posted {post.postDate} by{' '}
                         </span>
-                        <span className={classes.postedBy}>{props.post.postedBy}</span>
+                        <span className={classes.postedBy}>{post.postedBy}</span>
                     </div>
                 </CardContent>
-                <Modal
-                    open={open}
-                    onClose={handlePostModalClose}
-                    aria-labelledby="simple-modal-post"
-                    aria-describedby="simple-modal-to-open-post"
-                >
-                    <PostModal handlePostModalClose={handlePostModalClose} />
-                </Modal>
             </CardActionArea>
         </Card>
     );
