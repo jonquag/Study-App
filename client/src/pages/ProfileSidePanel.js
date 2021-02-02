@@ -1,10 +1,11 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 import DragzonePicture from '../components/DragzonePicture';
 
-import profilePic from '../static/images/profilePicSample.png';
+import { useGlobalContext } from '../context/studyappContext';
+import * as actions from '../context/actions';
 
 const useStyles = makeStyles(theme => ({
     linkStyles: {
@@ -21,37 +22,61 @@ const useStyles = makeStyles(theme => ({
     },
     drawer: {
         background: '#F9F9FC',
+        height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: theme.spacing(6),
+            background: '#FFF',
+            height: '100vh',
+        },
     },
     linkContainer: {
         paddingTop: '2em',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: 0,
+        },
     },
     profileName: {
         paddingTop: '1em',
         fontSize: '1.375rem',
     },
+    button: {
+        margin: '2em',
+        textTransform: 'none',
+        fontWeight: 'bold',
+        fontSize: '1rem',
+        letterSpacing: 0.5,
+    },
 }));
 
-const ProfileSidePane = () => {
+const ProfileSidePanel = props => {
     const classes = useStyles();
+    const { profile, dispatch } = useGlobalContext();
+
+    const handleDrawerClose = () => {
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
 
     return (
         <Grid
             container
             direction="column"
             alignItems="center"
+            justify="space-between"
             item
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={3}>
-                <img
-                    src={profilePic}
-                    alt="Ashly Sanford"
-                    className={classes.profilePic}
-                />
+            <Grid
+                container
+                item
+                direction="column"
+                alignItems="center"
+                style={{ marginTop: '3em' }}
+            >
+                <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
-                    Ashly Sanford
+                    {profile.firstName + ' ' + profile.lastName}
                 </Typography>
             </Grid>
 
@@ -64,6 +89,7 @@ const ProfileSidePane = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     User Info
                 </NavLink>
@@ -74,6 +100,7 @@ const ProfileSidePane = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     My Courses
                 </NavLink>
@@ -84,6 +111,7 @@ const ProfileSidePane = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     Settings
                 </NavLink>
@@ -94,17 +122,23 @@ const ProfileSidePane = () => {
                         opacity: '100%',
                     }}
                     className={classes.linkStyles}
+                    onClick={handleDrawerClose}
                 >
                     Notifications
                 </NavLink>
             </Grid>
-            <Grid container direction="column" item justify="flex-end" sm={4}>
+            <Grid container item>
                 <Grid item>
-                    <Typography>Logout</Typography>
+                    <Button
+                        className={classes.button}
+                        onClick={() => actions.logout()(dispatch)}
+                    >
+                        Logout
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
     );
 };
 
-export default ProfileSidePane;
+export default ProfileSidePanel;

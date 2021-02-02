@@ -8,9 +8,12 @@ import ChatContent from '../../components/Chat/ChatContent';
 import ChatSidePanel from './ChatSidePanel';
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     container: {
         height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
+        },
     },
 }));
 
