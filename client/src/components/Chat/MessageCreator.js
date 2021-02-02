@@ -52,8 +52,8 @@ const useStyles = makeStyles(theme => ({
         fontSize: theme.spacing(3)
     },
     sendButton: {
-        margin: theme.spacing(3),
-        width: 110
+        margin: theme.spacing(0, 3),
+        width: 110,
     },
 }));
 
