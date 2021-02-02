@@ -34,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       borderRadius: 4,
-      outline: 'none'
-
+      outline: 'none',
+      top: "50%",
+      left: "50%",
+      transform: `translate(-50%, -50%)`
     },
 
     groupImageContainer: {
@@ -55,22 +57,9 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.5,
       height: "300px",
       width: "400px"
-    },
+    }
     
   }));
-
-  function getModalStyle() {
-    const top = 50;
-    const left = 50;
-  
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    };
-  }
-
-
 
 const Groups = () => {
     const classes = useStyles();
@@ -80,7 +69,6 @@ const Groups = () => {
     const [suggestedGroups, setSuggestedGroups] = React.useState([]);
 
     const { enqueueSnackbar } = useSnackbar();
-    const [modalStyle] = React.useState(getModalStyle);
     const [openModal, setOpen] = useState(false);
     const [groupError, setGroupErrors] = useState('');
     const [uploading, setUploading] = useState(false);
@@ -208,7 +196,7 @@ const Groups = () => {
   };
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div className={classes.paper}>
     <h2>Create a new group</h2>
     <p>
       Add group name and select your course.
