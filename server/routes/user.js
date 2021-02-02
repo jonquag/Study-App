@@ -6,7 +6,6 @@ const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
 const Group = require('../models/Group');
 const Course = require('../models/courses');
-//require('../models/courses');
 
 // Get the logged in user
 router.get('/', verifyAuth, async function (req, res, next) {
@@ -188,7 +187,6 @@ router.get('/groups', verifyAuth, async function (req, res, next) {
                 throw new GeneralError('Error returning groups to join');
             });
         if (userDoc && userDoc.courses) {
-            console.log(userDoc.d)
             res.send(userDoc.courses);
         } else {
             res.sendStatus(500);
@@ -283,8 +281,6 @@ router.post('/groups', verifyAuth, async function (req, res, next) {
     }
 
 });
-
-
 
 // delete a user from a group
 router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
