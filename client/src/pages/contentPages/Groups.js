@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
       left: "50%",
       transform: `translate(-50%, -50%)`
     },
-
     groupImageContainer: {
       flex: 1,
       display: 'flex',
