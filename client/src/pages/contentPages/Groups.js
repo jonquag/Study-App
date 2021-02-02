@@ -214,7 +214,7 @@ const Groups = () => {
     <Box className={classes.groupImageContainer}>
       <FormHelperText>Drag and Drop Group Picture </FormHelperText>
         <Tooltip
-          title='Drag and drop profile picture'
+          title='Drag and drop group picture'
           arrow placement='right'
         >
         <Box {...getRootProps({style})}>
