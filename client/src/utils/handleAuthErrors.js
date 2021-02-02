@@ -8,6 +8,7 @@ const handleAuthErrors = (err, setErrors) => {
             setErrors(errors);
         } else if (err.status === 401) {
             setErrors({ password: 'Invalid password' });
+            setErrors({ oldPassword: 'Invalid password' });
         } else if (err.status === 404) {
             setErrors({ email: 'User with email not found' });
         } else if (err.status === 409) {
