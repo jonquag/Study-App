@@ -5,7 +5,6 @@ const router = express.Router();
 const fileUpload = multer();
 const streamUpload = require('../controllers/upload');
 const updateProfile = require('../controllers/profile');
-const { response } = require('express');
 
 
 //stream file upload
