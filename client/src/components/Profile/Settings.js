@@ -72,7 +72,7 @@ const ProfileSettings = () => {
                         confirmPassword: '',
                     }}
                     validationSchema={SignupSchema}
-                    onSubmit={async (values, { setSubmitting, setErrors }) => {
+                    onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
                         console.log(values);
                         const password = {
                             oldPassword: values.oldPassword,
@@ -86,6 +86,9 @@ const ProfileSettings = () => {
                                         variant: 'success',
                                         autoHideDuration: '5000',
                                     });
+                                    setTimeout(() => {
+                                        resetForm();
+                                    }, 500);
                                 } else if (res.status === 500) {
                                     enqueueSnackbar('Server Error', {
                                         variant: 'Error',
