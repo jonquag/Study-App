@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
     cardTitle: {
         fontWeight: 'bold',
         fontSize: 22,
+        [theme.breakpoints.down('sm')]: {
+            fontSize: 16,
+        }
     },
     cardDesc: {
         fontSize: 14,
