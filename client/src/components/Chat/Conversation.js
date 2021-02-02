@@ -57,10 +57,11 @@ const Conversation = ({messages}) => {
             <Container>
                 <List>
                     {
-                        messages.map(message => {
+                        messages.map((message, index) => {
                             const isReceived = message.user !== user._id;
                             return (
-                                <ListItem 
+                                <ListItem
+                                    key={index}
                                     className={
                                         isReceived ? 
                                         classes.left_msg : 

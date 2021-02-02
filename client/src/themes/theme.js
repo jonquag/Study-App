@@ -23,10 +23,6 @@ export const theme = createMuiTheme({
             fontSize: '1rem',
             fontWeight: 500,
         },
-        h7: {
-            fontSize: '0.5rem',
-            fontWeight: 500,
-        },
     },
     palette: {
         primary: {

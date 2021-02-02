@@ -64,11 +64,11 @@ export const ChatContent = ({chat}) => {
                 />
                 <Box flexGrow={1} flexDirection='column'>
                     <Typography variant='h5'>{chat.chatGroup}</Typography>
-                    <Typography className={classes.members} variant='h7'>
+                    <Typography className={classes.members} variant='h6'>
                         {chat.members + ' Members'}
                     </Typography>
                 </Box>
-                <IconButton item>
+                <IconButton>
                     <MoreHorizIcon className={classes.dot_icon} />
                 </IconButton>
             </Container>

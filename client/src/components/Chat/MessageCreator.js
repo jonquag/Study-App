@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     },
     text: {
         height: 100,
-        padding: 10
+        padding: 10,
     },
     iconAdornments: {
         fontSize: theme.spacing(3)
@@ -67,7 +67,6 @@ const MessageCreator = () => {
                 fullWidth={true}
                 multiline={true}
                 placeholder="Type your message here"
-                disableUnderline={true}
                 InputProps={{
                     classes: {input: classes.text},
                     disableUnderline: true,
