@@ -23,12 +23,9 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: theme.spacing(8),
     },
     button: {
-      color: '#FFF',
-      background: theme.palette.primary.gradient,
       marginTop: "60px",
       marginRight: "60px",
       textTransform: 'none',
-      height: '3rem',
   },
     paper: {
       position: 'fixed',
@@ -265,6 +262,7 @@ const Groups = () => {
     <Button
       type="submit"
       className={classes.button}
+      color="primary"
       style={{marginTop: "20px"}}
     >
       Create New Group
@@ -333,6 +331,7 @@ const Groups = () => {
           md={4}>
             <Button
               className={classes.button}
+              color="primary"
               onClick={handleOpen}
               >
               Create New Group
