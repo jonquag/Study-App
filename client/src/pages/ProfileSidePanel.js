@@ -2,8 +2,8 @@ import React from 'react';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-
 import DragzonePicture from '../components/DragzonePicture';
+
 import { useGlobalContext } from '../context/studyappContext';
 import * as actions from '../context/actions';
 

@@ -105,7 +105,7 @@ const Navbar = () => {
                                 >
                                     Chats
                                 </NavLink>
-                                <Badge badgeContent={12} className={classes.badge} />
+                                <Badge badgeContent={8} className={classes.badge} />
                             </ListItem>
                         </List>
                     </div>

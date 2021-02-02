@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
+import React from 'react';
+import { 
+    Grid, 
+    Typography, 
+    Badge, 
+    Divider, 
+    Avatar } 
+from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-import { chatList } from '../../data/mockData';
 import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
@@ -98,14 +102,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatSidePanel = () => {
+const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
     const classes = useStyles();
     const { dispatch } = useGlobalContext();
 
-    const [chatId, setChatId] = useState(null);
-
-    const handleChatList = id => {
-        setChatId(id);
+    const handleChatList = (index) => {
+        setChatIndex(index)
         dispatch({ type: 'CLOSE_DRAWER' });
     };
 
@@ -117,18 +119,18 @@ const ChatSidePanel = () => {
                     <Badge badgeContent={12} className={classes.badge} />
                 </Grid>
                 <Divider className={classes.divider} />
-                {chatList.map(cg => {
+                {chatList.map((cg, index) => {
                     return (
                         <React.Fragment key={cg.id}>
                             <Grid
                                 item
                                 container
                                 className={
-                                    cg.id === chatId
+                                    index === chatIndex
                                         ? classes.chat_list_active
                                         : classes.chat_list
                                 }
-                                onClick={() => handleChatList(cg.id)}
+                                onClick={() => handleChatList(index)}
                             >
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar
