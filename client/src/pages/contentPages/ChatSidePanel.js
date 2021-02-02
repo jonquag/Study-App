@@ -3,12 +3,23 @@ import { Grid, Typography, Badge, Divider, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { chatList } from '../../data/mockData';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+            backgroundColor: '#FFF',
+            paddingTop: theme.spacing(6),
+        },
+    },
     list_container: {
         display: 'block',
-        height: 'calc(100vh - 103px)',
+        height: 'calc(100vh - 100px)',
         overflowY: 'auto',
+        [theme.breakpoints.down('sm')]: {
+            backgroundColor: '#FFF',
+        },
         '&::-webkit-scrollbar': {
             width: '0.6rem',
             height: '12rem',
@@ -23,6 +34,9 @@ const useStyles = makeStyles(theme => ({
         },
         '&::-webkit-scrollbar-thumb:hover': {
             background: '#ccc',
+        },
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
         },
     },
     chat_head: {
@@ -86,50 +100,59 @@ const useStyles = makeStyles(theme => ({
 
 const ChatSidePanel = () => {
     const classes = useStyles();
+    const { dispatch } = useGlobalContext();
+
     const [chatId, setChatId] = useState(null);
 
+    const handleChatList = id => {
+        setChatId(id);
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
+
     return (
-        <Grid container className={classes.list_container}>
-            <Grid item className={classes.chat_head}>
-                <Typography>All Chats</Typography>
-                <Badge badgeContent={12} className={classes.badge} />
+        <div className={classes.container}>
+            <Grid container className={classes.list_container}>
+                <Grid item className={classes.chat_head}>
+                    <Typography>All Chats</Typography>
+                    <Badge badgeContent={12} className={classes.badge} />
+                </Grid>
+                <Divider className={classes.divider} />
+                {chatList.map(cg => {
+                    return (
+                        <React.Fragment key={cg.id}>
+                            <Grid
+                                item
+                                container
+                                className={
+                                    cg.id === chatId
+                                        ? classes.chat_list_active
+                                        : classes.chat_list
+                                }
+                                onClick={() => handleChatList(cg.id)}
+                            >
+                                <Grid item className={classes.avatar_container}>
+                                    <Avatar
+                                        alt="chat_group_img"
+                                        src={cg.imgUrl}
+                                        variant="rounded"
+                                        className={classes.avatar}
+                                    />
+                                </Grid>
+                                <Grid item container className={classes.group_member}>
+                                    <Typography className={classes.group_name}>
+                                        {cg.chatGroup}
+                                    </Typography>
+                                    <Typography variant="subtitle1" color="textSecondary">
+                                        {cg.members} members
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <Divider className={classes.divider} />
+                        </React.Fragment>
+                    );
+                })}
             </Grid>
-            <Divider className={classes.divider} />
-            {chatList.map(cg => {
-                return (
-                    <React.Fragment key={cg.id}>
-                        <Grid
-                            item
-                            container
-                            className={
-                                cg.id === chatId
-                                    ? classes.chat_list_active
-                                    : classes.chat_list
-                            }
-                            onClick={() => setChatId(cg.id)}
-                        >
-                            <Grid item className={classes.avatar_container}>
-                                <Avatar
-                                    alt="chat_group_img"
-                                    src={cg.imgUrl}
-                                    variant="rounded"
-                                    className={classes.avatar}
-                                />
-                            </Grid>
-                            <Grid item container className={classes.group_member}>
-                                <Typography className={classes.group_name}>
-                                    {cg.chatGroup}
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    {cg.members} members
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <Divider className={classes.divider} />
-                    </React.Fragment>
-                );
-            })}
-        </Grid>
+        </div>
     );
 };
 

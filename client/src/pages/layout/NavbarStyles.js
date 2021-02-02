@@ -13,6 +13,9 @@ export const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         marginLeft: '2.25rem',
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: '0.75rem',
+        },
         '& img': {
             width: '2.75rem',
             height: 'auto',
@@ -21,6 +24,9 @@ export const useStyles = makeStyles(theme => ({
         },
     },
     listContainer: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'none',
+        },
         flexGrow: 3,
         display: 'flex',
         '& > *': {
@@ -31,9 +37,19 @@ export const useStyles = makeStyles(theme => ({
         },
     },
     profile: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'none',
+        },
         flexGrow: 1,
         display: 'flex',
         marginLeft: theme.spacing(2),
+    },
+    menuButton: {
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+        fontSize: '2.25rem',
+        color: '#4B00FF',
     },
     avatar: {
         height: 60,
@@ -62,5 +78,16 @@ export const useStyles = makeStyles(theme => ({
         fontSize: 18,
         opacity: '50%',
         marginLeft: 15,
+    },
+    dropdown_list: {
+        '& li': {
+            paddingLeft: theme.spacing(0.5),
+            '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            },
+        },
+    },
+    mobile_logout: {
+        marginTop: theme.spacing(2),
     },
 }));

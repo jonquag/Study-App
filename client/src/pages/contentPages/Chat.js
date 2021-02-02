@@ -8,6 +8,9 @@ import ChatSidePanel from './ChatSidePanel';
 const useStyles = makeStyles(theme => ({
     container: {
         height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            height: 'auto',
+        },
     },
     contentContainer: {
         backgroundColor: theme.palette.common.white,
