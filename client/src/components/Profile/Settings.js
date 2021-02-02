@@ -4,6 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TextField as MikTextField } from 'formik-material-ui';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
+
+import * as actions from '../../context/actions';
+import { useGlobalContext } from '../../context/studyappContext';
+import handleAuthErrors from '../../utils/handleAuthErrors';
 
 export const useStyles = makeStyles(theme => ({
     settings: {
@@ -50,6 +55,8 @@ const SignupSchema = Yup.object().shape({
 
 const ProfileSettings = () => {
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
+    const { dispatch } = useGlobalContext();
 
     return (
         <Grid container justify="center">
@@ -67,6 +74,30 @@ const ProfileSettings = () => {
                     validationSchema={SignupSchema}
                     onSubmit={async (values, { setSubmitting, setErrors }) => {
                         console.log(values);
+                        const password = {
+                            oldPassword: values.oldPassword,
+                            newPassword: values.newPassword,
+                        };
+                        actions
+                            .updatePassword(password)(dispatch)
+                            .then(res => {
+                                if (res.status === 200) {
+                                    enqueueSnackbar('Updated successfully', {
+                                        variant: 'success',
+                                        autoHideDuration: '5000',
+                                    });
+                                } else if (res.status === 500) {
+                                    enqueueSnackbar('Server Error', {
+                                        variant: 'Error',
+                                        autoHideDuration: '5000',
+                                    });
+                                } else {
+                                    handleAuthErrors(res, setErrors);
+                                }
+                            });
+                        setTimeout(() => {
+                            setSubmitting(false);
+                        }, 500);
                     }}
                 >
                     {({ submitForm, isSubmitting, errors }) => (
