@@ -67,6 +67,9 @@ export const fetchProfile = () => async dispatch => {
             ],
         });
     } catch (err) {
+        if (err.response.status === 401) {
+            dispatch({ type: 'LOGIN_FAIL' });
+        }
         console.log(err.message);
     }
 };

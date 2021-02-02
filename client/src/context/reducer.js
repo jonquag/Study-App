@@ -27,7 +27,7 @@ export const reducer = (state, action) => {
         case 'REGISTER_FAIL':
             return {
                 ...state,
-                isLoading: true,
+                isLoading: false,
             };
         case 'LOGOUT':
             return {
