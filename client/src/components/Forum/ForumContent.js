@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Grid, Typography, Divider } from '@material-ui/core';
+import { Button, Grid, Typography, Divider, Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
+import PostModal from '../Posts/PostModal';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -75,6 +76,15 @@ const ForumContent = () => {
                         <PostCard key={post.id} post={post} />
                     ))}
                 </Grid>
+                {/* <Button
+                    className={classes.button}
+                    onClick={handleOpen}
+                    variant="text"
+                    color="primary"
+                    type="button"
+                >
+                    BUTTON
+                </Button> */}
             </Grid>
         </Grid>
     );

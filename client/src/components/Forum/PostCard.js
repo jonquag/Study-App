@@ -1,10 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
+import { Card, Modal } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import PostModal from '../Posts/PostModal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -50,8 +51,19 @@ const useStyles = makeStyles(theme => ({
 const PostCard = props => {
     const classes = useStyles();
 
+    const [open, setOpen] = React.useState(false);
+
+    // Calling will open modal
+    const handlePostModalOpen = () => {
+        setOpen(true);
+    };
+    // Calling will close modal
+    const handlePostModalClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root} variant="outlined" onClick={handlePostModalOpen}>
             <CardActionArea className={classes.actionArea}>
                 <CardMedia
                     component="img"
@@ -74,6 +86,14 @@ const PostCard = props => {
                         <span className={classes.postedBy}>{props.post.postedBy}</span>
                     </div>
                 </CardContent>
+                <Modal
+                    open={open}
+                    onClose={handlePostModalClose}
+                    aria-labelledby="simple-modal-post"
+                    aria-describedby="simple-modal-to-open-post"
+                >
+                    <PostModal handlePostModalClose={handlePostModalClose} />
+                </Modal>
             </CardActionArea>
         </Card>
     );
