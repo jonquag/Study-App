@@ -20,16 +20,17 @@ import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles(theme => ({
     paper: {
         backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
+        // border: '2px solid #000',
         boxShadow: theme.shadows[5],
         marginTop: theme.spacing(10),
-        padding: theme.spacing(2, 4, 3),
+        padding: theme.spacing(3),
     },
     divider: {
         margin: theme.spacing(2, 0),
     },
     input: {
-        width: 400,
+        maxWidth: 450,
+        width: '100%',
         paddingBottom: theme.spacing(2),
     },
     label: {
@@ -38,14 +39,11 @@ const useStyles = makeStyles(theme => ({
     title: {
         marginBottom: theme.spacing(1),
     },
-    groupImageContainer: {
+    imageContainer: {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: '10px',
-        paddingBottom: '10px',
+        padding: theme.spacing(1, 0),
     },
     large: {
         height: '300px',
@@ -61,6 +59,9 @@ const useStyles = makeStyles(theme => ({
     },
     close: {
         height: 2.5,
+    },
+    wrapper: {
+        maxWidth: 800,
     },
 }));
 
@@ -117,7 +118,7 @@ const ForumModal = ({ handleClose }) => {
                 justify="center"
                 alignItems="center"
             >
-                <div>
+                <div className={classes.wrapper}>
                     <div className={classes.paper}>
                         <Grid item>
                             <Button
@@ -145,66 +146,68 @@ const ForumModal = ({ handleClose }) => {
                             <Divider className={classes.divider} />
                         </Grid>
 
-                        <form>
-                            <Grid item>
-                                <InputLabel className={classes.label}>
-                                    Post Title
-                                </InputLabel>
-                                <TextField
-                                    variant="outlined"
-                                    defaultValue={title}
-                                    onChange={e => setTitle(e.target.value)}
-                                    className={classes.input}
-                                    placeholder="Add a title.."
-                                />
-                            </Grid>
+                        <Grid item container justify="center">
+                            <form>
+                                <Grid item>
+                                    <InputLabel className={classes.label}>
+                                        Post Title
+                                    </InputLabel>
+                                    <TextField
+                                        variant="outlined"
+                                        defaultValue={title}
+                                        onChange={e => setTitle(e.target.value)}
+                                        className={classes.input}
+                                        placeholder="Add a title.."
+                                    />
+                                </Grid>
 
-                            <Grid item>
-                                <InputLabel className={classes.label}>
-                                    Post Description
-                                </InputLabel>
-                                <TextField
-                                    variant="outlined"
-                                    id="outlined-multiline-static"
-                                    multiline
-                                    rows={4}
-                                    defaultValue={description}
-                                    onChange={e => setDescription(e.target.value)}
-                                    className={classes.input}
-                                    placeholder="Add a description.."
-                                />
-                            </Grid>
-                            <Grid item>
-                                <Box className={classes.groupImageContainer}>
-                                    <FormHelperText>
-                                        Drag and Drop Post Picture{' '}
-                                    </FormHelperText>
-                                    <Tooltip
-                                        title="Drag and drop post picture"
-                                        arrow
-                                        placement="right"
+                                <Grid item>
+                                    <InputLabel className={classes.label}>
+                                        Post Description
+                                    </InputLabel>
+                                    <TextField
+                                        variant="outlined"
+                                        id="outlined-multiline-static"
+                                        multiline
+                                        rows={4}
+                                        defaultValue={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                        className={classes.input}
+                                        placeholder="Add a description.."
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <Box className={classes.imageContainer}>
+                                        <FormHelperText className={classes.label}>
+                                            Drag and Drop Post Picture{' '}
+                                        </FormHelperText>
+                                        <Tooltip
+                                            title="Drag and drop post picture"
+                                            arrow
+                                            placement="right"
+                                        >
+                                            <Box {...getRootProps({ style })}>
+                                                <img
+                                                    src="https://www.rcdrilling.com/wp-content/uploads/2013/12/default_image_01-1024x1024-570x321.png"
+                                                    className={classes.large}
+                                                    alt="Post"
+                                                />
+                                            </Box>
+                                        </Tooltip>
+                                    </Box>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        color="primary"
+                                        startIcon={<AddIcon />}
+                                        onSubmit={createPost}
+                                        className={classes.button}
                                     >
-                                        <Box {...getRootProps({ style })}>
-                                            <img
-                                                src="https://www.rcdrilling.com/wp-content/uploads/2013/12/default_image_01-1024x1024-570x321.png"
-                                                className={classes.large}
-                                                alt="Post"
-                                            />
-                                        </Box>
-                                    </Tooltip>
-                                </Box>
-                            </Grid>
-                            <Grid item>
-                                <Button
-                                    color="primary"
-                                    startIcon={<AddIcon />}
-                                    onSubmit={createPost}
-                                    className={classes.button}
-                                >
-                                    Create Post
-                                </Button>
-                            </Grid>
-                        </form>
+                                        Create Post
+                                    </Button>
+                                </Grid>
+                            </form>
+                        </Grid>
                     </div>
                 </div>
             </Grid>
