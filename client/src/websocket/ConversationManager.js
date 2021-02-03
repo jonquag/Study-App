@@ -5,39 +5,61 @@ import { fetchConversations } from '../context/actions';
 class ConversationManager {
 
     constructor() {
-        this._socket = io({ autoConnect: false, forceNew: true });
+        this._socket = io({ autoConnect: false });
+        socketEvents(this._socket, this.handleReceiveMessage);
         this._updateConversations = () => {};
         this._conversations = {};
     }
 
-    initUpdateMessages = (updateFunc) => {
-        this._updateConversations = updateFunc;
+    init = (updateConversations) => {
+        this._updateConversations = updateConversations;
     }
 
+    handleReceiveMessage = (data) => {
+        this._conversations[data.room].messages.push(data.message);
+        this._updateConversations({...this._conversations});  
+    };
+
     sendMessageToGroup = (groupId, message) => {
-        //this._conversations[groupId].messages.push(message);
-        //this._updateConversations({...this._conversations});
         this._socket.emit('messageGroup', {room: groupId, message})
     }
 
-    startSocket = () => {
+    startSocket = (groupNames) => {
         if (!this._socket.connected) {
-            socketEvents(this._socket);
-            this._socket.connect({rooms: 'hello'});
-            fetchConversations().then((conversations) => {
-                const convos = {};
-                conversations.map(c => (convos[c.group] = c));
-                console.log('convos: ', convos)
-                this._conversations = convos;
-                this._updateConversations(convos);
-            })
+            this._socket.io.opts.query = 'rooms=' + groupNames;
+            this._socket.connect();
+            this.updateConversations();
         }
+    }
+
+    updateRooms = (groups) => {
+        const groupNames = groups.map(group => group._id);
+        this._socket.emit('updateRooms', groupNames);
+        this.updateConversations();
+    }
+
+    updateConversations = () => {
+        fetchConversations().then((conversations) => {
+            const convos = {};
+            conversations.map(c => (convos[c.group] = c));
+            this._conversations = convos;
+            this._updateConversations(convos);
+        })
     }
 
     closeSocket = () => {
         if (this._socket.connected) {
-            this._socket.close();
+            this._updateConversations = () => {};
+            this._socket.disconnect();
         }
+    }
+
+    removeListeners = () => {
+        this._socket.off('connect');
+        this._socket.off('rooms updated');
+        this._socket.off('group messagee');
+        this._socket.off('disconnect');
+        this._socket.off('connect_error');
     }
 
 }

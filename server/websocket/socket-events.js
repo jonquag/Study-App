@@ -1,34 +1,32 @@
 const verifyToken = require('../utils/verifyToken');
-const roomController = require('../controllers/rooms');
-const connectedUsers = {}
+const messageController = require('../controllers/messages');
 
 module.exports = function (io) {
     io.use((socket, next) => {
         verifyToken(socket, next);
     });
-    io.on("connection", async (socket) => {
-        //await roomController.joinRooms(socket);
-        socket.join('6019f50fec5ce9f1a8963e53');
-        
-        connectedUsers[socket.uid] = socket.id;
-        console.log("user " + socket.uid + " connected to socket server");
 
-        socket.on("joinRoom", () => {
-            console.log("join room");
+    io.on("connection", (socket) => {
+        
+        const rooms = socket.handshake.query['rooms'].split(',')
+        socket.join(rooms);
+        console.log(socket.uid + ' connected');
+
+        socket.on('updateRooms', (data) => {
+            socket.leaveAll()
+            socket.join(data);
+            socket.emit('rooms updated', data)
         });
-        socket.on("leaveRoom", () => {
-            console.log("leave room");
-        });
+
         socket.on("messageGroup", (data) => {
-            //console.log('hello: ', socket, data)
-            //socket.emit('message', data)
-            console.log(data.room)
-            io.to(data.room).emit('group message', data)
-            //socket.emit('group message', data)
-            //io.to(data.room).emit('message', data);
+            messageController.saveMessage(data).then((msg) => {
+                console.log(msg)
+                io.to(data.room).emit('group message', {room: data.room, message: msg})
+            });
         });
+        
         socket.on("disconnect", () => {
-            delete connectedUsers[socket.uid]
+            socket.leaveAll();
             console.log("disconnected user ", socket.uid)
         })
     });

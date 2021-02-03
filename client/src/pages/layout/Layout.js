@@ -4,20 +4,22 @@ import * as actions from '../../context/actions';
 import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
 
 const Layout = ({ children }) => {
-    const { dispatch, isLoading,  isAuth } = useGlobalContext();
+    const { dispatch, isLoading } = useGlobalContext();
     const { conversationManager } = useConversationContext();
+    
     useEffect(() => {
-        if (isLoading) 
+        if (isLoading)
             actions.fetchProfile()(dispatch).then((userGroups) => {
+                console.log('init')
+                const groupNames = userGroups.map(group => group._id);
+                conversationManager.startSocket(groupNames);
                 actions.fetchUserGroups(userGroups)(dispatch)
             });
-    }, [isLoading, dispatch]);
+    }, [isLoading, dispatch, conversationManager]);
 
     useEffect(() => {
-        conversationManager.closeSocket();
+        return () => conversationManager.closeSocket();
     }, [conversationManager])
-
-    if (isAuth) conversationManager.startSocket();
 
     return (
         <>

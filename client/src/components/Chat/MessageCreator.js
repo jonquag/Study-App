@@ -67,9 +67,16 @@ const MessageCreator = ({groupId}) => {
     const [workingText, setWorkingText] = React.useState('');
 
     const sendMessage = () => {
-        const d = new Date();
-        const nowTime = Math.floor(d.getTime() / 1000)
-        conversationManager.sendMessageToGroup(groupId, {user: user._id, timeStamp: nowTime, content: workingText});
+        // const d = new Date();
+        // const nowTime = Math.floor(d.getTime() / 1000)
+
+        const payload = {
+            user: user._id, 
+            text: workingText, 
+            image: profile.imageUrl
+        }
+        conversationManager.sendMessageToGroup(groupId, payload);
+        setWorkingText('');
     };
 
     const handleChangeText = (ev) => {

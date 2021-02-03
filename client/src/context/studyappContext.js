@@ -19,10 +19,10 @@ const ConversationContext = createContext({
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const [conversations, setConversations] = React.useState([]);
+    const [conversations, setConversations] = React.useState({});
 
     React.useEffect(() => {
-        conversationManager.initUpdateMessages(setConversations);
+        conversationManager.init(setConversations);
     }, []);
     
     return (
