@@ -45,7 +45,8 @@ const ForumContent = ({name, groupId}) => {
     const classes = useStyles();
 
     const [forumPosts, setForumPosts] = useState([]);
-    const [Id, setId] = useState(groupId);
+
+    const [forumName, setForumName] = useState('');
 
     const getGroupForum = async (groupId) => {
 
@@ -53,6 +54,7 @@ const ForumContent = ({name, groupId}) => {
 
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
+            setForumName(response.data.group.forum.name)
 
         } catch(err) {
             console.log(err)
@@ -60,7 +62,6 @@ const ForumContent = ({name, groupId}) => {
     }
     
     useEffect(() => {
-        setId(groupId);
         getGroupForum(groupId);
       }, [groupId]);
     
@@ -76,7 +77,7 @@ const ForumContent = ({name, groupId}) => {
             >
                 <Grid item>
                     <Typography variant="h1" className={classes.headerText}>
-                        {name}
+                        {forumName}
                     </Typography>
                 </Grid>
 
