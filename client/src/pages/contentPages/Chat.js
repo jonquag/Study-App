@@ -72,14 +72,17 @@ const Chat = () => {
     React.useEffect(() => {
         if (groups.length && Object.keys(conversations).length) {
             const sorted = groups.sort((a, b) => {
-                const aMessages = conversations[a._id].messages;
-                const bMessages = conversations[b._id].messages;
-    
-                const aMostRecent = 
-                    aMessages.length === 0 ? 0 : aMessages[aMessages.length - 1].timeStamp;
-                const bMostRecent = 
-                    bMessages.length === 0 ? 0 : bMessages[bMessages.length - 1].timeStamp;
-                return bMostRecent - aMostRecent;
+                if (conversations[a._id] && conversations[b._id]) {
+                    const aMessages = conversations[a._id].messages;
+                    const bMessages = conversations[b._id].messages;
+        
+                    const aMostRecent = 
+                        aMessages.length === 0 ? 0 : aMessages[aMessages.length - 1].timeStamp;
+                    const bMostRecent = 
+                        bMessages.length === 0 ? 0 : bMessages[bMessages.length - 1].timeStamp;
+                    return bMostRecent - aMostRecent;
+                }
+                return 0
             })
             if (chatGroups) {
                 const selectedId = chatGroups[chatIndex]._id;
@@ -89,7 +92,6 @@ const Chat = () => {
             setChatGroups([...sorted]);
         }
     }, [groups, conversations]);
-
 
     if (!chatGroups) return <LinearProgress />
     return (

@@ -13,7 +13,11 @@ class ConversationManager {
 
     init = (updateConversations) => {
         this._updateConversations = updateConversations;
-    }
+    };
+
+    getConversations = () => {
+        return this._conversations;
+    };
 
     handleReceiveMessage = (data) => {
         this._conversations[data.room].messages.push(data.message);
@@ -53,15 +57,6 @@ class ConversationManager {
             this._socket.disconnect();
         }
     }
-
-    removeListeners = () => {
-        this._socket.off('connect');
-        this._socket.off('rooms updated');
-        this._socket.off('group messagee');
-        this._socket.off('disconnect');
-        this._socket.off('connect_error');
-    }
-
 }
 
 export default ConversationManager;

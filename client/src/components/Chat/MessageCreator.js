@@ -67,9 +67,6 @@ const MessageCreator = ({groupId}) => {
     const [workingText, setWorkingText] = React.useState('');
 
     const sendMessage = () => {
-        // const d = new Date();
-        // const nowTime = Math.floor(d.getTime() / 1000)
-
         const payload = {
             user: user._id, 
             text: workingText, 
