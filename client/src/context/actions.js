@@ -67,7 +67,7 @@ export const fetchProfile = () => async dispatch => {
         });
         return user.groups;
     } catch (err) {
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
             dispatch({ type: 'LOGIN_FAIL' });
         }
         console.log(err.message);
