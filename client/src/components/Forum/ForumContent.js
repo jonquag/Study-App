@@ -55,7 +55,6 @@ const ForumContent = ({name, groupId}) => {
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
             setForumName(response.data.group.forum.name)
-
             setIsLoading(false);
 
         } catch(err) {
