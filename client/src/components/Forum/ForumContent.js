@@ -47,14 +47,16 @@ const ForumContent = ({name, groupId}) => {
     const [forumPosts, setForumPosts] = useState([]);
 
     const [forumName, setForumName] = useState('');
+    const [isLoading, setIsLoading] = useState('true')
 
     const getGroupForum = async (groupId) => {
 
         try {
-
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
             setForumName(response.data.group.forum.name)
+
+            setIsLoading(false);
 
         } catch(err) {
             console.log(err)
@@ -65,6 +67,18 @@ const ForumContent = ({name, groupId}) => {
         getGroupForum(groupId);
       }, [groupId]);
     
+    const renderPosts = () => {
+        if(!isLoading) {
+            return (
+                <Grid item className={classes.postCard}>
+                        {forumPosts.map(post => (
+                            <PostCard key={post._id} post={post} />
+                        ))}
+                </Grid>
+    
+               ); 
+        } 
+    }
 
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
@@ -97,11 +111,9 @@ const ForumContent = ({name, groupId}) => {
                 direction="column"
                 className={classes.cardContainer}
             >
-                <Grid item className={classes.postCard}>
-                    {forumPosts.map(post => (
-                        <PostCard key={post._id} post={post} />
-                    ))}
-                </Grid>
+            
+            { renderPosts()}   
+        
             </Grid>
         </Grid>
     );
