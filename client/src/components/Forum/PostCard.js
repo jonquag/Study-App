@@ -53,8 +53,12 @@ const useStyles = makeStyles(theme => ({
 const PostCard = ({ post, updateActivePost }) => {
     const classes = useStyles();
 
+    const updatePostId = () => {
+        updateActivePost(post.id);
+    };
+
     return (
-        <Card className={classes.root} variant="outlined" onClick={updateActivePost}>
+        <Card className={classes.root} variant="outlined" onClick={updatePostId}>
             <CardActionArea className={classes.actionArea}>
                 <CardMedia
                     component="img"

@@ -46,6 +46,7 @@ const ForumContent = () => {
 
     const updateActivePost = postId => {
         setActivePost(postId);
+        console.log('postId: ' + postId);
         handleOpen();
         // console.log('active post: ' + activePost);
         // console.log('set active post: ' + setActivePost);
@@ -95,7 +96,6 @@ const ForumContent = () => {
                         <PostCard
                             key={post.id}
                             post={post}
-                            onClick={updateActivePost}
                             updateActivePost={updateActivePost}
                         />
                     ))}
