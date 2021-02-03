@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1, 0),
     },
     commentText: {
-        padding: theme.spacing(0, 2),
+        padding: theme.spacing(0, 4),
     },
 }));
 

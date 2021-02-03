@@ -43,15 +43,15 @@ const useStyles = makeStyles(theme => ({
     close: {
         height: 2.5,
     },
-    wrapper: {
-        width: 'calc(100vw - 100px)',
-        [theme.breakpoints.up('md')]: {
-            width: 'calc(100vw - 250px)',
-        },
-        [theme.breakpoints.up('lg')]: {
-            width: 'calc(100vw - 40vw)',
-        },
-    },
+    // wrapper: {
+    //     width: 'calc(100vw - 100px)',
+    //     [theme.breakpoints.up('md')]: {
+    //         width: 'calc(100vw - 250px)',
+    //     },
+    //     [theme.breakpoints.up('lg')]: {
+    //         width: 'calc(100vw - 40vw)',
+    //     },
+    // },
     upvote: {
         transform: 'rotate(-90deg)',
         // fontSize: 'large',
@@ -71,67 +71,74 @@ const PostModal = ({ handleClose }) => {
     };
 
     return (
-        <Grid item container direction="column" justify="center" alignItems="center">
-            <div className={classes.wrapper}>
-                <div className={classes.paper}>
-                    <Grid item container direction="column" alignItems="center">
-                        <Grid item xs={12} container>
-                            <Grid item xs={2}>
-                                <Button
-                                    onClick={handleClose}
-                                    color="primary"
-                                    className={classes.close}
-                                >
-                                    <CloseIcon />
-                                </Button>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <Typography variant="h2" align="center">
-                                    Post Title
-                                </Typography>
-                            </Grid>
-                        </Grid>
-
-                        <Divider className={classes.divider} />
-
-                        <Grid item>
-                            <Box className={classes.imageContainer}>Place image here</Box>
-                        </Grid>
-                        <Divider className={classes.divider} />
-                        <Grid item>
-                            <Typography>
-                                This is the description of the post. Don't you wish I
-                                would have used Lorem25 and got it working? This is the
-                                description of the post. Don't you wish I would have used
-                                Lorem25 and got it working? description of the post. Don't
-                                you wish I would have used Lorem25 and got it working?
-                            </Typography>
-                        </Grid>
-                        <Divider className={classes.divider} />
-                        <Grid item container xs={12} alignItems="center">
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={8}>
-                                <Comments />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <IconButton aria-label="upvote" onClick={toggleVote}>
-                                    {upvoted ? (
-                                        <ForwardIcon
-                                            color="secondary"
-                                            className={classes.upvote}
-                                        />
-                                    ) : (
-                                        <ForwardOutlinedIcon
-                                            color="secondary"
-                                            className={classes.upvote}
-                                        />
-                                    )}
-                                </IconButton>
-                            </Grid>
-                        </Grid>
+        <Grid
+            item
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            // style={{ width: '100%' }}
+        >
+            {/* <div className={classes.wrapper}>
+                <div className={classes.paper}> */}
+            <Grid item container direction="column" alignItems="center">
+                <Grid item xs={12} container>
+                    <Grid item xs={2}>
+                        <Button
+                            onClick={handleClose}
+                            color="primary"
+                            className={classes.close}
+                        >
+                            <CloseIcon />
+                        </Button>
                     </Grid>
-                </div>
-            </div>
+                    <Grid item xs={8}>
+                        <Typography variant="h2" align="center">
+                            Post Title
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+                <Divider className={classes.divider} />
+
+                <Grid item>
+                    <Box className={classes.imageContainer}>Place image here</Box>
+                </Grid>
+                <Divider className={classes.divider} />
+                <Grid item>
+                    <Typography>
+                        This is the description of the post. Don't you wish I would have
+                        used Lorem25 and got it working? This is the description of the
+                        post. Don't you wish I would have used Lorem25 and got it working?
+                        description of the post. Don't you wish I would have used Lorem25
+                        and got it working?
+                    </Typography>
+                </Grid>
+                <Divider className={classes.divider} />
+                <Grid item container xs={12} alignItems="center">
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <Comments />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <IconButton aria-label="upvote" onClick={toggleVote}>
+                            {upvoted ? (
+                                <ForwardIcon
+                                    color="secondary"
+                                    className={classes.upvote}
+                                />
+                            ) : (
+                                <ForwardOutlinedIcon
+                                    color="secondary"
+                                    className={classes.upvote}
+                                />
+                            )}
+                        </IconButton>
+                    </Grid>
+                </Grid>
+            </Grid>
+            {/* </div>
+            </div> */}
         </Grid>
     );
 };
