@@ -102,7 +102,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
+const ChatSidePanel = ({groups, chatIndex, setChatIndex}) => {
     const classes = useStyles();
     const { dispatch } = useGlobalContext();
 
@@ -119,9 +119,9 @@ const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
                     <Badge badgeContent={12} className={classes.badge} />
                 </Grid>
                 <Divider className={classes.divider} />
-                {chatList.map((cg, index) => {
+                {groups.map((g, index) => {
                     return (
-                        <React.Fragment key={cg.id}>
+                        <React.Fragment key={g._id}>
                             <Grid
                                 item
                                 container
@@ -135,17 +135,17 @@ const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar
                                         alt="chat_group_img"
-                                        src={cg.imgUrl}
+                                        src={g.image}
                                         variant="rounded"
                                         className={classes.avatar}
                                     />
                                 </Grid>
                                 <Grid item container className={classes.group_member}>
                                     <Typography className={classes.group_name}>
-                                        {cg.chatGroup}
+                                        {g.name}
                                     </Typography>
                                     <Typography variant="subtitle1" color="textSecondary">
-                                        {cg.members} members
+                                        {g.members.length} members
                                     </Typography>
                                 </Grid>
                             </Grid>

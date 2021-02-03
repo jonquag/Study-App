@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => ({
 
 const Message = ({msg, isReceived}) => {
     const classes = useStyles();
-
     return (
         <Box 
             display='flex' 

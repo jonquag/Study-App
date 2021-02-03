@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import SocketManager from '../websocket/SocketManager';
+import ConversationManager from '../websocket/ConversationManager';
 
 import { initialState, reducer } from './reducer';
 
@@ -10,20 +10,27 @@ const AppContext = createContext({
     profile: {},
 });
 
-const initialSocket = new SocketManager();
+const conversationManager = new ConversationManager();
 
-const SocketContext = createContext({
-    SocketManager: initialSocket
+const ConversationContext = createContext({
+    conversationManager,
+    conversations: {},
 });
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [conversations, setConversations] = React.useState([]);
+
+    React.useEffect(() => {
+        conversationManager.initUpdateMessages(setConversations);
+    }, []);
+    
     return (
-        <SocketContext.Provider value={{SocketManager: initialSocket}}>
+        <ConversationContext.Provider value={{conversationManager, conversations}}>
             <AppContext.Provider value={{ ...state, dispatch }}>
                 {children}
             </AppContext.Provider>
-        </SocketContext.Provider>
+        </ConversationContext.Provider>
         
     );
 };
@@ -32,8 +39,8 @@ const useGlobalContext = () => {
     return useContext(AppContext);
 };
 
-const useSocketContext = () => {
-    return useContext(SocketContext);
+const useConversationContext = () => {
+    return useContext(ConversationContext);
 }
 
-export { AppProvider, useGlobalContext, useSocketContext };
+export { AppProvider, useGlobalContext, useConversationContext };

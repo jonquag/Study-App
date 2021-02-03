@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
 import * as actions from '../../context/actions';
-import { useSocketContext, useGlobalContext } from '../../context/studyappContext';
+import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
 
 const Layout = ({ children }) => {
     const { dispatch, isLoading,  isAuth } = useGlobalContext();
-    const { SocketManager } = useSocketContext();
+    const { conversationManager } = useConversationContext();
     useEffect(() => {
         if (isLoading) 
             actions.fetchProfile()(dispatch).then((userGroups) => {
@@ -14,10 +14,10 @@ const Layout = ({ children }) => {
     }, [isLoading, dispatch]);
 
     useEffect(() => {
-        SocketManager.closeSocket();
-    }, [SocketManager])
+        conversationManager.closeSocket();
+    }, [conversationManager])
 
-    if (isAuth) SocketManager.startSocket();
+    if (isAuth) conversationManager.startSocket();
 
     return (
         <>

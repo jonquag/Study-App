@@ -8,6 +8,11 @@ const socketEvents = (socket) => {
     socket.on('connect', () => {
         console.log('connected to socket server');
     })
+
+    socket.on('group message', (data) => {
+        console.log(data);
+    })
+    
     socket.on('disconnect', () => {
         removeListeners(socket);
         console.log('disconnected from socket server');

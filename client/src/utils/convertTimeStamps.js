@@ -7,6 +7,7 @@ export const msToTimeAgo = (ms) => {
     const d = new Date();
     const nowTs = Math.floor(d.getTime()/1000);
     const seconds = nowTs-ms;
+    
     // years ago
     if (seconds > 365.2425*24*3600) {
         const y = Math.floor(seconds / (365.2425*24*3600))

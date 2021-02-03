@@ -55,28 +55,7 @@ export const ChatContent = ({chat}) => {
     const classes = useStyles();
 
     return (
-        <Grid item container sm={12} md={9} className={classes.contentContainer}>
-            <Container className={classes.chat_head}>
-                <Avatar
-                    variant='square'
-                    className={classes.chat_pic} 
-                    src={chat.imgUrl}
-                />
-                <Box flexGrow={1} flexDirection='column'>
-                    <Typography variant='h5'>{chat.chatGroup}</Typography>
-                    <Typography className={classes.members} variant='h6'>
-                        {chat.members + ' Members'}
-                    </Typography>
-                </Box>
-                <IconButton>
-                    <MoreHorizIcon className={classes.dot_icon} />
-                </IconButton>
-            </Container>
-            <Divider className={classes.divider}/>
-            <Conversation messages={chat.messages}/>
-            <Divider className={classes.divider}/>
-            <MessageCreator />
-        </Grid>
+        
     )
 };
 
