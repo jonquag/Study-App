@@ -3,9 +3,9 @@ import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
-
 import Modal from '@material-ui/core/Modal';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import ForumModal from './ForumModal';
 
 const useStyles = makeStyles(theme => ({
@@ -78,14 +78,17 @@ const ForumContent = () => {
                     >
                         Add Post
                     </Button>
-                    <Modal
+                    <Dialog
                         open={open}
                         onClose={handleClose}
-                        aria-labelledby="simple-modal-forum"
-                        aria-describedby="simple-modal-to-open-forum"
+                        aria-labelledby="form-dialog-title"
+                        className={classes.dialog}
+                        maxWidth="md"
                     >
-                        <ForumModal handleClose={handleClose} />
-                    </Modal>
+                        <DialogContent>
+                            <ForumModal handleClose={handleClose} />
+                        </DialogContent>
+                    </Dialog>
                 </Grid>
             </Grid>
             <Divider className={classes.divider} />

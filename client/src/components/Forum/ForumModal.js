@@ -18,18 +18,11 @@ import AddIcon from '@material-ui/icons/Add';
 // import ImageIcon from '@material-ui/icons/Image';
 
 const useStyles = makeStyles(theme => ({
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        // border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        marginTop: theme.spacing(10),
-        padding: theme.spacing(3),
-    },
     divider: {
         margin: theme.spacing(2, 0),
     },
     input: {
-        maxWidth: 450,
+        // maxWidth: 450,
         width: '100%',
         paddingBottom: theme.spacing(2),
     },
@@ -45,23 +38,20 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         padding: theme.spacing(1, 0),
     },
-    large: {
-        height: '300px',
-        width: '400px',
-    },
-    uploading: {
-        opacity: 0.5,
-        height: '300px',
-        width: '400px',
-    },
+    // large: {
+    //     height: '300px',
+    //     width: '400px',
+    // },
+    // uploading: {
+    //     opacity: 0.5,
+    //     height: '300px',
+    //     width: '400px',
+    // },
     button: {
-        width: 400,
+        width: '100%',
     },
     close: {
         height: 2.5,
-    },
-    wrapper: {
-        maxWidth: 800,
     },
 }));
 
@@ -110,109 +100,86 @@ const ForumModal = ({ handleClose }) => {
     );
 
     return (
-        <Grid container sm={12} direction="column">
-            <Grid
-                item
-                container
-                direction="column"
-                xs={12}
-                justify="center"
-                alignItems="center"
-            >
-                <div className={classes.wrapper}>
-                    <div className={classes.paper}>
-                        <Grid item>
-                            <Button
-                                onClick={handleClose}
-                                color="primary"
-                                className={classes.close}
-                            >
-                                <CloseIcon />
-                            </Button>
-                            <Typography
-                                variant="h2"
-                                id="modal-title"
-                                align="center"
-                                className={classes.title}
-                            >
-                                Add Forum Post
-                            </Typography>
-                            <Typography
-                                variant="h4"
-                                id="modal-description"
-                                align="center"
-                            >
-                                Create a post for students in your course!
-                            </Typography>
-                            <Divider className={classes.divider} />
-                        </Grid>
-
-                        <Grid item container justify="center">
-                            <form>
-                                <Grid item>
-                                    <InputLabel className={classes.label}>
-                                        Post Title
-                                    </InputLabel>
-                                    <TextField
-                                        variant="outlined"
-                                        defaultValue={title}
-                                        onChange={e => setTitle(e.target.value)}
-                                        className={classes.input}
-                                        placeholder="Add a title.."
-                                    />
-                                </Grid>
-
-                                <Grid item>
-                                    <InputLabel className={classes.label}>
-                                        Post Description
-                                    </InputLabel>
-                                    <TextField
-                                        variant="outlined"
-                                        id="outlined-multiline-static"
-                                        multiline
-                                        rows={4}
-                                        defaultValue={description}
-                                        onChange={e => setDescription(e.target.value)}
-                                        className={classes.input}
-                                        placeholder="Add a description.."
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <Box className={classes.imageContainer}>
-                                        <FormHelperText className={classes.label}>
-                                            Drag and Drop Post Picture{' '}
-                                        </FormHelperText>
-                                        <Tooltip
-                                            title="Drag and drop post picture"
-                                            arrow
-                                            placement="right"
-                                        >
-                                            <Box {...getRootProps({ style })}>
-                                                <img
-                                                    src="https://www.rcdrilling.com/wp-content/uploads/2013/12/default_image_01-1024x1024-570x321.png"
-                                                    className={classes.large}
-                                                    alt="Post"
-                                                />
-                                            </Box>
-                                        </Tooltip>
-                                    </Box>
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        color="primary"
-                                        startIcon={<AddIcon />}
-                                        onSubmit={createPost}
-                                        className={classes.button}
-                                    >
-                                        Create Post
-                                    </Button>
-                                </Grid>
-                            </form>
-                        </Grid>
-                    </div>
-                </div>
+        <div>
+            <Grid item>
+                <Button onClick={handleClose} color="primary" className={classes.close}>
+                    <CloseIcon />
+                </Button>
+                <Typography
+                    variant="h2"
+                    id="modal-title"
+                    align="center"
+                    className={classes.title}
+                >
+                    Add Forum Post
+                </Typography>
+                <Typography variant="h4" id="modal-description" align="center">
+                    Create a post for students in your course!
+                </Typography>
+                <Divider className={classes.divider} />
             </Grid>
-        </Grid>
+
+            <Grid item container justify="center">
+                <form>
+                    <Grid item>
+                        <InputLabel className={classes.label}>Post Title</InputLabel>
+                        <TextField
+                            variant="outlined"
+                            defaultValue={title}
+                            onChange={e => setTitle(e.target.value)}
+                            className={classes.input}
+                            placeholder="Add a title.."
+                        />
+                    </Grid>
+
+                    <Grid item>
+                        <InputLabel className={classes.label}>
+                            Post Description
+                        </InputLabel>
+                        <TextField
+                            variant="outlined"
+                            id="outlined-multiline-static"
+                            multiline
+                            rows={4}
+                            defaultValue={description}
+                            onChange={e => setDescription(e.target.value)}
+                            className={classes.input}
+                            placeholder="Add a description.."
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Box className={classes.imageContainer}>
+                            <FormHelperText className={classes.label}>
+                                Drag and drop post picture{' '}
+                            </FormHelperText>
+                            <Tooltip
+                                title="Drag and drop post picture"
+                                arrow
+                                placement="right"
+                            >
+                                <Box {...getRootProps({ style })}>
+                                    <img
+                                        src="https://www.rcdrilling.com/wp-content/uploads/2013/12/default_image_01-1024x1024-570x321.png"
+                                        className={classes.large}
+                                        alt="Post"
+                                    />
+                                </Box>
+                            </Tooltip>
+                        </Box>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            color="primary"
+                            startIcon={<AddIcon />}
+                            onSubmit={createPost}
+                            className={classes.button}
+                        >
+                            Create Post
+                        </Button>
+                    </Grid>
+                </form>
+            </Grid>
+        </div>
     );
 };
 
