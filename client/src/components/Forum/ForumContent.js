@@ -33,20 +33,22 @@ const ForumContent = () => {
         console.log('Add post clicked');
     };
 
-    const updateActivePost = postId => {
-        setActivePost(postId);
-        handleOpen();
-        console.log('active post: ' + activePost);
-        console.log('set active post: ' + setActivePost);
-    };
-
     // Calling will open modal
     const handleOpen = () => {
+        console.log('open');
         setOpen(true);
     };
     // Calling will close modal
     const handleClose = () => {
+        console.log('close');
         setOpen(false);
+    };
+
+    const updateActivePost = postId => {
+        setActivePost(postId);
+        handleOpen();
+        // console.log('active post: ' + activePost);
+        // console.log('set active post: ' + setActivePost);
     };
 
     return (
@@ -94,10 +96,12 @@ const ForumContent = () => {
                             key={post.id}
                             post={post}
                             onClick={updateActivePost}
-                            setActivePost={setActivePost}
+                            updateActivePost={updateActivePost}
                         />
                     ))}
                 </Grid>
+                <Button onClick={updateActivePost}>button</Button>
+
                 <Modal
                     open={open}
                     onClose={handleClose}
