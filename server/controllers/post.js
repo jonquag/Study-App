@@ -46,6 +46,23 @@ exports.creatForumPost = async (req, res, next) => {
     }
 };
 
+exports.getPost = async (req, res, next) => {
+    const { postId } = req.params;
+    try {
+        const post = await Post.findById(postId).populate({
+            path: 'comments',
+            model: 'Comment',
+        });
+
+        if (!post) throw NotFound('Post not found');
+
+        res.status(200).json({ post });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
+
 exports.hidePost = async (req, res, next) => {
     const { forumId, postId } = req.params;
 

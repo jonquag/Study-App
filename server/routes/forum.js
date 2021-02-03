@@ -19,6 +19,10 @@ router.post(
     postController.creatForumPost
 );
 
+// GET forum/post/:postId
+// Returns a post with all its comments
+router.get('/post/:postId', auth, postController.getPost);
+
 // PUT forum/post/:forumId/:postId
 // Disables a post from being viewed in a forum.
 router.put('/post/:forumId/:postId', auth, postController.hidePost);
