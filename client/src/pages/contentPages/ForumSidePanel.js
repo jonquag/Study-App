@@ -3,7 +3,6 @@ import { Grid, Typography, Badge, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-//import { courseGroupList } from '../../data/mockData';
 import axios from 'axios';
 import { useGlobalContext } from '../../context/studyappContext';
 
@@ -100,9 +99,6 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
         setCourseList(editedCourseList);
     };
 
-    const handleOnClick = name => {
-        
-    }
     const handleDrawerClose = (name, groupId) => {
         onGroupUpdate(name, groupId);
         dispatch({ type: 'CLOSE_DRAWER' });
