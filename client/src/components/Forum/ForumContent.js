@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    Button,
-    Grid,
-    Typography,
-    Divider,
-    Modal,
-    Box,
-    IconButton,
-} from '@material-ui/core';
+import { Button, Grid, Typography, Divider, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
@@ -16,9 +8,10 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
 import ForwardIcon from '@material-ui/icons/Forward';
 import ForwardOutlinedIcon from '@material-ui/icons/ForwardOutlined';
-import ForumModal from './ForumModal';
+import AddPostDialog from './AddPostDialog';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -32,6 +25,8 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         marginBottom: 10,
+        margin: theme.spacing(1, 0),
+        width: '100%',
     },
     cardContainer: {
         maxWidth: '100%',
@@ -56,13 +51,8 @@ const useStyles = makeStyles(theme => ({
         marginTop: '75px',
         padding: theme.spacing(3),
     },
-    divider: {
-        margin: theme.spacing(2, 0),
-        width: '100%',
-    },
     title: {
         marginBottom: theme.spacing(2),
-        // width: 'calc(100vw - 100px)',
     },
     cardTitle: {
         fontWeight: 'bold',
@@ -78,10 +68,6 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1, 0),
         maxWidth: 500,
         maxHeight: 500,
-        // these can be commented out, just showing size.
-        height: 500,
-        width: 500,
-        background: 'grey',
     },
     close: {
         height: 2.5,
@@ -98,33 +84,33 @@ const useStyles = makeStyles(theme => ({
 
 const ForumContent = () => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [openPost, setOpenPost] = React.useState(false);
+    const [openNewPost, setOpenNewPost] = React.useState(false);
     const [activePost, setActivePost] = React.useState('');
     const [upvoted, setUpvoted] = React.useState(false);
 
     const toggleVote = () => {
         setUpvoted(!upvoted);
-        console.log('upvoted?: ' + upvoted);
     };
 
-    const addPost = () => {
-        console.log('Add post clicked');
+    const handleOpenNewPost = () => {
+        setOpenNewPost(true);
     };
-    // Calling will open modal
-    const handleOpen = () => {
-        console.log('open');
-        setOpen(true);
+    const handleCloseNewPost = () => {
+        setOpenNewPost(false);
     };
-    // Calling will close modal
-    const handleClose = () => {
-        console.log('close');
-        setOpen(false);
+    // Calling will open dialog
+    const handleOpenPost = () => {
+        setOpenPost(true);
+    };
+    // Calling will close dialog
+    const handleClosePost = () => {
+        setOpenPost(false);
     };
     // Updates setActivePost to the corresponding clicked card and opens dialog.
     const updateActivePost = postId => {
         setActivePost(postId);
-        // console.log('postId: ' + postId);
-        handleOpen();
+        handleOpenPost();
     };
 
     return (
@@ -145,22 +131,24 @@ const ForumContent = () => {
                 <Grid item container sm={3}>
                     <Button
                         className={classes.button}
-                        onClick={handleOpen}
+                        onClick={handleOpenNewPost}
                         variant="text"
                         color="primary"
                         type="button"
+                        startIcon={<AddIcon />}
                     >
                         Add Post
                     </Button>
+                    {/* New post dialog */}
                     <Dialog
-                        open={open}
-                        onClose={handleClose}
+                        open={openNewPost}
+                        onClose={handleCloseNewPost}
                         aria-labelledby="form-dialog-title"
                         className={classes.dialog}
                         maxWidth="md"
                     >
                         <DialogContent>
-                            <ForumModal handleClose={handleClose} />
+                            <AddPostDialog handleCloseNewPost={handleCloseNewPost} />
                         </DialogContent>
                     </Dialog>
                 </Grid>
@@ -184,16 +172,14 @@ const ForumContent = () => {
                         />
                     ))}
                 </Grid>
-                <Button onClick={updateActivePost}>button</Button>
-
+                {/* View Post Dialog */}
                 <Dialog
-                    open={open}
-                    onClose={handleClose}
+                    open={openPost}
+                    onClose={handleClosePost}
                     aria-labelledby="form-dialog-title"
                     className={classes.dialog}
                     maxWidth="lg"
                 >
-                    {/* <PostModal /> */}
                     <DialogContent>
                         <Grid
                             item
@@ -212,7 +198,7 @@ const ForumContent = () => {
                                 >
                                     <Grid item>
                                         <Button
-                                            onClick={handleClose}
+                                            onClick={handleClosePost}
                                             color="primary"
                                             className={classes.close}
                                         >
@@ -275,7 +261,7 @@ const ForumContent = () => {
                                         <TextField
                                             variant="outlined"
                                             autoFocus
-                                            label="Comment"
+                                            label="Comment on post"
                                             type="text"
                                             multiline
                                             rows={4}

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,14 +5,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import axios from 'axios';
+
 import { Grid } from '@material-ui/core';
 
-const PostDialog = ({ open, handleClose, postId }) => {
-    // const dostuff = () => {
-    //     console.log('working');
-    // };
+const PostDialog = ({ open, handleClose }) => {
     return (
         <div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
