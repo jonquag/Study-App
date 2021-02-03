@@ -3,6 +3,9 @@ import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import ForumModal from './ForumModal';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -36,12 +39,18 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const addPost = () => {
-    console.log('Add post clicked');
-};
-
 const ForumContent = () => {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+
+    // Calling will open modal
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    // Calling will close modal
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
@@ -58,10 +67,27 @@ const ForumContent = () => {
                     </Typography>
                 </Grid>
 
-                <Grid item>
-                    <Button className={classes.button} onClick={addPost} color="primary">
+                <Grid item container sm={3}>
+                    <Button
+                        className={classes.button}
+                        onClick={handleOpen}
+                        variant="text"
+                        color="primary"
+                        type="button"
+                    >
                         Add Post
                     </Button>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="form-dialog-title"
+                        className={classes.dialog}
+                        maxWidth="md"
+                    >
+                        <DialogContent>
+                            <ForumModal handleClose={handleClose} />
+                        </DialogContent>
+                    </Dialog>
                 </Grid>
             </Grid>
             <Divider className={classes.divider} />
