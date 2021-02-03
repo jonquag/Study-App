@@ -10,6 +10,9 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        borderRadius: 15,
     },
     actionArea: {
         height: 120,
