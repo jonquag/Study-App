@@ -103,9 +103,8 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
     const handleOnClick = name => {
         
     }
-    const handleDrawerClose = (name) => {
-        console.log(name)
-        onGroupUpdate(name);
+    const handleDrawerClose = (name, groupId) => {
+        onGroupUpdate(name, groupId);
         dispatch({ type: 'CLOSE_DRAWER' });
     };
 
@@ -125,7 +124,7 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                                 <Typography
                                     key={group._id}
                                     className={classes.group_list}
-                                    onClick={() => handleDrawerClose(group.name)}
+                                    onClick={() => handleDrawerClose(group.name, group._id)}
                                 >
                                     {group.name}
                                 </Typography>
