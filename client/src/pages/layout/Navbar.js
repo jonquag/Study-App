@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {
     AppBar,
@@ -13,6 +14,9 @@ import {
     Menu,
     MenuItem,
     Link,
+    IconButton,
+    Divider,
+    Hidden,
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -25,8 +29,9 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 const Navbar = () => {
     const classes = useStyles();
     const history = useHistory();
-  
+
     const { profile, dispatch } = useGlobalContext();
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -100,7 +105,7 @@ const Navbar = () => {
                                 >
                                     Chats
                                 </NavLink>
-                                <Badge badgeContent={12} className={classes.badge} />
+                                <Badge badgeContent={8} className={classes.badge} />
                             </ListItem>
                         </List>
                     </div>
@@ -148,6 +153,97 @@ const Navbar = () => {
                             </MenuItem>
                         </Menu>
                     </div>
+                    <Hidden mdUp>
+                        <div>
+                            <IconButton
+                                edge="start"
+                                className={classes.menuButton}
+                                color="inherit"
+                                aria-label="menu"
+                                onClick={e => setAnchorEl(e.currentTarget)}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                            <Menu
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                open={open}
+                                onClose={() => setAnchorEl(null)}
+                            >
+                                <List component="nav" className={classes.dropdown_list}>
+                                    <ListItem>
+                                        <NavLink
+                                            color="inherit"
+                                            variant="inherit"
+                                            underline="none"
+                                            to="/forum"
+                                            activeStyle={{
+                                                opacity: '100%',
+                                            }}
+                                            className={classes.linkStyles}
+                                            onClick={() => setAnchorEl(null)}
+                                        >
+                                            Forum
+                                        </NavLink>
+                                    </ListItem>
+                                    <ListItem>
+                                        <NavLink
+                                            color="inherit"
+                                            variant="inherit"
+                                            underline="none"
+                                            to="/groups"
+                                            activeStyle={{
+                                                opacity: '100%',
+                                            }}
+                                            className={classes.linkStyles}
+                                            onClick={() => setAnchorEl(null)}
+                                        >
+                                            Groups
+                                        </NavLink>
+                                    </ListItem>
+                                    <ListItem>
+                                        <NavLink
+                                            color="inherit"
+                                            variant="inherit"
+                                            underline="none"
+                                            to="/chat"
+                                            activeStyle={{
+                                                opacity: '100%',
+                                            }}
+                                            className={classes.linkStyles}
+                                            onClick={() => setAnchorEl(null)}
+                                        >
+                                            Chats
+                                        </NavLink>
+                                        <Badge
+                                            badgeContent={12}
+                                            className={classes.badge}
+                                        />
+                                    </ListItem>
+                                </List>
+                                <Divider />
+                                <MenuItem
+                                    className={classes.mobile_logout}
+                                    onClick={handleLogout}
+                                >
+                                    <ExitToAppIcon className={classes.icons} />
+                                    <Typography>Logout</Typography>
+                                </MenuItem>
+                                <MenuItem onClick={handleProfile}>
+                                    <AccountCircleIcon className={classes.icons} />
+                                    <Typography>My Profile</Typography>
+                                </MenuItem>
+                            </Menu>
+                        </div>
+                    </Hidden>
                 </Toolbar>
             </AppBar>
         </div>

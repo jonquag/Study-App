@@ -26,6 +26,12 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justify: 'flex-start',
         padding: theme.spacing(8, 0, 0, 11),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0, 0, 0, 6),
+        },
+        [theme.breakpoints.down('xs')]: {
+            padding: theme.spacing(0, 2, 0, 2),
+        },
     },
     university: {
         marginBottom: theme.spacing(3),
@@ -39,12 +45,16 @@ const useStyles = makeStyles(theme => ({
         padding: '0 4px 0 8px',
         '& button': {
             padding: 8,
+            fontSize: 18,
         },
     },
     btn_group: {
         width: '15%',
         display: 'flex',
         justifyContent: 'space-between',
+        '& button': {
+            fontSize: 18,
+        },
     },
     form: {
         display: 'flex',
@@ -71,7 +81,7 @@ const useStyles = makeStyles(theme => ({
 const MyCourses = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { isLoading, userCourse, userGroups, dispatch } = useGlobalContext();
-    const {groups} = userGroups;
+    const { groups } = userGroups;
     const { school, userCourses, schoolCourses } = userCourse;
     const classes = useStyles();
     const [selectId, setSelectId] = useState('');
@@ -96,7 +106,7 @@ const MyCourses = () => {
         try {
             const res = await axios.post('/user/courses', courses);
             actions.fetchUserGroups(res.data.user.groups)(dispatch);
-            dispatch({type: 'updateUserCourses', payload: res.data.user.courses});
+            dispatch({ type: 'updateUserCourses', payload: res.data.user.courses });
             if (res.status === 200) {
                 enqueueSnackbar('Updated successfully', {
                     variant: 'success',
@@ -111,32 +121,37 @@ const MyCourses = () => {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
-    const handleRemove = async (id) => {
-        //if course has not been added to user 
+    const handleRemove = async id => {
+        //if course has not been added to user
         if (!userCourses.some(course => course._id === id)) {
             setMyCourses(myCourses.filter(c => c._id !== id));
         } else {
             try {
                 let groupIds;
                 if (groups && groups.length) {
-                    // filter user groups selecting only the group id's 
+                    // filter user groups selecting only the group id's
                     // eslint-disable-next-line no-sequences
-                    groupIds = groups.reduce((arr, g) => (g.course === id && arr.push(g._id), arr), []);
+                    groupIds = groups.reduce(
+                        (arr, g) => (g.course === id && arr.push(g._id), arr),
+                        []
+                    );
                 } else {
                     groupIds = groups.map(group => group._id);
                 }
-                const res = await axios.delete(`/user/courses/${id}`, {data: {groupsRemoved: groupIds}});
-    
+                const res = await axios.delete(`/user/courses/${id}`, {
+                    data: { groupsRemoved: groupIds },
+                });
+
                 actions.fetchUserGroups(res.data.groups)(dispatch);
-                dispatch({type: 'updateUserCourses', payload: res.data.courses});
+                dispatch({ type: 'updateUserCourses', payload: res.data.courses });
                 setMyCourses(myCourses.filter(c => c._id !== id));
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
         }
-    }
+    };
 
     if (isLoading) return <LinearProgress />;
 

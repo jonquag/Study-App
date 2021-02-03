@@ -4,8 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { courseGroupList } from '../../data/mockData';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+            backgroundColor: '#FFF',
+            paddingTop: theme.spacing(6),
+        },
+    },
     chat_head: {
         height: 120,
         display: 'flex',
@@ -48,16 +56,19 @@ const useStyles = makeStyles(theme => ({
     },
     icons: {
         color: '#2968ff',
+        fontSize: 22,
     },
     group_list: {
-        color: theme.palette.primary.main,
+        color: '#2574FF',
         cursor: 'pointer',
         marginTop: 16,
+        fontSize: '0.9375rem',
     },
 }));
 
 const ForumSidePanel = () => {
     const classes = useStyles();
+    const { dispatch } = useGlobalContext();
 
     const [courseList, setCourseList] = useState(
         courseGroupList.map(cgl => ({ ...cgl, expand: false }))
@@ -74,8 +85,12 @@ const ForumSidePanel = () => {
         setCourseList(editedCourseList);
     };
 
+    const handleDrawerClose = () => {
+        dispatch({ type: 'CLOSE_DRAWER' });
+    };
+
     return (
-        <Grid>
+        <Grid className={classes.container}>
             <Grid item className={classes.chat_head}>
                 <Typography>My Courses</Typography>
                 <Badge badgeContent={3} className={classes.badge} />
@@ -90,7 +105,7 @@ const ForumSidePanel = () => {
                                 <Typography
                                     key={group.id}
                                     className={classes.group_list}
-                                    onClick={() => console.log(`${group.name} forum`)}
+                                    onClick={handleDrawerClose}
                                 >
                                     {group.name}
                                 </Typography>

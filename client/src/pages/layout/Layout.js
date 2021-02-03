@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react';
-import { LinearProgress } from '@material-ui/core';
 
 import * as actions from '../../context/actions';
-import { useGlobalContext } from '../../context/studyappContext';
+import { useSocketContext, useGlobalContext } from '../../context/studyappContext';
 
 const Layout = ({ children }) => {
-    const { dispatch, isLoading } = useGlobalContext();
+    const { dispatch, isLoading,  isAuth } = useGlobalContext();
+    const { SocketManager } = useSocketContext();
+    useEffect(() => {
+        if (isLoading) 
+            actions.fetchProfile()(dispatch).then((userGroups) => {
+                actions.fetchUserGroups(userGroups)(dispatch)
+            });
+    }, [isLoading, dispatch]);
 
     useEffect(() => {
-        actions.fetchProfile()(dispatch).then((userGroups) => {
-            actions.fetchUserGroups(userGroups)(dispatch)
-        });
-    }, [dispatch]);
+        SocketManager.closeSocket();
+    }, [SocketManager])
 
-    if (isLoading) return <LinearProgress />;
+    if (isAuth) SocketManager.startSocket();
 
     return (
         <>
