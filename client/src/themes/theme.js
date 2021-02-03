@@ -7,17 +7,25 @@ export const theme = createMuiTheme({
         h1: {
             fontSize: '2.25rem',
         },
-
-        h5: {
-            fontSize: '1.25rem',
-            fontWeight: 500,
-            letterSpacing: -0.5,
+        h2: {
+            fontSize: 22,
+            fontWeight: 'bold',
+            letterSpacing: 0.5,
         },
         h3: {
             fontFamily: 'Montserrat',
             fontSize: '1.625rem',
             fontWeight: 500,
             letterSpacing: -1,
+        },
+        h4: {
+            fontSize: 16,
+            opacity: '50%',
+        },
+        h5: {
+            fontSize: '1.25rem',
+            fontWeight: 500,
+            letterSpacing: -0.5,
         },
         h6: {
             fontSize: '1rem',

@@ -53,9 +53,6 @@ const useStyles = makeStyles(theme => ({
 const PostCard = ({ post, updateActivePost }) => {
     const classes = useStyles();
 
-    const dostuff = () => {
-        console.log('didstuff');
-    };
     return (
         <Card className={classes.root} variant="outlined" onClick={updateActivePost}>
             <CardActionArea className={classes.actionArea}>
