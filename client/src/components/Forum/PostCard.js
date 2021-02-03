@@ -5,6 +5,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import { msToTimeAgo } from '../../utils/convertTimeStamps';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -76,7 +77,7 @@ const PostCard = props => {
                     </div>
                     <div className={classes.postDateInfo}>
                         <span className={classes.cardDesc}>
-                            Posted {props.post.postDate} by{' '}
+                            Posted by{' '}
                         </span>
                         <span className={classes.postedBy}>Jason Smith</span>
                     </div>
