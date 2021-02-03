@@ -15,14 +15,12 @@ import { baseStyle, activeStyle, acceptStyle, rejectStyle } from './ForumModalSt
 import { makeStyles } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
-// import ImageIcon from '@material-ui/icons/Image';
 
 const useStyles = makeStyles(theme => ({
     divider: {
         margin: theme.spacing(2, 0),
     },
     input: {
-        // maxWidth: 450,
         width: '100%',
         paddingBottom: theme.spacing(2),
     },
@@ -38,15 +36,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         padding: theme.spacing(1, 0),
     },
-    // large: {
-    //     height: '300px',
-    //     width: '400px',
-    // },
-    // uploading: {
-    //     opacity: 0.5,
-    //     height: '300px',
-    //     width: '400px',
-    // },
+
     button: {
         width: '100%',
     },
@@ -61,23 +51,6 @@ const ForumModal = ({ handleClose }) => {
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
 
-    // const [newPost, setNewPost] = useState();
-
-    // const onDrop = useCallback(async droppedFiles => {
-    //     if (droppedFiles.length) {
-    //         setUploading(true);
-
-    //         const form = new FormData();
-    //         form.append('image', droppedFiles[0]);
-    //         const res = await axios
-    //             .post('/upload/single', form)
-    //             .catch(err => console.log(err));
-    //         if (res && res.data) {
-    //             setGroupPicture(res.data.imageUrl);
-    //             setUploading(false);
-    //         }
-    //     }
-    // }, []);
     const onDrop = () => {
         console.log('Dropped');
     };
