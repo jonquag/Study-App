@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
-
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -41,8 +41,29 @@ const addPost = () => {
     console.log('Add post clicked');
 };
 
-const ForumContent = ({name}) => {
+const ForumContent = ({name, groupId}) => {
     const classes = useStyles();
+
+    const [forumPosts, setForumPosts] = useState([]);
+    const [Id, setId] = useState(groupId);
+
+    const getGroupForum = async (groupId) => {
+
+        try {
+            
+            const response = await axios.get(`/forum/${groupId}`);
+            setForumPosts(response.data.group.forum.posts)
+
+        } catch(err) {
+            console.log(err)
+        }
+    }
+    
+    useEffect(() => {
+        setId(groupId);
+        getGroupForum(groupId);
+      }, [groupId]);
+    
 
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
@@ -55,7 +76,7 @@ const ForumContent = ({name}) => {
             >
                 <Grid item>
                     <Typography variant="h1" className={classes.headerText}>
-                        Forum
+                        {`${name} ${groupId}`}
                     </Typography>
                 </Grid>
 
