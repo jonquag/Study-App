@@ -64,7 +64,7 @@ const PostCard = props => {
                     component="img"
                     alt="alt img"
                     height="140"
-                    image={props.post.image}
+                    image={props.post.postAvatar}
                     title={props.post.title}
                     className={classes.cardImage}
                 />
@@ -78,7 +78,7 @@ const PostCard = props => {
                         <span className={classes.cardDesc}>
                             Posted {props.post.postDate} by{' '}
                         </span>
-                        <span className={classes.postedBy}>{props.post.postedBy}</span>
+                        <span className={classes.postedBy}>Jason Smith</span>
                     </div>
                 </CardContent>
             </CardActionArea>
