@@ -21,18 +21,20 @@ const useStyles = makeStyles(theme => ({
 const Forum = () => {
     const classes = useStyles();
     const [selectedGroup, setSelectedGroup] = useState('');
+    const [selectedGroupId, setSelectedGroupId] = useState('');
 
-    const updateSelectedGroup = (group) => {
+    const updateSelectedGroup = (group, groupId) => {
         setSelectedGroup(group);
+        setSelectedGroupId(groupId);
     }
 
     return (
         <Grid container className={classes.container}>
             <Sidebar>
-                <ForumSidePanel onGroupUpdate={updateSelectedGroup}/>
+                <ForumSidePanel onGroupUpdate={updateSelectedGroup} />
             </Sidebar>
             <Grid item container sm={12} md={9} className={classes.contentContainer}>
-                <ForumContent name={selectedGroup} />
+                <ForumContent name={selectedGroup} groupId={selectedGroupId} />
             </Grid>
         </Grid>
     );
