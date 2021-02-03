@@ -50,7 +50,7 @@ const ForumContent = ({name, groupId}) => {
     const getGroupForum = async (groupId) => {
 
         try {
-            
+
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
 
@@ -76,7 +76,7 @@ const ForumContent = ({name, groupId}) => {
             >
                 <Grid item>
                     <Typography variant="h1" className={classes.headerText}>
-                        {`${name} ${groupId}`}
+                        {name}
                     </Typography>
                 </Grid>
 
@@ -97,8 +97,8 @@ const ForumContent = ({name, groupId}) => {
                 className={classes.cardContainer}
             >
                 <Grid item className={classes.postCard}>
-                    {posts.map(post => (
-                        <PostCard key={post.id} post={post} />
+                    {forumPosts.map(post => (
+                        <PostCard key={post._id} post={post} />
                     ))}
                 </Grid>
             </Grid>
