@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-    Avatar,
-    Box,
-    Container,
-    Typography,
-} from '@material-ui/core';
+import { Avatar, Box, Container, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { msToTimeAgo } from '../../utils/convertTimeStamps';
 
 const useStyles = makeStyles(theme => ({
     container: {
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
     },
     received_container: {
         background: theme.palette.primary.gradient,
@@ -33,62 +28,55 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         width: 'auto',
         maxWidth: 500,
-        justifySelf: 'flex-end'
+        justifySelf: 'flex-end',
     },
     contentText: {
         alignItems: 'center',
-        padding: 5
+        padding: 5,
+        color: '#FFF',
     },
     avatar: {
         width: 60,
         height: 60,
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(2),
     },
     left_timestamp: {
-        fontSize: 12,
+        fontSize: '0.75rem',
         opacity: 0.29,
         paddingTop: 5,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
     },
     right_timestamp: {
-        fontSize: 12,
+        fontSize: '0.75rem',
         opacity: 0.29,
         paddingTop: 5,
-        alignSelf: 'flex-end'
-    }
+        alignSelf: 'flex-end',
+    },
 }));
 
-const Message = ({msg, isReceived}) => {
+const Message = ({ msg, isReceived }) => {
     const classes = useStyles();
 
     return (
-        <Box 
-            display='flex' 
-            flexDirection='row' 
-            className={classes.container}
-        >
-            {isReceived && <Avatar className={classes.avatar} src={msg.profileImg}/>}
-            <Box display='flex' flexDirection='column'>
-                <Container 
+        <Box display="flex" flexDirection="row" className={classes.container}>
+            {isReceived && <Avatar className={classes.avatar} src={msg.profileImg} />}
+            <Box display="flex" flexDirection="column">
+                <Container
                     className={
-                        isReceived ? 
-                        classes.received_container : 
-                        classes.sent_container
+                        isReceived ? classes.received_container : classes.sent_container
                     }
                 >
-                    <Typography 
-                        className={classes.contentText} 
-                        variant='h6' 
+                    <Typography
+                        className={classes.contentText}
+                        variant="h6"
                         color={isReceived ? 'primary' : 'secondary'}
                     >
                         {msg.content}
                     </Typography>
                 </Container>
-                <Typography 
+                <Typography
                     className={
-                        isReceived ? 
-                        classes.left_timestamp : 
-                        classes.right_timestamp
+                        isReceived ? classes.left_timestamp : classes.right_timestamp
                     }
                 >
                     {msToTimeAgo(msg.timeStamp)}

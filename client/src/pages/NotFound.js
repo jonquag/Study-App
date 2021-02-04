@@ -13,15 +13,15 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         backgroundColor: theme.palette.common.white,
         height: '100vh',
-        width: '100vw'
+        width: '100vw',
     },
     icon: { fontSize: '300px' },
-    text: { opacity: '80%', padding: '1em'},
+    text: { opacity: '80%', padding: '1em' },
     linkStyles: {
         textDecoration: 'none',
         color: 'blue',
         padding: '1em 0 0 2em',
-        fontSize: 15,
+        fontSize: '0.9375rem',
         opacity: '50%',
     },
 }));
@@ -32,19 +32,25 @@ const NotFound = () => {
 
     return (
         <div className={classes.root}>
-            <SentimentVeryDissatisfiedIcon className={classes.icon}/>
+            <SentimentVeryDissatisfiedIcon className={classes.icon} />
             <Typography variant="h1" color="textPrimary" className={classes.text}>
                 404
             </Typography>
             <Typography variant="h6" color="textPrimary" className={classes.text}>
                 The page you are looking for doesn't exist or another error occured.
             </Typography>
-            <Box flexDirection='row' className={classes.linkContainer}>
-                {isAuth && <NavLink to='/profile' className={classes.linkStyles}>Profile</NavLink>}
-                <NavLink to='/login' className={classes.linkStyles}>Login</NavLink>
+            <Box flexDirection="row" className={classes.linkContainer}>
+                {isAuth && (
+                    <NavLink to="/profile" className={classes.linkStyles}>
+                        Profile
+                    </NavLink>
+                )}
+                <NavLink to="/login" className={classes.linkStyles}>
+                    Login
+                </NavLink>
             </Box>
         </div>
-    )
+    );
 };
 
 export default NotFound;

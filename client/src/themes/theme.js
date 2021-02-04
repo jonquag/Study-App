@@ -8,7 +8,7 @@ export const theme = createMuiTheme({
             fontSize: '2.25rem',
         },
         h2: {
-            fontSize: 22,
+            fontSize: '1.375rem',
             fontWeight: 'bold',
             letterSpacing: 0.5,
         },
@@ -19,7 +19,7 @@ export const theme = createMuiTheme({
             letterSpacing: -1,
         },
         h4: {
-            fontSize: 16,
+            fontSize: '1rem',
             opacity: '50%',
         },
         h5: {
@@ -48,21 +48,24 @@ export const theme = createMuiTheme({
                 color: '#FFF',
                 background: 'linear-gradient(45deg, #2574FF, #4B00FF)',
                 textTransform: 'none',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 padding: 20,
                 height: '3rem',
             },
             outlinedPrimary: {
                 color: '#FFF',
                 textTransform: 'none',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 padding: 20,
                 height: '3rem',
+                '&:hover': {
+                    borderColor: '#FFF',
+                },
             },
             outlinedSecondary: {
                 color: '#2968FF',
                 textTransform: 'none',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 padding: 20,
                 height: '3rem',
             },

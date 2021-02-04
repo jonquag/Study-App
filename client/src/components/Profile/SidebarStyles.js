@@ -132,7 +132,7 @@ export const useStyles = makeStyles(theme => ({
         margin: '2em',
         textTransform: 'none',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: '1rem',
         letterSpacing: 0.5,
     },
 }));

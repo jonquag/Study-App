@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
         padding: '0 4px 0 8px',
         '& button': {
             padding: 8,
-            fontSize: 18,
+            fontSize: '1.125rem',
         },
     },
     btn_group: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'space-between',
         '& button': {
-            fontSize: 18,
+            fontSize: '1.125rem',
         },
     },
     form: {
@@ -132,8 +132,9 @@ const MyCourses = () => {
                 let groupIds;
                 if (groups && groups.length) {
                     // filter user groups selecting only the group id's
-                    // eslint-disable-next-line no-sequences
+
                     groupIds = groups.reduce(
+                        // eslint-disable-next-line no-sequences
                         (arr, g) => (g.course === id && arr.push(g._id), arr),
                         []
                     );
