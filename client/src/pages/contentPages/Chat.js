@@ -94,7 +94,6 @@ const Chat = () => {
                         aMessages.length === 0 ? 0 : aMessages[aMessages.length - 1].timeStamp;
                     const bMostRecent = 
                         bMessages.length === 0 ? 0 : bMessages[bMessages.length - 1].timeStamp;
-                    console.log(aMostRecent, bMostRecent)
                     return bMostRecent - aMostRecent;
                 }
                 return 0
@@ -139,7 +138,10 @@ const Chat = () => {
                         </IconButton>
                     </Container>
                     <Divider className={classes.divider}/>
-                    <Conversation messages={conversations[selectedGroupChat].messages}/>
+                    <Conversation 
+                        notifications={notifications} 
+                        messages={conversations[selectedGroupChat].messages}
+                    />
                     <Divider className={classes.divider}/>
                     <MessageCreator groupId={selectedGroupChat}/>
                 </>

@@ -93,6 +93,10 @@ const MessageCreator = ({groupId}) => {
                     classes: {input: classes.text},
                     disableUnderline: true,
                 }}
+                onKeyUp={(e) => {
+                    if (e.key === 'Enter')
+                        sendMessage();
+                }}
             />
             </Box>
             <Box
