@@ -6,6 +6,8 @@ const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
 const Group = require('../models/Group');
 const Course = require('../models/courses');
+const Forum = require('../models/Forum');
+const mongoose = require('mongoose');
 
 // Get the logged in user
 router.get('/', verifyAuth, async function (req, res, next) {
@@ -244,6 +246,12 @@ router.post('/groups', verifyAuth, async function (req, res, next) {
     const session = await Group.startSession();
     session.startTransaction();
 
+    const forum = new Forum({
+        user: userId,
+    });
+    const forumRes = await forum.save();
+    if (!forumRes) throw new GeneralError('Error creating forum.');
+
     try {
 
         const instance = (await Group.create([{
@@ -251,7 +259,8 @@ router.post('/groups', verifyAuth, async function (req, res, next) {
             members: [userId],
             image: imageUrl,
             course: courseId, 
-            admin: userId
+            admin: userId,
+            forum: forum._id,
         }], {session}))[0];
 
         const userUpdate = await User.findByIdAndUpdate(userId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
