@@ -4,14 +4,17 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateBody = require('../middleware/validateBody');
 const validateEntryReq = validateBody.entry;
+const auth = require('../middleware/verifyAuth');
 const {
     Conflict,
     GeneralError,
     NotFound,
     Unauthorized,
 } = require('../utils/errors');
+const { check } = require('express-validator');
 const Profile = require('../models/profile');
 const User = require('../models/user');
+const userController = require('../controllers/user');
 
 router.post('/login', validateEntryReq, async function (req, res, next) {
     const { email, password } = req.body;
@@ -87,5 +90,17 @@ router.delete('/logout', function (req, res) {
     res.clearCookie('token');
     res.sendStatus(204);
 });
+
+// PUT /auth/changepasword
+// Changes user password
+router.put(
+    '/changepassword',
+    auth,
+    [
+        check('oldPassword', 'Old password is required').notEmpty(),
+        check('newPassword', 'New password is required').notEmpty(),
+    ],
+    userController.passwordChange
+);
 
 module.exports = router;
