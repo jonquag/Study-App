@@ -1,44 +1,11 @@
 const express = require('express');
 const { check } = require('express-validator');
 
-const { NotFound } = require('../utils/errors');
 const auth = require('../middleware/verifyAuth');
-
-const Group = require('../models/Group');
+const postController = require('../controllers/post');
+const commentController = require('../controllers/comment');
 
 const router = express.Router();
-
-const forumController = require('../controllers/forum');
-const postController = require('../controllers/post');
-
-// Creates a forum to a specific group
-router.post(
-    '/:groupId',
-    [check('name', 'Forum name is required').notEmpty()],
-    auth,
-    forumController.creatForum
-);
-
-// returns a group forum and its posts base on group id.
-router.get('/:groupId', auth, async (req, res, next) => {
-    const groupId = req.params.groupId;
-    try {
-        const group = await Group.findById(groupId).populate({
-            path: 'forum',
-            model: 'Forum',
-            populate: {
-                path: 'posts',
-                model: 'Post',
-            },
-        });
-
-        if (!group) throw new NotFound('No group found');
-        res.status(200).json({ group });
-    } catch (err) {
-        console.log(err);
-        next(err);
-    }
-});
 
 // POST forum/post/:forumId
 // Creates a post in a forum
@@ -51,5 +18,46 @@ router.post(
     ],
     postController.creatForumPost
 );
+
+// GET forum/post/:postId
+// Returns a post with all its comments
+router.get('/post/:postId', auth, postController.getPost);
+
+// PUT forum/post/:forumId/:postId
+// Disables a post from being viewed in a forum.
+router.put('/post/:forumId/:postId', auth, postController.hidePost);
+
+// PUT forum/post/:postId
+// Edit a post using post id
+router.put('/post/:postId', auth, postController.editPost);
+
+// PUT /forum/post/vote/:postId
+// Adds user id to votes array in post
+router.put('/post/vote/:postId', auth, postController.addUpvote);
+
+// PUT /forum/post/unvote/:postId
+// Remove upvote from a post
+router.put('/post/unvote/:postId', auth, postController.removeUpvote);
+
+// POST forum/post/comment/:postId
+// Creates a comment for a post
+router.post(
+    '/post/comment/:postId',
+    auth,
+    [check('text', 'Text is required').notEmpty()],
+    commentController.addComment
+);
+
+// PUT forum/post/comment/:postId/:commentId
+// Disables a comment from being viewed in a post.
+router.put(
+    '/post/comment/:postId/:commentId',
+    auth,
+    commentController.hideComment
+);
+
+// PUT forum/post/comment/:postId
+// Edit a comment using comment id
+router.put('/post/comment/:commentId', auth, commentController.editComment);
 
 module.exports = router;
