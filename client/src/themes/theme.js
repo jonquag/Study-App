@@ -3,7 +3,6 @@ import { createMuiTheme } from '@material-ui/core';
 export const theme = createMuiTheme({
     typography: {
         fontFamily: 'Poppins',
-        // fontSize: '0.75rem',
         h1: {
             fontSize: '2.25rem',
         },

@@ -42,7 +42,6 @@ const Navbar = () => {
 
     const handleLogout = () => {
         actions.logout()(dispatch);
-        // history.push('/login');
     };
 
     return (

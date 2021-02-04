@@ -1,5 +1,4 @@
 const handleAuthErrors = (err, setErrors) => {
-    // console.log(err);
     if (err && err.data && err.data.response) {
         if (err.status === 400) {
             const errors = {};
