@@ -4,7 +4,7 @@ import { LinearProgress } from '@material-ui/core';
 import { useGlobalContext } from '../../context/studyappContext';
 import Navbar from '../layout/Navbar';
 const PrivateRoute = ({ component: Component, ...rest }) => {
-    const { isAuth, isLoading } = useGlobalContext();
+const { isAuth, isLoading } = useGlobalContext();
 
     return (
         <Route

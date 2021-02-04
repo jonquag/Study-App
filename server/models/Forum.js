@@ -2,17 +2,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ForumSchema = new Schema({
-    // name of the forum
-    name: {
-        type: String,
-        required: true,
-        ref: 'User',
-    },
-
+    
     // user creating the forum
     user: {
         type: Schema.Types.ObjectId,
-        required: true,
+        ref: 'User',
+        required: true
     },
     posts: [
         {

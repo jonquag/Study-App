@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import GroupCard from '../../components/Group/GroupCard';
 import defaultImage from '../../images/upload_placeholder.png';
 import { useSnackbar } from 'notistack';
-import { useGlobalContext } from '../../context/studyappContext';
+import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
@@ -62,6 +62,7 @@ const useStyles = makeStyles(theme => ({
 
 const Groups = () => {
     const classes = useStyles();
+    const {conversationManager} = useConversationContext();
     const {userGroups, userCourse, dispatch} = useGlobalContext();
     const {groups, courseGroups} = userGroups;
     const [suggestedGroups, setSuggestedGroups] = useState([]);
@@ -136,7 +137,9 @@ const Groups = () => {
         if(response.data) {
 
           groups.push(response.data.data)
-          actions.fetchUserGroups(groups)(dispatch);
+          await actions.fetchUserGroups(groups)(dispatch);
+
+          conversationManager.updateRooms(groups);
 
           enqueueSnackbar('Group Created Successfully.', {
             variant: 'success',
@@ -272,6 +275,7 @@ const Groups = () => {
             const currGroups = [...groups, res.data];
             const newUserGroups = { courseGroups: [...courseGroups], groups: currGroups };
             dispatch({ type: 'updateUserGroups', payload: newUserGroups });
+            conversationManager.updateRooms(currGroups);
         } catch (err) {
             console.log(err);
         }
@@ -290,7 +294,9 @@ const Groups = () => {
             );
             updatedCourseGroups[index] = res.data;
             const newUserGroups = { courseGroups: updatedCourseGroups, groups: myGroups };
+
             dispatch({ type: 'updateUserGroups', payload: newUserGroups });
+            conversationManager.updateRooms(myGroups);
         } catch (err) {
             console.log(err);
         }
