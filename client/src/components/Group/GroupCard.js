@@ -1,19 +1,18 @@
 import React from 'react';
-import { 
-  Grid, 
-  Typography, 
-  Card, 
-  CardContent, 
-  CardMedia, 
-  CardActions, 
-  Button 
+import {
+    Grid,
+    Typography,
+    Card,
+    CardContent,
+    CardMedia,
+    CardActions,
+    Button,
 } from '@material-ui/core';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import groupPicture from '../../images/study_group.png';
 
-const useStyles = makeStyles((theme) => ({
-
+const useStyles = makeStyles(theme => ({
     card: {
         height: '100%',
         display: 'flex',
@@ -58,29 +57,31 @@ const GroupCard = props => {
                 />
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h6" style={{ fontWeight: 600 }}>
-                      {props.data.name}
+                        {props.data.name}
                     </Typography>
                     <Grid container direction="row" style={{ paddingTop: '10px' }}>
                         <PeopleAltOutlinedIcon color="disabled" fontSize="small" />
-                        <Typography 
-                            variant="body1" 
-                            color="textSecondary" 
-                            style={{ paddingLeft: "5px"}} 
+                        <Typography
+                            variant="body1"
+                            color="textSecondary"
+                            style={{ paddingLeft: '5px' }}
                         >
                             {formatGroupCount(props.data.members.length)} members
                         </Typography>
                     </Grid>
-                  </CardContent>
-                  <CardActions onClick={async () => {
-                    setIsUpdating(true);
-                    await props.handleCardPress(props.data._id);
-                  }}>
-                    <Button 
-                        disabled={isUpdating} 
-                        className={classes.button} 
-                        color='primary'
+                </CardContent>
+                <CardActions
+                    onClick={async () => {
+                        setIsUpdating(true);
+                        await props.handleCardPress(props.data._id);
+                    }}
+                >
+                    <Button
+                        disabled={isUpdating}
+                        className={classes.button}
+                        color="primary"
                     >
-                      {props.actionText}
+                        {props.actionText}
                     </Button>
                 </CardActions>
             </Card>

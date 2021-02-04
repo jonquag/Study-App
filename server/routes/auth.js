@@ -15,6 +15,7 @@ const { check } = require('express-validator');
 const Profile = require('../models/profile');
 const User = require('../models/user');
 const userController = require('../controllers/user');
+const Group = require('../models/Group');
 
 router.post('/login', validateEntryReq, async function (req, res, next) {
     const { email, password } = req.body;
@@ -83,6 +84,23 @@ router.post('/register', validateEntryReq, async function (req, res, next) {
         res.sendStatus(201);
     } catch (error) {
         next(error);
+    }
+});
+
+// Removes a group without any members
+router.delete('/group/:groupId', auth, async (req, res, next) => {
+    const { groupId } = req.params;
+    try {
+        const group = await Group.findById(groupId);
+        if (!groupId) throw new NotFound('Group not found');
+
+        const groupRes = await group.remove();
+        if (!groupRes) throw new GeneralError('Error removing group');
+
+        res.status(200).json({ message: 'Group removed' });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
     }
 });
 

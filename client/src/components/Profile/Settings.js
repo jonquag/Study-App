@@ -73,7 +73,6 @@ const ProfileSettings = () => {
                     }}
                     validationSchema={SignupSchema}
                     onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
-                        console.log(values);
                         const password = {
                             oldPassword: values.oldPassword,
                             newPassword: values.newPassword,

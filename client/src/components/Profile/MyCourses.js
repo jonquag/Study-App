@@ -158,7 +158,7 @@ const MyCourses = () => {
 
     return (
         <Grid item container md={9} className={classes.container}>
-            <Typography variant="h4" className={classes.university}>
+            <Typography variant="h1" className={classes.university}>
                 {school}
             </Typography>
             <Typography variant="h5" className={classes.title}>
