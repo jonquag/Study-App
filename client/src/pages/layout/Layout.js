@@ -10,13 +10,13 @@ const Layout = ({ children }) => {
     useEffect(() => {
         if (isLoading)
             actions.fetchProfile()(dispatch).then((userGroups) => {
-                console.log('init')
                 const groupNames = userGroups.map(group => group._id);
                 conversationManager.startSocket(groupNames);
-                actions.fetchUserGroups(userGroups)(dispatch)
+                actions.fetchUserGroups(userGroups)(dispatch);
             });
     }, [isLoading, dispatch, conversationManager]);
 
+    //cleanup socket
     useEffect(() => {
         return () => conversationManager.closeSocket();
     }, [conversationManager])

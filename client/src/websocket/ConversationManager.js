@@ -12,14 +12,27 @@ class ConversationManager {
         this._notifications = {};
     }
 
+    //Initialize ConversationManager with update functions
     init = (updateNotifications) => {
         this._updateNotifications = updateNotifications;
     };
 
+    // Connect to socket server and joins rooms
+    startSocket = (groupNames) => {
+        if (!this._socket.connected) {
+            this._socket.io.opts.query = 'rooms=' + groupNames;
+            this._socket.connect();
+            this.updateConversations();
+        }
+    }
+
+    //Get list of conversations of the form {groupId: Conversation}
     getConversations = () => {
         return this._conversations;
     };
 
+    //Adds data.messages to conversation.messages and increases notification
+    // counter by 1
     handleReceiveMessage = (data) => {
         this._conversations[data.room].messages.push(data.message);
         this._notifications[data.room] += 1;
@@ -30,20 +43,15 @@ class ConversationManager {
         this._socket.emit('messageGroup', {room: groupId, message})
     }
 
-    startSocket = (groupNames) => {
-        if (!this._socket.connected) {
-            this._socket.io.opts.query = 'rooms=' + groupNames;
-            this._socket.connect();
-            this.updateConversations();
-        }
-    }
-
+    //Updates socket rooms on changes to user groups
     updateRooms = (groups) => {
         const groupNames = groups.map(group => group._id);
         this._socket.emit('updateRooms', groupNames);
         this.updateConversations();
     }
 
+    //fetches new list of conversations and initializes
+    // conversations and notifications
     updateConversations = () => {
         fetchConversations().then((conversations) => {
             const convos = {};
@@ -58,6 +66,7 @@ class ConversationManager {
         })
     }
 
+    //Clears the notifications for a specific conversation by groupId
     clearNotifications = (groupId) => {
         if (this._notifications[groupId] > 0) {
             this._notifications[groupId] = 0
@@ -65,6 +74,7 @@ class ConversationManager {
         }
     }
 
+    //Disconnect from socket server
     closeSocket = () => {
         if (this._socket.connected) {
             this._updateConversations = () => {};

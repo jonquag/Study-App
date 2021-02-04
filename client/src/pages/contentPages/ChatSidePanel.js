@@ -111,13 +111,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatSidePanel = ({groups, chatIndex, updateSelectedChat, notifications}) => {
-    console.log(notifications);
+const ChatSidePanel = ({groups, selectedGroupChat, updateSelectedChat, notifications}) => {
     const classes = useStyles();
     const { dispatch } = useGlobalContext();
 
-    const handleChatList = (index) => {
-        updateSelectedChat(index)
+    const handleChatList = (id) => {
+        updateSelectedChat(id)
         dispatch({ type: 'CLOSE_DRAWER' });
     };
 
@@ -126,7 +125,7 @@ const ChatSidePanel = ({groups, chatIndex, updateSelectedChat, notifications}) =
             <Grid container className={classes.list_container}>
                 <Grid item className={classes.chat_head}>
                     <Typography>All Chats</Typography>
-                    <Badge badgeContent={Object.values(notifications).reduce((a, b) => a + b)} className={classes.badge} />
+                    <Badge badgeContent={Object.values(notifications).reduce((a, b) => a + b, 0)} className={classes.badge} />
                 </Grid>
                 <Divider className={classes.divider} />
                 {groups.map((g, index) => {
@@ -136,11 +135,11 @@ const ChatSidePanel = ({groups, chatIndex, updateSelectedChat, notifications}) =
                                 item
                                 container
                                 className={
-                                    index === chatIndex
+                                    g._id === selectedGroupChat
                                         ? classes.chat_list_active
                                         : classes.chat_list
                                 }
-                                onClick={() => handleChatList(index)}
+                                onClick={() => handleChatList(g._id)}
                             >
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar

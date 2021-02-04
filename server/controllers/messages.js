@@ -7,17 +7,14 @@ exports.saveMessage = async (data) => {
         const d = new Date();
         const nowTime = Math.floor(d.getTime() / 1000);
         message['timeStamp'] = nowTime;
-        console.log(nowTime)
         const conversation = await Conversation.findOne({ group: data.room });
-        console.log(conversation)
-        conversation.messages.push(message)
+        if (!conversation) reject('No conversation found.');
+
+        conversation.messages.push(message);
 
         const c = await conversation.save();
+        if (!c) reject('Failed to update conversation.');
 
         resolve(c.messages[c.messages.length - 1]);
     });
-};
-
-exports.sendMsgToRoom = async (socket) => {
-
 };

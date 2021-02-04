@@ -62,62 +62,76 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = () => {
     const classes = useStyles();
-    const [chatIndex, setChatIndex] = useState(0);
     const { userGroups } = useGlobalContext();
     const {groups} = userGroups;
     const [chatGroups, setChatGroups] = useState(null);
+    const [selectedGroupChat, setSelectedGroupChat] = useState(null);
 
     const { conversationManager, notifications } = useConversationContext();
+    //notifications update triggers re-render so we can just get conversations
     let conversations = conversationManager.getConversations();
     
-    if (chatGroups) {
-        conversationManager.clearNotifications(chatGroups[chatIndex]._id);
-    }
-
+    //clear notifications if chat is active 
+    // safe to call because conversationManager.clearNotifications does not trigger update
+    // if 0 notifications
     React.useEffect(() => {
+        if (chatGroups && selectedGroupChat) {
+            conversationManager.clearNotifications(selectedGroupChat);
+        }
+    }, [chatGroups, conversationManager, notifications, selectedGroupChat]); 
+
+    //Sort chat groups when a new message comes in
+    React.useEffect(() => {
+        //Wait for groups and conversations to get populated
         if (groups.length && Object.keys(conversations).length) {
-            const sorted = groups.sort((a, b) => {
-                if (conversations[a._id] && conversations[b._id]) {
-                    const aMessages = conversations[a._id].messages;
-                    const bMessages = conversations[b._id].messages;
+            const sorted = groups.sort((aGroup, bGroup) => {
+                //Check conversations actually contain group._id
+                if (conversations[aGroup._id] && conversations[bGroup._id]) {
+                    const aMessages = conversations[aGroup._id].messages;
+                    const bMessages = conversations[bGroup._id].messages;
         
                     const aMostRecent = 
                         aMessages.length === 0 ? 0 : aMessages[aMessages.length - 1].timeStamp;
                     const bMostRecent = 
                         bMessages.length === 0 ? 0 : bMessages[bMessages.length - 1].timeStamp;
+                    console.log(aMostRecent, bMostRecent)
                     return bMostRecent - aMostRecent;
                 }
                 return 0
             })
-            if (chatGroups) {
-                const selectedId = chatGroups[chatIndex]._id;
-                const newIndex = sorted.findIndex(g => g._id === selectedId);
-                setChatIndex(newIndex);
-            }
+            setSelectedGroupChat(s => s || sorted[0]._id);
             setChatGroups([...sorted]);
         }
-    }, [groups, conversations]);
+    }, [groups, conversations, notifications]);
 
-    if (!chatGroups) return <LinearProgress />
+    if (!chatGroups || !selectedGroupChat) return <LinearProgress />
+    const selectedGroup = chatGroups.find(g => g._id === selectedGroupChat);
     return (
         <Grid container className={classes.container}>
             <Sidebar>
-                <ChatSidePanel groups={chatGroups} chatIndex={chatIndex} updateSelectedChat={setChatIndex} notifications={notifications}/>
+                <ChatSidePanel 
+                    groups={chatGroups} 
+                    selectedGroupChat={selectedGroupChat} 
+                    updateSelectedChat={setSelectedGroupChat} 
+                    notifications={notifications}
+                />
             </Sidebar>
             <Grid item container sm={12} md={9} className={classes.contentContainer}>
             {
-                chatGroups.length && chatGroups[chatIndex] && conversations[chatGroups[chatIndex]._id] && 
+                chatGroups.length && 
+                selectedGroup && 
+                conversations[selectedGroupChat] && 
                 <>
                     <Container className={classes.chat_head}>
                         <Avatar
                             variant='square'
                             className={classes.chat_pic} 
-                            src={chatGroups[chatIndex].image}
+                            src={selectedGroup.image}
                         />
                         <Box flexGrow={1} flexDirection='column'>
-                            <Typography variant='h5'>{chatGroups[chatIndex].name}</Typography>
+                            <Typography variant='h5'>{selectedGroup.name}</Typography>
                             <Typography className={classes.members} variant='h6'>
-                                {chatGroups[chatIndex].members.length + ' Members'}
+                                {selectedGroup.members.length + ' Members'}
                             </Typography>
                         </Box>
                         <IconButton>
@@ -125,9 +139,9 @@ const Chat = () => {
                         </IconButton>
                     </Container>
                     <Divider className={classes.divider}/>
-                    <Conversation messages={conversations[chatGroups[chatIndex]._id].messages}/>
+                    <Conversation messages={conversations[selectedGroupChat].messages}/>
                     <Divider className={classes.divider}/>
-                    <MessageCreator groupId={chatGroups[chatIndex]._id}/>
+                    <MessageCreator groupId={selectedGroupChat}/>
                 </>
             }
             </Grid>
