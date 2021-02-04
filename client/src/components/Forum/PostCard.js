@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
+import { Card } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
-        borderRadius: 10,
+        borderRadius: 15,
     },
     actionArea: {
         height: 120,
@@ -54,31 +54,35 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const PostCard = props => {
+const PostCard = ({ post, updateActivePost }) => {
     const classes = useStyles();
 
+    const updatePostId = () => {
+        updateActivePost(post.id);
+    };
+
     return (
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root} variant="outlined" onClick={updatePostId}>
             <CardActionArea className={classes.actionArea}>
                 <CardMedia
                     component="img"
                     alt="alt img"
                     height="140"
-                    image={props.post.image}
-                    title={props.post.title}
+                    image={post.image}
+                    title={post.title}
                     className={classes.cardImage}
                 />
                 <CardContent className={classes.cardInfo}>
                     <div>
                         <Typography className={classes.cardTitle}>
-                            {props.post.title}
+                            {post.title}
                         </Typography>
                     </div>
                     <div className={classes.postDateInfo}>
                         <span className={classes.cardDesc}>
-                            Posted {props.post.postDate} by{' '}
+                            Posted {post.postDate} by{' '}
                         </span>
-                        <span className={classes.postedBy}>{props.post.postedBy}</span>
+                        <span className={classes.postedBy}>{post.postedBy}</span>
                     </div>
                 </CardContent>
             </CardActionArea>

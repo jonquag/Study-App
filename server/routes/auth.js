@@ -4,9 +4,17 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateBody = require('../middleware/validateBody');
 const validateEntryReq = validateBody.entry;
-const { Conflict, GeneralError, NotFound, Unauthorized } = require('../utils/errors');
+const auth = require('../middleware/verifyAuth');
+const {
+    Conflict,
+    GeneralError,
+    NotFound,
+    Unauthorized,
+} = require('../utils/errors');
+const { check } = require('express-validator');
 const Profile = require('../models/profile');
 const User = require('../models/user');
+const userController = require('../controllers/user');
 
 router.post('/login', validateEntryReq, async function (req, res, next) {
     const { email, password } = req.body;
@@ -16,9 +24,11 @@ router.post('/login', validateEntryReq, async function (req, res, next) {
         });
         if (!user) throw new NotFound('No user found');
 
-        const match = await bcrypt.compare(password, user.password).catch(() => {
-            throw new GeneralError('Error decrypting password');
-        });
+        const match = await bcrypt
+            .compare(password, user.password)
+            .catch(() => {
+                throw new GeneralError('Error decrypting password');
+            });
 
         if (!match) throw new Unauthorized('Invalid credentials');
 
@@ -44,7 +54,7 @@ router.post('/register', validateEntryReq, async function (req, res, next) {
         });
         userInfo.password = hashedPw;
         const user = new User(userInfo);
-        const userDoc = await user.save(user).catch((err) => {
+        const userDoc = await user.save(user).catch(err => {
             console.log(err.Error);
             if (!err.errors || (err.errors.email && err.errors.email.reason)) {
                 throw new GeneralError('Error connecting to database.');
@@ -56,7 +66,9 @@ router.post('/register', validateEntryReq, async function (req, res, next) {
             expiresIn: '180d',
         });
         await new Profile({ user: userDoc.id }).save().catch(() => {
-            throw new GeneralError('Error creating user profile on registration.');
+            throw new GeneralError(
+                'Error creating user profile on registration.'
+            );
         });
         res.cookie('token', token, { httpOnly: true });
         res.sendStatus(201);
@@ -69,5 +81,17 @@ router.delete('/logout', function (req, res) {
     res.clearCookie('token');
     res.sendStatus(204);
 });
+
+// PUT /auth/changepasword
+// Changes user password
+router.put(
+    '/changepassword',
+    auth,
+    [
+        check('oldPassword', 'Old password is required').notEmpty(),
+        check('newPassword', 'New password is required').notEmpty(),
+    ],
+    userController.passwordChange
+);
 
 module.exports = router;

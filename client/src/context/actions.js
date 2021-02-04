@@ -74,7 +74,7 @@ export const fetchProfile = () => async dispatch => {
     }
 };
 
-export const fetchUserGroups = (userGroups) => async dispatch => {
+export const fetchUserGroups = userGroups => async dispatch => {
     try {
         const res = await axios.get('/user/groups');
         const courseGroups = res.data.map(course => course.groups).flat();
@@ -82,13 +82,13 @@ export const fetchUserGroups = (userGroups) => async dispatch => {
             type: 'updateUserGroups',
             payload: {
                 groups: [...userGroups],
-                courseGroups
-            }
-        })
+                courseGroups,
+            },
+        });
     } catch (err) {
         console.log(err.message);
     }
-}
+};
 
 export const updateProfile = userInfo => async dispatch => {
     try {
@@ -111,3 +111,13 @@ export const fetchConversations = async () => {
         return [];
     }
 }
+
+export const updatePassword = password => async dispatch => {
+    try {
+        const res = await axios.put('/auth/changepassword', password);
+        return res;
+    } catch (err) {
+        console.log(err.message);
+        return err.response;
+    }
+};
