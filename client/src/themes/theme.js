@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core';
 export const theme = createMuiTheme({
     typography: {
         fontFamily: 'Poppins',
-        fontSize: '0.75rem',
+        // fontSize: '0.75rem',
         h1: {
             fontSize: '2.25rem',
         },
@@ -34,7 +34,7 @@ export const theme = createMuiTheme({
     },
     palette: {
         primary: {
-            main: '#FFF',
+            main: '#4B00FF',
             light: '#2574FF',
             gradient: 'linear-gradient(45deg, #2574FF, #4B00FF)',
         },

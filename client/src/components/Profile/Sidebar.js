@@ -9,6 +9,12 @@ import { useGlobalContext } from '../../context/studyappContext';
 const useStyles = makeStyles(theme => ({
     fab_icon: {
         margin: 16,
+        backgroundColor: '#FFF',
+        color: '#737373',
+        '&:hover': {
+            color: '#FFF',
+            backgroundColor: theme.palette.secondary.main,
+        },
     },
     mobile_container: {
         backgroundColor: theme.palette.common.white,
