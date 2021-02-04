@@ -133,8 +133,8 @@ const MyCourses = () => {
                 let groupIds;
                 if (groups && groups.length) {
                     // filter user groups selecting only the group id's
-                    // eslint-disable-next-line no-sequences
                     groupIds = groups.reduce(
+                        // eslint-disable-next-line no-sequences
                         (arr, g) => (g.course === id && arr.push(g._id), arr),
                         []
                     );

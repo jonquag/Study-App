@@ -22,6 +22,8 @@ module.exports = function (io) {
         socket.on("messageGroup", (data) => {
             messageController.saveMessage(data).then((msg) => {
                 io.to(data.room).emit('group message', {room: data.room, message: msg})
+            }).catch((err) => {
+                console.log(err);
             });
         });
         
