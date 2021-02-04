@@ -61,7 +61,16 @@ exports.getConversations = async (req, res, next) => {
         if (!user) throw new NotFound('No user found');
 
         const {groups} = user;
-        const convos = await Conversation.find({ 'group': {$in: groups }});
+        const convos = await Conversation.find({ 
+            'group': { $in: groups }
+        }).populate({
+            path : 'messages',
+            populate: {
+                path: 'profile',
+                model: 'Profile',
+            },
+        });
+
         if (!convos) throw new GeneralError('Error finding conversations');
 
         res.status(200).json(convos);

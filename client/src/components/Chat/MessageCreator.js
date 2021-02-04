@@ -62,13 +62,12 @@ const useStyles = makeStyles(theme => ({
 const MessageCreator = ({groupId}) => {
     const classes = useStyles();
     const { profile } = useGlobalContext();
-    const { user } = profile;
     const { conversationManager } = useConversationContext();
     const [workingText, setWorkingText] = React.useState('');
 
     const sendMessage = () => {
         const payload = {
-            user: user._id, 
+            profile: profile._id, 
             text: workingText, 
             image: profile.imageUrl
         }

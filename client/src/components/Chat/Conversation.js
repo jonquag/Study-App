@@ -58,7 +58,7 @@ const Conversation = ({notifications, messages}) => {
                 <List>
                     {
                         messages.map((message, index) => {
-                            const isReceived = message.user !== user._id;
+                            const isReceived = message.profile.user !== user._id;
                             return (
                                 <ListItem
                                     key={index}

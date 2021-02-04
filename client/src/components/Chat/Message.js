@@ -66,7 +66,7 @@ const Message = ({msg, isReceived}) => {
             flexDirection='row' 
             className={classes.container}
         >
-            {isReceived && <Avatar className={classes.avatar} src={msg.image}/>}
+            {isReceived && <Avatar className={classes.avatar} src={msg.profile.imageUrl}/>}
             <Box display='flex' flexDirection='column'>
                 <Container 
                     className={

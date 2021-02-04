@@ -12,12 +12,11 @@ const ConversationSchema = new Schema({
     // individual message information
     messages: [
         {
-            user: { 
+            profile: {
                 type: Schema.Types.ObjectId,
-                ref: 'User',
+                ref: 'Profile',
                 required: true
             },
-            image: { type: String },
             timeStamp: {
                 type: Number,
             },
