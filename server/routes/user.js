@@ -6,7 +6,9 @@ const User = require('../models/user');
 const University = require('../models/universities');
 const { BadRequest, GeneralError } = require('../utils/errors');
 const Group = require('../models/Group');
-require('../models/courses');
+const Course = require('../models/courses');
+const Forum = require('../models/Forum');
+const mongoose = require('mongoose');
 
 // Get the logged in user
 router.get('/', verifyAuth, async function (req, res, next) {
@@ -233,6 +235,7 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
         next(err);
     }
 });
+
 
 // POST user/groups
 // Creates a new group from a users course
