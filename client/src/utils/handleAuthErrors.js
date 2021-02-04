@@ -1,4 +1,5 @@
 const handleAuthErrors = (err, setErrors) => {
+    // console.log(err);
     if (err && err.data && err.data.response) {
         if (err.status === 400) {
             const errors = {};
@@ -7,8 +8,9 @@ const handleAuthErrors = (err, setErrors) => {
             });
             setErrors(errors);
         } else if (err.status === 401) {
-            setErrors({ password: 'Invalid password' });
-            setErrors({ oldPassword: 'Invalid password' });
+            if (err.data.response === 'Invalid credentials')
+                setErrors({ password: 'Invalid email or password' });
+            else setErrors({ oldPassword: 'Invalid password' });
         } else if (err.status === 404) {
             setErrors({ email: 'User with email not found' });
         } else if (err.status === 409) {
