@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Typography, Divider, Box, IconButton, Avatar } from '@material-ui/core';
+import {
+    Grid,
+    Typography,
+    Divider,
+    Box,
+    IconButton,
+    Avatar,
+    CircularProgress,
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ForwardIcon from '@material-ui/icons/Forward';
 import ForwardOutlinedIcon from '@material-ui/icons/ForwardOutlined';
@@ -33,12 +41,16 @@ const useStyles = makeStyles(theme => ({
         width: '75px',
         margin: theme.spacing(1, 0),
     },
+    circular: {
+        height: '200px',
+        width: '200px',
+    },
 }));
 
 const PostDialog = ({ handleClosePost, activePostId }) => {
     const classes = useStyles();
-    const [postData, setPostData] = useState();
     const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
     const [avatarUrl, setAvatarUrl] = useState();
     const [title, setTitle] = useState();
     const [postText, setPostText] = useState();
@@ -53,13 +65,10 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
         try {
             const res = await axios.get(`/forum/post/${hardCodedId}`);
             console.log(res.data.post);
-            // setPostData(res.data.post);
             setTitle(res.data.post.title);
             setPostText(res.data.post.text);
             setAvatarUrl(res.data.post.postAvatar);
             setComments(res.data.post.comments);
-            // setComments(res.data.post.comments);
-            // console.log('setPostData: ' + postData.isDeleted);
         } catch (err) {
             console.log(err);
         }
@@ -69,6 +78,30 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
         getPostData(hardCodedId);
     }, [hardCodedId]);
 
+    const addComment = async () => {
+        const res = await axios.post(`forum/post/comment/${hardCodedId}`, {
+            text: newComment,
+        });
+        console.log(res);
+        const updatedComments = [...comments, res.data.comment];
+        setComments(updatedComments);
+        setNewComment('');
+    };
+
+    if (!title)
+        return (
+            <Grid
+                container
+                direction="column"
+                justify="center"
+                align="center"
+                alignItems="center"
+                className={classes.circular}
+            >
+                {/* <LinearProgress /> */}
+                <CircularProgress size={100} color="secondary" />
+            </Grid>
+        );
     return (
         <div>
             <Grid item container direction="column" justify="center" alignItems="center">
@@ -154,7 +187,10 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
                                 color="secondary"
                                 fullWidth
                                 className={classes.input}
+                                value={newComment}
+                                onChange={e => setNewComment(e.target.value)}
                             />
+                            <Button onClick={addComment}>Add Comment</Button>
                         </Grid>
                         <Grid item xs={1}></Grid>
                     </Grid>
