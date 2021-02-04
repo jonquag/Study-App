@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
 import axios from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -35,6 +36,7 @@ const useStyles = makeStyles(theme => ({
             padding: theme.spacing(0, 1, 0, 1),
         },
     },
+    
 }));
 
 const addPost = () => {
@@ -47,12 +49,12 @@ const ForumContent = ({name, groupId}) => {
     const [forumPosts, setForumPosts] = useState([]);
 
     const [forumName, setForumName] = useState('');
-    const [isLoading, setIsLoading] = useState('true')
+    const [isLoading, setIsLoading] = useState(null)
 
     const getGroupForum = async (groupId) => {
 
         try {
-
+            setIsLoading(true);
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
             setForumName(response.data.group.forum.name)
@@ -68,19 +70,28 @@ const ForumContent = ({name, groupId}) => {
       }, [groupId]);
     
     const renderPosts = () => {
-        if(!isLoading) {
-            return (
-                <Grid item className={classes.postCard}>
-                        {forumPosts.map(post => (
-                            <PostCard key={post._id} post={post} />
-                        ))}
-                </Grid>
-    
-               ) 
-        } 
+        return (
+            <Grid item className={classes.postCard}>
+                    {forumPosts.map(post => (
+                        <PostCard key={post._id} post={post} />
+                    ))}
+            </Grid>
+            ) 
+    }
+
+    if(isLoading) {
+        return (
+            <Grid container direction="column" justify="center" align="center" alignItems="center">
+            <CircularProgress
+            size={100}
+            color="secondary"
+            />
+            </Grid>
+        )
     }
 
     return (
+      
         <Grid container direction="column" alignContent="center" item sm={12}>
             <Grid
                 item
@@ -112,7 +123,7 @@ const ForumContent = ({name, groupId}) => {
                 className={classes.cardContainer}
             >
             { renderPosts()}   
-        
+
             </Grid>
         </Grid>
     );
