@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { msToTimeAgo } from '../../utils/convertTimeStamps';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -57,6 +58,23 @@ const useStyles = makeStyles(theme => ({
 
 const PostCard = props => {
     const classes = useStyles();
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        setIsLoading(false)
+
+    },[])
+    
+    if(isLoading) {
+        return (
+            <Grid container direction="column" justify="center" align="center" alignItems="center">
+            <CircularProgress
+            size={100}
+            color="secondary"
+            />
+            </Grid>
+        )
+    }
 
     return (
         <Card className={classes.root} variant="outlined">
