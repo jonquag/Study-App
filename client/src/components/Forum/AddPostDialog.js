@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
     Grid,
     Button,
@@ -15,6 +15,7 @@ import { baseStyle, activeStyle, acceptStyle, rejectStyle } from './ForumModalSt
 import { makeStyles } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -50,12 +51,38 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
 
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
-
+    const hardCodedForumId = '6012462f4f758023244df285';
     const onDrop = () => {
         console.log('Dropped');
     };
 
-    const createPost = () => {};
+    // router.post(
+    //     '/post/:forumId',
+    //     auth,
+    //     [
+    //         check('title', 'Title is required').notEmpty(),
+    //         check('text', 'Text is required').notEmpty(),
+    //     ],
+    //     postController.creatForumPost
+    // );
+
+    const createNewPostData = () => {
+        createNewPost(hardCodedForumId);
+    };
+
+    const createNewPost = async hardCodedIdForumId => {
+        try {
+            const res = await axios.post(`forum/post/${hardCodedForumId}`, {
+                text: description,
+                title: title,
+            });
+            console.log('new post response: ' + res);
+            setTitle('');
+            setDescription('');
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const { getRootProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
         onDrop,
@@ -106,6 +133,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                             onChange={e => setTitle(e.target.value)}
                             className={classes.input}
                             placeholder="Add a title.."
+                            value={title}
                         />
                     </Grid>
 
@@ -122,6 +150,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                             onChange={e => setDescription(e.target.value)}
                             className={classes.input}
                             placeholder="Add a description.."
+                            value={description}
                         />
                     </Grid>
                     <Grid item>
@@ -148,7 +177,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                         <Button
                             color="primary"
                             startIcon={<AddIcon />}
-                            onSubmit={createPost}
+                            onClick={createNewPostData}
                             className={classes.button}
                         >
                             Create Post
