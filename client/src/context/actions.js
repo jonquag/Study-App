@@ -102,6 +102,16 @@ export const updateProfile = userInfo => async dispatch => {
     }
 };
 
+export const fetchConversations = async () => {
+    try {
+        const res = await axios.get('/user/conversations');
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
+
 export const updatePassword = password => async dispatch => {
     try {
         const res = await axios.put('/auth/changepassword', password);
