@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Typography, Badge, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -72,17 +72,24 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
 
     const [courseList, setCourseList] = useState([]);
     const [courseId, setCourseId] = useState([]);
+    const firstUpdate = useRef(true);
 
     const getGroups = async () => {
         try {
           const res = await axios.get('/user/groups/');
           setCourseList([...res.data].map(cgl => ({ ...cgl, expand: false })));
 
+          if (firstUpdate.current) {
+            onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
+            firstUpdate.current = false;
+            return;
+        }
+
         } catch (err) {
           console.log(err);
         }
       }
-
+    
     useEffect(() => {
         getGroups();
       }, []);
