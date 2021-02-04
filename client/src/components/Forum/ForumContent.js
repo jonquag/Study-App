@@ -57,7 +57,7 @@ const ForumContent = ({name, groupId}) => {
             setIsLoading(true);
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
-            setForumName(response.data.group.forum.name)
+            setForumName(response.data.group.name)
             setIsLoading(false);
 
         } catch(err) {
