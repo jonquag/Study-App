@@ -10,14 +10,17 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1, 0),
     },
     commentText: {
-        padding: theme.spacing(0, 4),
+        padding: theme.spacing(2),
+    },
+    comment: {
+        margin: theme.spacing(1, 0),
     },
 }));
 
 const Comments = ({ comment }) => {
     const classes = useStyles();
     return (
-        <div>
+        <div className={classes.comment}>
             {' '}
             <Grid container item justify="flex-start">
                 <Grid

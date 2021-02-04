@@ -10,6 +10,7 @@ import {
     IconButton,
     Avatar,
     CircularProgress,
+    Container,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ForwardIcon from '@material-ui/icons/Forward';
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
         width: '2rem',
     },
     divider: {
-        margin: theme.spacing(1, 0),
+        margin: theme.spacing(2, 0),
         width: '100%',
     },
     input: {
@@ -39,11 +40,18 @@ const useStyles = makeStyles(theme => ({
     avatar: {
         height: '75px',
         width: '75px',
-        margin: theme.spacing(1, 0),
+        margin: theme.spacing(1),
+        border: '2px solid #2968FF',
     },
     circular: {
         height: '200px',
         width: '200px',
+    },
+    postText: {
+        padding: theme.spacing(1, 0, 1, 5),
+    },
+    button: {
+        height: 117,
     },
 }));
 
@@ -138,19 +146,23 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
 
                     <Divider className={classes.divider} />
                     {/* Image container */}
-                    <Grid item>
-                        <Box className={classes.imageContainer}>
+                    <Grid item container xs={12} justify="center">
+                        <Grid item>
                             <img src={avatarUrl} alt="Post" />
-                        </Box>
+                        </Grid>
                     </Grid>
+                    <Box className={classes.imageContainer}></Box>
+
                     <Divider className={classes.divider} />
                     {/* Post text body */}
                     <Grid item container xs={12} alignItems="center">
                         <Grid item xs={1}>
-                            <Avatar className={classes.avatar}></Avatar>
+                            <Avatar className={classes.avatar} src={avatarUrl}></Avatar>
                         </Grid>
                         <Grid item xs={10}>
-                            <Typography align="center">{postText}</Typography>
+                            <Typography className={classes.postText}>
+                                {postText}
+                            </Typography>
                         </Grid>
                         <Grid item xs={1}>
                             <IconButton aria-label="upvote" onClick={toggleVote}>
@@ -170,29 +182,53 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
                     </Grid>
                     <Divider className={classes.divider} />
                     {/* Comments loop container */}
-                    <Grid item container xs={12} alignItems="center">
+                    <Grid item container xs={12} justify="center">
                         <Grid item xs={1}></Grid>
-                        <Grid item xs={10}>
+                        <Grid item xs={9} container direction="column">
                             {comments.map(comment => (
-                                <Comments key={comment._id} comment={comment} />
+                                <Grid item>
+                                    <Comments key={comment._id} comment={comment} />
+                                </Grid>
                             ))}
-                            <TextField
-                                variant="outlined"
-                                autoFocus
-                                label="Comment on post"
-                                type="text"
-                                multiline
-                                rows={4}
-                                rowsMax={4}
-                                color="secondary"
-                                fullWidth
-                                className={classes.input}
-                                value={newComment}
-                                onChange={e => setNewComment(e.target.value)}
-                            />
-                            <Button onClick={addComment}>Add Comment</Button>
                         </Grid>
                         <Grid item xs={1}></Grid>
+                        <Grid
+                            item
+                            container
+                            xs={12}
+                            alignItems="center"
+                            justify="center"
+                            spacing={1}
+                        >
+                            <Grid item xs={10}>
+                                <TextField
+                                    variant="outlined"
+                                    autoFocus
+                                    label="Comment on post"
+                                    type="text"
+                                    multiline
+                                    rows={4}
+                                    rowsMax={4}
+                                    color="secondary"
+                                    fullWidth
+                                    className={classes.input}
+                                    value={newComment}
+                                    onChange={e => setNewComment(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Button
+                                    color="secondary"
+                                    variant="outlined"
+                                    onClick={addComment}
+                                    className={classes.button}
+                                    fullWidth
+                                    // disabled={}
+                                >
+                                    Add Comment
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
