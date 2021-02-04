@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/user');
 const verifyAuth = require('../middleware/verifyAuth');
 const User = require('../models/user');
 const University = require('../models/universities');
@@ -235,61 +236,10 @@ router.post('/groups/:groupId', verifyAuth, async function (req, res, next) {
     }
 });
 
-// create a new group from a course they are enrolled in 
-router.post('/groups', verifyAuth, async function (req, res, next) {
 
-    const userId = req.body.userId;
-    const imageUrl = req.body.imageUrl;
-    const courseId = req.body.courseId;
-    const groupName = req.body.groupName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
-
-    const session = await Group.startSession();
-    session.startTransaction();
-
-    const forum = new Forum({
-        user: userId,
-    });
-    const forumRes = await forum.save();
-    if (!forumRes) throw new GeneralError('Error creating forum.');
-
-    try {
-
-        const instance = (await Group.create([{
-            name: groupName,
-            members: [userId],
-            image: imageUrl,
-            course: courseId, 
-            admin: userId,
-            forum: forum._id,
-        }], {session}))[0];
-
-        const userUpdate = await User.findByIdAndUpdate(userId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
-        .session(session)
-        .catch((err) => {
-            throw new GeneralError('Error updating User Groups');
-        });
-
-        const courseUpdate = await Course.findByIdAndUpdate(courseId, { $addToSet: { groups: instance._id } }, { useFindAndModify: false, new: true })
-        .session(session)
-        .catch((err) => {
-            throw new GeneralError('Error updating Course Groups');
-        });
-
-        await session.commitTransaction();
-        session.endSession();
-        res.status(201);
-        res.send({
-            data: instance
-        });
-
-    } catch(err) {
-        console.log(err)
-        await session.abortTransaction();
-        session.endSession();
-        next(err);
-    }
-
-});
+// POST user/groups
+// Creates a new group from a users course
+router.post('/groups', verifyAuth, userController.createGroup);
 
 // delete a user from a group
 router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
@@ -326,5 +276,9 @@ router.delete('/groups/:groupId', verifyAuth, async function (req, res, next) {
         next(err);
     }
 });
+
+// GET user/conversations
+// Finds all the conversations of all the users groups
+router.get('/conversations', verifyAuth, userController.getConversations);
 
 module.exports = router;

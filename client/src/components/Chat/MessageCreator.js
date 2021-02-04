@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SentimentSatisfiedOutlinedIcon from '@material-ui/icons/SentimentSatisfiedOutlined';
 
+import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
+
 const useStyles = makeStyles(theme => ({
     container: {
         minHeight: 120,
@@ -57,8 +59,25 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const MessageCreator = () => {
+const MessageCreator = ({groupId}) => {
     const classes = useStyles();
+    const { profile } = useGlobalContext();
+    const { conversationManager } = useConversationContext();
+    const [workingText, setWorkingText] = React.useState('');
+
+    const sendMessage = () => {
+        const payload = {
+            profile: profile._id, 
+            text: workingText, 
+            image: profile.imageUrl
+        }
+        conversationManager.sendMessageToGroup(groupId, payload);
+        setWorkingText('');
+    };
+
+    const handleChangeText = (ev) => {
+        setWorkingText(ev.target.value);
+    }
 
     return (
         <Container className={classes.container}>
@@ -66,10 +85,16 @@ const MessageCreator = () => {
             <TextField
                 fullWidth={true}
                 multiline={true}
+                value={workingText}
+                onChange={handleChangeText}
                 placeholder="Type your message here"
                 InputProps={{
                     classes: {input: classes.text},
                     disableUnderline: true,
+                }}
+                onKeyUp={(e) => {
+                    if (e.key === 'Enter')
+                        sendMessage();
                 }}
             />
             </Box>
@@ -92,6 +117,9 @@ const MessageCreator = () => {
                     className={classes.sendButton} 
                     variant='outlined' 
                     color='secondary'
+                    onClick={() => {
+                        sendMessage();
+                    }}
                 >
                     Send
                 </Button>

@@ -140,17 +140,20 @@ const Signup = () => {
                                             autoHideDuration: '5000',
                                         });
                                     } else if (res.status === 500) {
+                                        setTimeout(() => {
+                                            setSubmitting(false);
+                                        }, 500);
                                         enqueueSnackbar('Server Error', {
                                             variant: 'Error',
                                             autoHideDuration: '5000',
                                         });
                                     } else {
+                                        setTimeout(() => {
+                                            setSubmitting(false);
+                                        }, 500);
                                         handleAuthErrors(res, setErrors);
                                     }
                                 });
-                            setTimeout(() => {
-                                setSubmitting(false);
-                            }, 500);
                         }}
                     >
                         {({ submitForm, isSubmitting, errors }) => (

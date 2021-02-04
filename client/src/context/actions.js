@@ -67,7 +67,7 @@ export const fetchProfile = () => async dispatch => {
         });
         return user.groups;
     } catch (err) {
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
             dispatch({ type: 'LOGIN_FAIL' });
         }
         console.log(err.message);
@@ -101,6 +101,16 @@ export const updateProfile = userInfo => async dispatch => {
         return err;
     }
 };
+
+export const fetchConversations = async () => {
+    try {
+        const res = await axios.get('/user/conversations');
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
 
 export const updatePassword = password => async dispatch => {
     try {
