@@ -67,7 +67,12 @@ const Chat = () => {
     const {groups} = userGroups;
     const [chatGroups, setChatGroups] = useState(null);
 
-    const { conversations } = useConversationContext();
+    const { conversationManager, notifications } = useConversationContext();
+    let conversations = conversationManager.getConversations();
+    
+    if (chatGroups) {
+        conversationManager.clearNotifications(chatGroups[chatIndex]._id);
+    }
 
     React.useEffect(() => {
         if (groups.length && Object.keys(conversations).length) {
@@ -97,7 +102,7 @@ const Chat = () => {
     return (
         <Grid container className={classes.container}>
             <Sidebar>
-                <ChatSidePanel groups={chatGroups} chatIndex={chatIndex} setChatIndex={setChatIndex} />
+                <ChatSidePanel groups={chatGroups} chatIndex={chatIndex} updateSelectedChat={setChatIndex} notifications={notifications}/>
             </Sidebar>
             <Grid item container sm={12} md={9} className={classes.contentContainer}>
             {

@@ -63,6 +63,15 @@ const useStyles = makeStyles(theme => ({
             background: theme.palette.primary.gradient,
         },
     },
+    small_badge: {
+        color: theme.palette.common.white,
+        '& span': {
+            width: 30,
+            height: 24,
+            fontSize: '0.7rem',
+            background: theme.palette.primary.gradient,
+        },
+    },
     chat_list: {
         height: 100,
         flexWrap: 'nowrap',
@@ -102,12 +111,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatSidePanel = ({groups, chatIndex, setChatIndex}) => {
+const ChatSidePanel = ({groups, chatIndex, updateSelectedChat, notifications}) => {
+    console.log(notifications);
     const classes = useStyles();
     const { dispatch } = useGlobalContext();
 
     const handleChatList = (index) => {
-        setChatIndex(index)
+        updateSelectedChat(index)
         dispatch({ type: 'CLOSE_DRAWER' });
     };
 
@@ -116,7 +126,7 @@ const ChatSidePanel = ({groups, chatIndex, setChatIndex}) => {
             <Grid container className={classes.list_container}>
                 <Grid item className={classes.chat_head}>
                     <Typography>All Chats</Typography>
-                    <Badge badgeContent={12} className={classes.badge} />
+                    <Badge badgeContent={Object.values(notifications).reduce((a, b) => a + b)} className={classes.badge} />
                 </Grid>
                 <Divider className={classes.divider} />
                 {groups.map((g, index) => {
@@ -147,6 +157,9 @@ const ChatSidePanel = ({groups, chatIndex, setChatIndex}) => {
                                     <Typography variant="subtitle1" color="textSecondary">
                                         {g.members.length} members
                                     </Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Badge badgeContent={notifications[g._id]} className={classes.small_badge} />
                                 </Grid>
                             </Grid>
                             <Divider className={classes.divider} />

@@ -22,7 +22,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../images/logo_study.png';
 import { useStyles } from './NavbarStyles';
-import { useGlobalContext } from '../../context/studyappContext';
+import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
@@ -31,6 +31,7 @@ const Navbar = () => {
     const history = useHistory();
 
     const { profile, dispatch } = useGlobalContext();
+    const { notifications } = useConversationContext();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -105,7 +106,7 @@ const Navbar = () => {
                                 >
                                     Chats
                                 </NavLink>
-                                <Badge badgeContent={8} className={classes.badge} />
+                                <Badge badgeContent={Object.values(notifications).reduce((a, b) => a + b, 0)} className={classes.badge} />
                             </ListItem>
                         </List>
                     </div>

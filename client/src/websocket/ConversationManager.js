@@ -7,12 +7,13 @@ class ConversationManager {
     constructor() {
         this._socket = io({ autoConnect: false });
         socketEvents(this._socket, this.handleReceiveMessage);
-        this._updateConversations = () => {};
+        this._updateNotifications = () => {};
         this._conversations = {};
+        this._notifications = {};
     }
 
-    init = (updateConversations) => {
-        this._updateConversations = updateConversations;
+    init = (updateNotifications) => {
+        this._updateNotifications = updateNotifications;
     };
 
     getConversations = () => {
@@ -21,7 +22,8 @@ class ConversationManager {
 
     handleReceiveMessage = (data) => {
         this._conversations[data.room].messages.push(data.message);
-        this._updateConversations({...this._conversations});  
+        this._notifications[data.room] += 1;
+        this._updateNotifications({...this._notifications});  
     };
 
     sendMessageToGroup = (groupId, message) => {
@@ -45,10 +47,22 @@ class ConversationManager {
     updateConversations = () => {
         fetchConversations().then((conversations) => {
             const convos = {};
-            conversations.map(c => (convos[c.group] = c));
+            const notifications = {};
+            conversations.forEach(c => {
+                convos[c.group] = c;
+                notifications[c.group] = 0;
+            });
             this._conversations = convos;
-            this._updateConversations(convos);
+            this._notifications = notifications;
+            this._updateNotifications(notifications);
         })
+    }
+
+    clearNotifications = (groupId) => {
+        if (this._notifications[groupId] > 0) {
+            this._notifications[groupId] = 0
+            this._updateNotifications({...this._notifications});
+        }
     }
 
     closeSocket = () => {

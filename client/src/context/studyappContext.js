@@ -14,19 +14,19 @@ const conversationManager = new ConversationManager();
 
 const ConversationContext = createContext({
     conversationManager,
-    conversations: {},
+    notifications: {},
 });
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const [conversations, setConversations] = React.useState({});
+    const [notifications, setNotifications] = React.useState({});
 
     React.useEffect(() => {
-        conversationManager.init(setConversations);
+        conversationManager.init(setNotifications);
     }, []);
     
     return (
-        <ConversationContext.Provider value={{conversationManager, conversations}}>
+        <ConversationContext.Provider value={{conversationManager, notifications}}>
             <AppContext.Provider value={{ ...state, dispatch }}>
                 {children}
             </AppContext.Provider>
