@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
 import axios from 'axios';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -47,18 +47,15 @@ const ForumContent = ({name, groupId}) => {
     const classes = useStyles();
 
     const [forumPosts, setForumPosts] = useState([]);
-
     const [forumName, setForumName] = useState('');
-    const [isLoading, setIsLoading] = useState(null)
+    
 
     const getGroupForum = async (groupId) => {
 
         try {
-            setIsLoading(true);
             const response = await axios.get(`/forum/${groupId}`);
             setForumPosts(response.data.group.forum.posts)
             setForumName(response.data.group.name)
-            setIsLoading(false);
 
         } catch(err) {
             console.log(err)
@@ -72,22 +69,11 @@ const ForumContent = ({name, groupId}) => {
     const renderPosts = () => {
         return (
             <Grid item className={classes.postCard}>
-                    {forumPosts.map(post => (
-                        <PostCard key={post._id} post={post} />
-                    ))}
+                {forumPosts.map(post => (
+                    <PostCard key={post._id} post={post} />
+                ))}
             </Grid>
             ) 
-    }
-
-    if(isLoading) {
-        return (
-            <Grid container direction="column" justify="center" align="center" alignItems="center">
-            <CircularProgress
-            size={100}
-            color="secondary"
-            />
-            </Grid>
-        )
     }
 
     return (
