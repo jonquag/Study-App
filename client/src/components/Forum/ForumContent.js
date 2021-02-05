@@ -3,7 +3,7 @@ import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import PostCard from './PostCard';
 import axios from 'axios';
-
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -47,7 +47,7 @@ const ForumContent = ({name, groupId}) => {
 
     const [forumPosts, setForumPosts] = useState([]);
     const [forumName, setForumName] = useState('');
-    
+    const { forumId } = useGlobalContext();
 
     const getGroupForum = async (groupId) => {
 
