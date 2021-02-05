@@ -86,11 +86,11 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                 }
             });
             setCourseList(newCourseList);
-            if (firstUpdate.current) {
-                onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
-                firstUpdate.current = false;
-                return;
-            }
+            //if (firstUpdate.current) {
+            //    onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
+             //   firstUpdate.current = false;
+             //   return;
+           // }
         } catch (err) {
             console.log(err);
         }
@@ -139,6 +139,7 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                                                 type: 'FORUM_ID',
                                                 payload: group.forum,
                                             });
+                                            //console.log(group.name)
                                             handleDrawerClose(group.name, group._id);
                                         }}
                                     >
