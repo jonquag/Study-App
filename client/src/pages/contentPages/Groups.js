@@ -140,17 +140,16 @@ const Groups = () => {
             };
 
             const response = await axios.post('/user/groups', data);
-            groups.push(response.data.data);
-            await actions.fetchUserGroups(groups)(dispatch);
-
-            conversationManager.updateRooms(groups);
+            
             setGroupName('');
             setCourseId('');
             setGroupPicture('');
 
             if (response.data) {
                 groups.push(response.data.data);
-                actions.fetchUserGroups(groups)(dispatch);
+                await actions.fetchUserGroups(groups)(dispatch);
+
+                conversationManager.updateRooms(groups);
 
                 enqueueSnackbar('Group Created Successfully.', {
                     variant: 'success',
