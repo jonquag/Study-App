@@ -39,10 +39,9 @@ const PostSchema = new Schema({
         },
     ],
     date: {
-        type: Date,
-        default: Date.now,
+        type: Number,
     },
-    userAvatar: { type: String, default: ''},
+    userAvatar: { type: String, default: '' },
 });
 
 module.exports = mongoose.model('Post', PostSchema);
