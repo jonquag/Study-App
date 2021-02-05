@@ -177,6 +177,7 @@ router.put('/universities/:universityId', verifyAuth, async function (req, res, 
 
 // returns all the groups a user can join from their courses
 router.get('/groups', verifyAuth, async function (req, res, next) {
+ 
     try {
         const userDoc = await User.findById({ _id: req.body.userId })
             .populate({
