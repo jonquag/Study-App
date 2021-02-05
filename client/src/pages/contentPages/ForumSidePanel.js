@@ -76,19 +76,25 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
 
     const getGroups = async () => {
         try {
-          const res = await axios.get('/user/groups/');
-          setCourseList([...res.data].map(cgl => ({ ...cgl, expand: false })));
-
-          if (firstUpdate.current) {
-            onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
-            firstUpdate.current = false;
-            return;
-        }
-
+            const res = await axios.get('/user/groups/');
+            const newCourseList = [...res.data].map((cgl, index) => {
+                if (index === 0) {
+                    setCourseId([cgl._id]);
+                    return { ...cgl, expand: true };
+                } else {
+                    return { ...cgl, expand: false };
+                }
+            });
+            setCourseList(newCourseList);
+            if (firstUpdate.current) {
+                onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
+                firstUpdate.current = false;
+                return;
+            }
         } catch (err) {
-          console.log(err);
+            console.log(err);
         }
-      }
+    };
     
     useEffect(() => {
         getGroups();
@@ -122,6 +128,7 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                     let groupList = null;
                     const isIdThere = courseId.some(id => cgl._id === id);
                     if (cgl.expand && isIdThere)
+                    console.log(cgl.groups)
                         groupList = cgl.groups.map(group => {
                             return (
                                 <Typography
