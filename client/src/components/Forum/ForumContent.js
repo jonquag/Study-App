@@ -84,10 +84,6 @@ const useStyles = makeStyles(theme => ({
     
 }));
 
-const addPost = () => {
-    console.log('Add post clicked');
-};
-
 
 const ForumContent = ({name, groupId}) => {
    
@@ -128,12 +124,9 @@ const ForumContent = ({name, groupId}) => {
     const getGroupForum = async (groupId) => {
 
         try {
-             //console.log(groupId)
             const response = await axios.get(`/forum/${groupId}`);
-            console.log(response.data.posts)
             setForumPosts(response.data.posts)
-            setForumName(name)
-            
+            setForumName(name)     
 
         } catch(err) {
             console.log(err)
