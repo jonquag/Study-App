@@ -71,7 +71,6 @@ const Message = ({ msg, isReceived }) => {
                     <Typography
                         className={classes.contentText}
                         variant="h6"
-                        color={isReceived ? '#FFF' : '#2574FF'}
                     >
                         {msg.text}
                     </Typography>
