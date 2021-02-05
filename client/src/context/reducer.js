@@ -7,7 +7,9 @@ export const initialState = {
         groups: [],
     },
     profile: {},
+    userGroups: {groups: [], courseGroups: []},
     isOpen: false,
+    forumId: null
 };
 
 export const reducer = (state, action) => {
@@ -68,6 +70,12 @@ export const reducer = (state, action) => {
                 ...state,
                 isOpen: true,
             };
+        case 'FORUM_ID':
+            return {
+                ...state,
+                forumId: payload,
+            };
+
         default:
             throw new Error('No action type found!');
     }

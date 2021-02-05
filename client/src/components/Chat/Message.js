@@ -29,11 +29,12 @@ const useStyles = makeStyles(theme => ({
         width: 'auto',
         maxWidth: 500,
         justifySelf: 'flex-end',
+        // color: '#2574FF',
     },
     contentText: {
         alignItems: 'center',
         padding: 5,
-        color: '#FFF',
+        color: '#2574FF',
     },
     avatar: {
         width: 60,
@@ -56,10 +57,11 @@ const useStyles = makeStyles(theme => ({
 
 const Message = ({ msg, isReceived }) => {
     const classes = useStyles();
-
     return (
         <Box display="flex" flexDirection="row" className={classes.container}>
-            {isReceived && <Avatar className={classes.avatar} src={msg.profileImg} />}
+            {isReceived && (
+                <Avatar className={classes.avatar} src={msg.profile.imageUrl} />
+            )}
             <Box display="flex" flexDirection="column">
                 <Container
                     className={
@@ -71,7 +73,7 @@ const Message = ({ msg, isReceived }) => {
                         variant="h6"
                         color={isReceived ? 'primary' : 'secondary'}
                     >
-                        {msg.content}
+                        {msg.text}
                     </Typography>
                 </Container>
                 <Typography

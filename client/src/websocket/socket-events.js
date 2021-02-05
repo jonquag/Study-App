@@ -1,15 +1,17 @@
-const removeListeners = (socket) => {
-    socket.off('connect');
-    socket.off('disconnect');
-    socket.off('connect_error');
-}
-
-const socketEvents = (socket) => {
+const socketEvents = (socket, handleReceiveMessage) => {
     socket.on('connect', () => {
         console.log('connected to socket server');
+    });
+
+    socket.on('rooms updated', (data) => {
+        console.log('connected to rooms: ', data);
+    });
+
+    socket.on('group message', (data) => {
+        handleReceiveMessage(data);
     })
+    
     socket.on('disconnect', () => {
-        removeListeners(socket);
         console.log('disconnected from socket server');
     })
     socket.on('connect_error', () => {

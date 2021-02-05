@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../../components/Profile/Sidebar';
 import ForumContent from '../../components/Forum/ForumContent';
@@ -19,14 +19,21 @@ const useStyles = makeStyles(theme => ({
 
 const Forum = () => {
     const classes = useStyles();
+    const [selectedGroup, setSelectedGroup] = useState('');
+    const [selectedGroupId, setSelectedGroupId] = useState('');
+
+    const updateSelectedGroup = (group, groupId) => {
+        setSelectedGroup(group);
+        setSelectedGroupId(groupId);
+    }
 
     return (
         <Grid container className={classes.container}>
             <Sidebar>
-                <ForumSidePanel />
+                <ForumSidePanel onGroupUpdate={updateSelectedGroup} />
             </Sidebar>
             <Grid item container sm={12} md={9} className={classes.contentContainer}>
-                <ForumContent />
+                <ForumContent name={selectedGroup} groupId={selectedGroupId} />
             </Grid>
         </Grid>
     );

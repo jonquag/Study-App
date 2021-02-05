@@ -89,18 +89,21 @@ const Login = props => {
                                             autoHideDuration: '5000',
                                         });
                                     } else if (res.status === 500) {
+                                        setTimeout(() => {
+                                            setSubmitting(false);
+                                        }, 500);
                                         enqueueSnackbar('Server Error', {
                                             variant: 'Error',
                                             autoHideDuration: '5000',
                                         });
                                     } else {
                                         console.log(res);
+                                        setTimeout(() => {
+                                            setSubmitting(false);
+                                        }, 500);
                                         handleAuthErrors(res, setErrors);
                                     }
                                 });
-                            setTimeout(() => {
-                                setSubmitting(false);
-                            }, 500);
                         }}
                     >
                         {({ submitForm, isSubmitting }) => (

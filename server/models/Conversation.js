@@ -12,10 +12,13 @@ const ConversationSchema = new Schema({
     // individual message information
     messages: [
         {
-            profile: { type: Schema.Types.ObjectId, required: true, ref: 'Profile' },
-            dateCreated: {
-                type: Date,
-                default: Date.now,
+            profile: {
+                type: Schema.Types.ObjectId,
+                ref: 'Profile',
+                required: true
+            },
+            timeStamp: {
+                type: Number,
             },
             text: { type: String, required: true },
         },

@@ -16,7 +16,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import { useSnackbar } from 'notistack';
-import { useGlobalContext } from '../../context/studyappContext';
+import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
 import axios from 'axios';
 
@@ -81,6 +81,7 @@ const useStyles = makeStyles(theme => ({
 const MyCourses = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { isLoading, userCourse, userGroups, dispatch } = useGlobalContext();
+    const { conversationManager } = useConversationContext();
     const { groups } = userGroups;
     const { school, userCourses, schoolCourses } = userCourse;
     const classes = useStyles();
@@ -132,7 +133,6 @@ const MyCourses = () => {
                 let groupIds;
                 if (groups && groups.length) {
                     // filter user groups selecting only the group id's
-
                     groupIds = groups.reduce(
                         // eslint-disable-next-line no-sequences
                         (arr, g) => (g.course === id && arr.push(g._id), arr),
@@ -145,7 +145,8 @@ const MyCourses = () => {
                     data: { groupsRemoved: groupIds },
                 });
 
-                actions.fetchUserGroups(res.data.groups)(dispatch);
+                await actions.fetchUserGroups(res.data.groups)(dispatch);
+                conversationManager.updateRooms(res.data.groups);
                 dispatch({ type: 'updateUserCourses', payload: res.data.courses });
                 setMyCourses(myCourses.filter(c => c._id !== id));
             } catch (err) {
