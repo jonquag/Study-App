@@ -21,14 +21,14 @@ import ChatSidePanel from './ChatSidePanel';
 const useStyles = makeStyles((theme) => ({
     container: {
         height: 'calc(100vh - 100px)',
-        [theme.breakpoints.down('sm')]: {
-            height: 'auto',
-        },
     },
     contentContainer: {
         backgroundColor: theme.palette.common.white,
         display: 'block',
-        height: 'calc(100vh - 103px)',
+        height: 'calc(100vh - 100px)',
+        [theme.breakpoints.down('sm')]: {
+            height: 'calc(100vh - 200px)',
+        },
     },
     divider: {
         opacity: 0.10414,

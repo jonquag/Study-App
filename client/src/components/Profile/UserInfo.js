@@ -85,7 +85,7 @@ const UserInfo = () => {
     };
 
     return (
-        <Grid container direction="column" className={classes.container}>
+        <Grid container xs={9} direction="column" className={classes.container}>
             <form noValidate autoComplete="off">
                 <Typography variant="h1" className={classes.header}>
                     Profile
