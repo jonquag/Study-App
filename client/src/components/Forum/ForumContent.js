@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Grid, Typography, Divider, Box, IconButton } from '@material-ui/core';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import PostCard from './PostCard';
 import axios from 'axios';
-import { useGlobalContext } from '../../context/studyappContext';
-import Comments from '../Posts/Comments';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
-import ForwardIcon from '@material-ui/icons/Forward';
-import ForwardOutlinedIcon from '@material-ui/icons/ForwardOutlined';
 import AddPostDialog from './AddPostDialog';
+import ForumDialog from './ForumDialog';
 
 const useStyles = makeStyles(theme => ({
     headerContainer: {
@@ -25,7 +20,6 @@ const useStyles = makeStyles(theme => ({
         },
     },
     divider: {
-        marginBottom: 10,
         margin: theme.spacing(1, 0),
         width: '100%',
     },
@@ -51,9 +45,6 @@ const useStyles = makeStyles(theme => ({
         boxShadow: theme.shadows[5],
         marginTop: '75px',
         padding: theme.spacing(3),
-    },
-    title: {
-        marginBottom: theme.spacing(2),
     },
     cardTitle: {
         fontWeight: 'bold',
@@ -81,26 +72,23 @@ const useStyles = makeStyles(theme => ({
     input: {
         margin: theme.spacing(2, 0),
     },
-    
 }));
 
-
-const ForumContent = ({name, groupId}) => {
-   
+const ForumContent = ({ name, groupId }) => {
     const classes = useStyles();
     const [openPost, setOpenPost] = React.useState(false);
     const [openNewPost, setOpenNewPost] = React.useState(false);
-    const [activePost, setActivePost] = React.useState('');
-    const [upvoted, setUpvoted] = React.useState(false);
+    const [activePostId, setActivePostId] = React.useState('');
 
-    const toggleVote = () => {
-        setUpvoted(!upvoted);
-    };
-
+    //  Calling will open new post dialog
     const handleOpenNewPost = () => {
         setOpenNewPost(true);
     };
-    const handleCloseNewPost = () => {
+    // Calling will close new post dialog
+    const handleCloseNewPost = newPost => {
+        if (newPost._id) {
+            setForumPosts([newPost, ...forumPosts]);
+        }
         setOpenNewPost(false);
     };
     // Calling will open dialog
@@ -113,42 +101,38 @@ const ForumContent = ({name, groupId}) => {
     };
     // Updates setActivePost to the corresponding clicked card and opens dialog.
     const updateActivePost = postId => {
-        setActivePost(postId);
+        setActivePostId(postId);
         handleOpenPost();
     };
 
     const [forumPosts, setForumPosts] = useState([]);
-    const [forumName, setForumName] = useState('');
-    const { forumId } = useGlobalContext();
+    //const [forumName, setForumName] = useState(name);
+    // const { forumId } = useGlobalContext();
 
-    const getGroupForum = async (groupId) => {
-
+    const getGroupForum = useCallback(async () => {
         try {
             const response = await axios.get(`/forum/${groupId}`);
-            setForumPosts(response.data.posts)
-            setForumName(name)     
-
-        } catch(err) {
-            console.log(err)
+            setForumPosts(response.data.posts);
+        } catch (err) {
+            console.log(err);
         }
-    }
-    
+    }, [groupId]);
+
     useEffect(() => {
         getGroupForum(groupId);
-      }, [groupId]);
-    
-    const renderPosts = () => {
-        return (
-            <Grid item className={classes.postCard}>
-                {forumPosts.map(post => (
-                    <PostCard key={post._id} post={post} />
-                ))}
-            </Grid>
-            ) 
-    }
+    }, [getGroupForum, groupId]);
+
+    // const renderPosts = () => {
+    //     return (
+    //         <Grid item className={classes.postCard}>
+    //             {forumPosts.map(post => (
+    //                 <PostCard key={post._id} post={post} />
+    //             ))}
+    //         </Grid>
+    //     );
+    // };
 
     return (
-      
         <Grid container direction="column" alignContent="center" item sm={12}>
             <Grid
                 item
@@ -159,7 +143,7 @@ const ForumContent = ({name, groupId}) => {
             >
                 <Grid item>
                     <Typography variant="h1" className={classes.headerText}>
-                        {forumName}
+                        {name}
                     </Typography>
                 </Grid>
 
@@ -201,7 +185,7 @@ const ForumContent = ({name, groupId}) => {
                 <Grid item className={classes.postCard}>
                     {forumPosts.map(post => (
                         <PostCard
-                            key={post.id}
+                            key={post._id}
                             post={post}
                             updateActivePost={updateActivePost}
                         />
@@ -216,100 +200,10 @@ const ForumContent = ({name, groupId}) => {
                     maxWidth="lg"
                 >
                     <DialogContent>
-                        <Grid
-                            item
-                            container
-                            direction="column"
-                            justify="center"
-                            alignItems="center"
-                        >
-                            <Grid item container direction="column" alignItems="center">
-                                <Grid
-                                    item
-                                    xs={12}
-                                    container
-                                    justify="space-between"
-                                    alignItems="baseline"
-                                >
-                                    <Grid item>
-                                        <Button
-                                            onClick={handleClosePost}
-                                            color="primary"
-                                            className={classes.close}
-                                        >
-                                            <CloseIcon />
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={8}>
-                                        <Typography
-                                            variant="h1"
-                                            align="center"
-                                            id="form-dialog-title"
-                                            className={classes.title}
-                                        >
-                                            Post Title
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <IconButton
-                                            aria-label="upvote"
-                                            onClick={toggleVote}
-                                        >
-                                            {upvoted ? (
-                                                <ForwardIcon
-                                                    color="secondary"
-                                                    className={classes.upvote}
-                                                />
-                                            ) : (
-                                                <ForwardOutlinedIcon
-                                                    color="secondary"
-                                                    className={classes.upvote}
-                                                />
-                                            )}
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-
-                                <Divider className={classes.divider} />
-
-                                <Grid item>
-                                    <Box className={classes.imageContainer}>
-                                        Place image here
-                                    </Box>
-                                </Grid>
-                                <Divider className={classes.divider} />
-                                <Grid item>
-                                    <Typography>
-                                        This is the description of the post. Don't you
-                                        wish I would have used Lorem25 and got it working?
-                                        This is the description of the post. Don't you
-                                        wish I would have used Lorem25 and got it working?
-                                        description of the post. Don't you wish I would
-                                        have used Lorem25 and got it working?
-                                    </Typography>
-                                </Grid>
-                                <Divider className={classes.divider} />
-                                <Grid item container xs={12} alignItems="center">
-                                    <Grid item xs={1}></Grid>
-                                    <Grid item xs={10}>
-                                        <Comments />
-                                        <TextField
-                                            variant="outlined"
-                                            autoFocus
-                                            label="Comment on post"
-                                            type="text"
-                                            multiline
-                                            rows={4}
-                                            rowsMax={4}
-                                            color="secondary"
-                                            fullWidth
-                                            className={classes.input}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={1}></Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <ForumDialog
+                            handleClosePost={handleClosePost}
+                            activePostId={activePostId}
+                        />
                     </DialogContent>
                 </Dialog>
             </Grid>

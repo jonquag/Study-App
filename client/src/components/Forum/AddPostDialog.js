@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
     Grid,
     Button,
@@ -11,10 +11,18 @@ import {
     FormHelperText,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
-import { baseStyle, activeStyle, acceptStyle, rejectStyle } from './ForumModalStyles';
+import {
+    baseStyle,
+    activeStyle,
+    acceptStyle,
+    rejectStyle,
+} from '../DragzonePicture.styles';
 import { makeStyles } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
+import axios from 'axios';
+import defaultPostPicture from '../../images/upload_placeholder.png';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -30,13 +38,6 @@ const useStyles = makeStyles(theme => ({
     title: {
         marginBottom: theme.spacing(1),
     },
-    imageContainer: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        padding: theme.spacing(1, 0),
-    },
-
     button: {
         width: '100%',
     },
@@ -48,14 +49,49 @@ const useStyles = makeStyles(theme => ({
 const AddPostDialog = ({ handleCloseNewPost }) => {
     const classes = useStyles();
 
-    const [title, setTitle] = useState();
-    const [description, setDescription] = useState();
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [uploading, setUploading] = useState(false);
+    const { forumId } = useGlobalContext();
 
-    const onDrop = () => {
-        console.log('Dropped');
+    // const hardCodedForumId = '6012462f4f758023244df285';
+
+    const onDrop = useCallback(async droppedFiles => {
+        if (droppedFiles.length) {
+            setUploading(true);
+
+            const form = new FormData();
+            form.append('image', droppedFiles[0]);
+            const res = await axios
+                .post('/upload/single', form)
+                .catch(err => console.log(err));
+            if (res && res.data) {
+                setImageUrl(res.data.imageUrl);
+                setUploading(false);
+            }
+        }
+    }, []);
+
+    // const createNewPostData = () => {
+    //     createNewPost(forumId);
+    // };
+
+    const createNewPost = async () => {
+        try {
+            const res = await axios.post(`forum/post/${forumId}`, {
+                text: description,
+                title: title,
+                postAvatar: imageUrl,
+            });
+            setTitle('');
+            setDescription('');
+            setImageUrl('');
+            handleCloseNewPost(res.data);
+        } catch (err) {
+            console.log(err);
+        }
     };
-
-    const createPost = () => {};
 
     const { getRootProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
         onDrop,
@@ -102,10 +138,10 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                         <InputLabel className={classes.label}>Post Title</InputLabel>
                         <TextField
                             variant="outlined"
-                            defaultValue={title}
                             onChange={e => setTitle(e.target.value)}
                             className={classes.input}
                             placeholder="Add a title.."
+                            value={title}
                         />
                     </Grid>
 
@@ -118,10 +154,10 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                             id="outlined-multiline-static"
                             multiline
                             rows={4}
-                            defaultValue={description}
                             onChange={e => setDescription(e.target.value)}
                             className={classes.input}
                             placeholder="Add a description.."
+                            value={description}
                         />
                     </Grid>
                     <Grid item>
@@ -136,7 +172,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                             >
                                 <Box {...getRootProps({ style })}>
                                     <img
-                                        src="https://www.rcdrilling.com/wp-content/uploads/2013/12/default_image_01-1024x1024-570x321.png"
+                                        src={imageUrl ? imageUrl : defaultPostPicture}
                                         className={classes.large}
                                         alt="Post"
                                     />
@@ -148,7 +184,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                         <Button
                             color="primary"
                             startIcon={<AddIcon />}
-                            onSubmit={createPost}
+                            onClick={createNewPost}
                             className={classes.button}
                         >
                             Create Post

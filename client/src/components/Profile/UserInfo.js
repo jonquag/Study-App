@@ -48,6 +48,9 @@ const useStyles = makeStyles(theme => ({
             flexDirection: 'column',
         },
     },
+    inputWrapper: {
+        margin: theme.spacing(2),
+    },
 }));
 
 const UserInfo = () => {
@@ -92,60 +95,73 @@ const UserInfo = () => {
                 </Typography>
                 <Grid item container spacing={4} className={classes.listsContainer}>
                     <Grid item>
-                        <InputLabel className={classes.labelStyles}>
-                            First Name
-                        </InputLabel>
-                        <TextField
-                            variant="outlined"
-                            defaultValue={firstName}
-                            onChange={e => setFirstName(e.target.value)}
-                            className={classes.inputStyles}
-                            placeholder="Add a first name.."
-                        />
+                        <div className={classes.inputWrapper}>
+                            <InputLabel className={classes.labelStyles}>
+                                First Name
+                            </InputLabel>
+                            <TextField
+                                variant="outlined"
+                                defaultValue={firstName}
+                                onChange={e => setFirstName(e.target.value)}
+                                className={classes.inputStyles}
+                                placeholder="Add a first name.."
+                            />
+                        </div>
                     </Grid>
                     {/* Last Name */}
                     <Grid item>
-                        <InputLabel className={classes.labelStyles}>Last Name</InputLabel>
-                        <TextField
-                            variant="outlined"
-                            value={lastName}
-                            onChange={e => setLastName(e.target.value)}
-                            className={classes.inputStyles}
-                            placeholder="Add a last name.."
-                        />
+                        <div className={classes.inputWrapper}>
+                            <InputLabel className={classes.labelStyles}>
+                                Last Name
+                            </InputLabel>
+                            <TextField
+                                variant="outlined"
+                                value={lastName}
+                                onChange={e => setLastName(e.target.value)}
+                                className={classes.inputStyles}
+                                placeholder="Add a last name.."
+                            />
+                        </div>
                     </Grid>
                     {/* Email */}
                     <Grid item>
-                        <InputLabel className={classes.labelStyles}>Email</InputLabel>
-                        <TextField
-                            variant="outlined"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            className={classes.inputStyles}
-                        />
+                        <div className={classes.inputWrapper}>
+                            <InputLabel className={classes.labelStyles}>Email</InputLabel>
+                            <TextField
+                                variant="outlined"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                className={classes.inputStyles}
+                            />
+                        </div>
                     </Grid>
-
                     {/* Phone */}
                     <Grid item>
-                        <InputLabel className={classes.labelStyles}>Phone</InputLabel>
-                        <TextField
-                            variant="outlined"
-                            value={phone}
-                            onChange={e => setPhone(e.target.value)}
-                            className={classes.inputStyles}
-                            placeholder="Add phone number.."
-                        />
+                        <div className={classes.inputWrapper}>
+                            <InputLabel className={classes.labelStyles}>Phone</InputLabel>
+                            <TextField
+                                variant="outlined"
+                                value={phone}
+                                onChange={e => setPhone(e.target.value)}
+                                className={classes.inputStyles}
+                                placeholder="Add phone number.."
+                            />
+                        </div>
                     </Grid>
                     {/* Location */}
                     <Grid item>
-                        <InputLabel className={classes.labelStyles}>Location</InputLabel>
-                        <TextField
-                            variant="outlined"
-                            value={location}
-                            onChange={e => setLocation(e.target.value)}
-                            className={classes.inputStyles}
-                            placeholder="eg. Toronto"
-                        />
+                        <div className={classes.inputWrapper}>
+                            <InputLabel className={classes.labelStyles}>
+                                Location
+                            </InputLabel>
+                            <TextField
+                                variant="outlined"
+                                value={location}
+                                onChange={e => setLocation(e.target.value)}
+                                className={classes.inputStyles}
+                                placeholder="eg. Toronto"
+                            />
+                        </div>
                     </Grid>
                     <Grid container>
                         <Grid item>
