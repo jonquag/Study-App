@@ -7,7 +7,7 @@ const Forum = require('../models/Forum');
 
 exports.creatForumPost = async (req, res, next) => {
     const errors = validationResult(req);
-
+    console.log(req.body);
     if (!errors.isEmpty())
         return res.status(400).json({
             error: errors.array(),
@@ -39,7 +39,7 @@ exports.creatForumPost = async (req, res, next) => {
         const forumRes = forum.save();
         if (!forumRes) throw new GeneralError('Error adding a post to a forum');
 
-        res.status(201).json({ post });
+        res.status(201).send(response);
     } catch (err) {
         console.log(err.message);
         next(error);
@@ -73,7 +73,7 @@ exports.hidePost = async (req, res, next) => {
         const post = await Post.findById(postId);
         if (!post) throw new NotFound('No post found');
 
-        const forumPost = forum.posts.find(fp => fp.toString() === postId);
+        const forumPost = forum.posts.find((fp) => fp.toString() === postId);
         if (!forumPost) throw new NotFound('No post in forum found');
 
         // check if useres are deleteing their own posts
@@ -100,8 +100,7 @@ exports.editPost = async (req, res, next) => {
         if (!post) throw new NotFound('No post found');
 
         // check if useres are editing their own posts
-        if (post.user.toString() !== userId)
-            throw new Unauthorized('Cannot edit post');
+        if (post.user.toString() !== userId) throw new Unauthorized('Cannot edit post');
 
         if (title) post.title = title;
         if (text) post.text = text;
@@ -126,12 +125,9 @@ exports.addUpvote = async (req, res, next) => {
         if (!post) throw new NotFound('No post found');
 
         // make sure a user can up vote a post only once.
-        const votesArr = post.votes.filter(
-            vote => vote.user.toString() === userId
-        );
+        const votesArr = post.votes.filter((vote) => vote.user.toString() === userId);
 
-        if (votesArr.length > 0)
-            throw new Unauthorized('Cannot up vote more than once');
+        if (votesArr.length > 0) throw new Unauthorized('Cannot up vote more than once');
 
         post.votes.push({ user: userId });
 
@@ -153,13 +149,10 @@ exports.removeUpvote = async (req, res, next) => {
         const post = await Post.findById(postId);
         if (!post) throw new NotFound('No post found');
 
-        const voteArr = post.votes.filter(
-            vote => vote.user.toString() === userId
-        );
-        if (voteArr.length === 0)
-            throw new GeneralError('Post has not yet been voted');
+        const voteArr = post.votes.filter((vote) => vote.user.toString() === userId);
+        if (voteArr.length === 0) throw new GeneralError('Post has not yet been voted');
 
-        post.votes = post.votes.filter(vote => vote.user.toString() !== userId);
+        post.votes = post.votes.filter((vote) => vote.user.toString() !== userId);
 
         const response = await post.save();
         if (!response) throw GeneralError('Error in unvoting');

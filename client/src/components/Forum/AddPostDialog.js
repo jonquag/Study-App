@@ -22,6 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import PanoramaIcon from '@material-ui/icons/Panorama';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -37,13 +38,6 @@ const useStyles = makeStyles(theme => ({
     title: {
         marginBottom: theme.spacing(1),
     },
-    // imageContainer: {
-    //     flex: 1,
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     padding: theme.spacing(1, 0),
-    // },
-
     button: {
         width: '100%',
     },
@@ -59,8 +53,9 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
     const [description, setDescription] = useState();
     const [imageUrl, setImageUrl] = useState('');
     const [uploading, setUploading] = useState(false);
-
-    const hardCodedForumId = '6012462f4f758023244df285';
+    const { forumId } = useGlobalContext();
+    console.log(forumId);
+    // const hardCodedForumId = '6012462f4f758023244df285';
 
     const onDrop = useCallback(async droppedFiles => {
         if (droppedFiles.length) {
@@ -79,20 +74,22 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
         }
     }, []);
 
-    const createNewPostData = () => {
-        createNewPost(hardCodedForumId);
-    };
+    // const createNewPostData = () => {
+    //     createNewPost(forumId);
+    // };
 
-    const createNewPost = async hardCodedIdForumId => {
+    const createNewPost = async () => {
         try {
-            const res = await axios.post(`forum/post/${hardCodedForumId}`, {
+            const res = await axios.post(`forum/post/${forumId}`, {
                 text: description,
                 title: title,
+                postAvatar: imageUrl,
             });
-            console.log('new post response: ' + res);
+            console.log('new post response: ' + res.data);
             setTitle('');
             setDescription('');
             setImageUrl('');
+            handleCloseNewPost(res.data);
         } catch (err) {
             console.log(err);
         }
@@ -143,7 +140,6 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                         <InputLabel className={classes.label}>Post Title</InputLabel>
                         <TextField
                             variant="outlined"
-                            defaultValue={title}
                             onChange={e => setTitle(e.target.value)}
                             className={classes.input}
                             placeholder="Add a title.."
@@ -160,7 +156,6 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                             id="outlined-multiline-static"
                             multiline
                             rows={4}
-                            defaultValue={description}
                             onChange={e => setDescription(e.target.value)}
                             className={classes.input}
                             placeholder="Add a description.."
@@ -191,7 +186,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                         <Button
                             color="primary"
                             startIcon={<AddIcon />}
-                            onClick={createNewPostData}
+                            onClick={createNewPost}
                             className={classes.button}
                         >
                             Create Post

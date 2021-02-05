@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, Typography, Divider, Box, IconButton } from '@material-ui/core';
+import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import PostCard from './PostCard';
 import axios from 'axios';
 import { useGlobalContext } from '../../context/studyappContext';
-import Comments from '../Posts/Comments';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import AddIcon from '@material-ui/icons/Add';
@@ -88,7 +86,10 @@ const ForumContent = ({ name, groupId }) => {
         setOpenNewPost(true);
     };
     // Calling will close new post dialog
-    const handleCloseNewPost = () => {
+    const handleCloseNewPost = newPost => {
+        if (newPost) {
+            setForumPosts([...forumPosts, newPost]);
+        }
         setOpenNewPost(false);
     };
     // Calling will open dialog
@@ -107,11 +108,12 @@ const ForumContent = ({ name, groupId }) => {
 
     const [forumPosts, setForumPosts] = useState([]);
     const [forumName, setForumName] = useState('');
-    const { forumId } = useGlobalContext();
+    // const { forumId } = useGlobalContext();
 
     const getGroupForum = async groupId => {
         try {
             const response = await axios.get(`/forum/${groupId}`);
+            // console.log(response.data);
             setForumPosts(response.data.posts);
             setForumName(name);
         } catch (err) {
