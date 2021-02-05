@@ -69,7 +69,7 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
         setUpvoted(!upvoted);
     };
 
-    const getPostData = async hardCodedId => {
+    const getPostData = async () => {
         try {
             const res = await axios.get(`/forum/post/${activePostId}`);
             setTitle(res.data.post.title);
@@ -82,9 +82,8 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
         }
     };
     useEffect(() => {
-        //getPostData(hardCodedId);
-        
         getPostData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activePostId]);
 
     const addComment = async () => {

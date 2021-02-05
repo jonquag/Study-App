@@ -185,7 +185,7 @@ const ForumContent = ({ name, groupId }) => {
                 <Grid item className={classes.postCard}>
                     {forumPosts.map(post => (
                         <PostCard
-                            key={post.id}
+                            key={post._id}
                             post={post}
                             updateActivePost={updateActivePost}
                         />
