@@ -89,7 +89,8 @@ const addPost = () => {
 };
 
 
-const ForumContent = (name, groupId) => {
+const ForumContent = ({name, groupId}) => {
+   
     const classes = useStyles();
     const [openPost, setOpenPost] = React.useState(false);
     const [openNewPost, setOpenNewPost] = React.useState(false);
@@ -127,9 +128,12 @@ const ForumContent = (name, groupId) => {
     const getGroupForum = async (groupId) => {
 
         try {
+             //console.log(groupId)
             const response = await axios.get(`/forum/${groupId}`);
-            setForumPosts(response.data.group.forum.posts)
-            setForumName(response.data.group.name)
+            console.log(response.data.posts)
+            setForumPosts(response.data.posts)
+            setForumName(name)
+            
 
         } catch(err) {
             console.log(err)
