@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 
 const ForumSidePanel = ({ onGroupUpdate }) => {
     const classes = useStyles();
-    const { dispatch } = useGlobalContext();
+    const { profile, dispatch } = useGlobalContext();
 
     const [courseList, setCourseList] = useState([]);
     const [courseId, setCourseId] = useState([]);
@@ -128,17 +128,26 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                     let groupList = null;
                     const isIdThere = courseId.some(id => cgl._id === id);
                     if (cgl.expand && isIdThere)
-                    console.log(cgl.groups)
                         groupList = cgl.groups.map(group => {
-                            return (
-                                <Typography
-                                    key={group._id}
-                                    className={classes.group_list}
-                                    onClick={() => handleDrawerClose(group.name, group._id)}
-                                >
-                                    {group.name}
-                                </Typography>
-                            );
+                            if(group.members.includes(profile.user._id)) {
+                                return (
+                                    <Typography
+                                        key={group._id}
+                                        className={classes.group_list}
+                                        onClick={() => {
+                                            dispatch({
+                                                type: 'FORUM_ID',
+                                                payload: group.forum,
+                                            });
+                                            handleDrawerClose(group.name, group._id);
+                                        }}
+                                    >
+                                        {group.name}
+                                    </Typography>
+                                );
+
+                            }
+                            
                         });
                     return (
                         <div key={cgl._id} className={classes.accordion_container}>
