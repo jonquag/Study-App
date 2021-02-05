@@ -72,6 +72,9 @@ const useStyles = makeStyles(theme => ({
     input: {
         margin: theme.spacing(2, 0),
     },
+    emptyMessage: {
+        marginTop: theme.spacing(4),
+    },
 }));
 
 const ForumContent = ({ name, groupId }) => {
@@ -121,22 +124,23 @@ const ForumContent = ({ name, groupId }) => {
     }, [getGroupForum, groupId]);
 
     const renderForumPosts = () => {
-        if (forumPosts.length){
-            return (
-                forumPosts.map(post => (
-                    <PostCard
-                        key={post._id}
-                        post={post}
-                        updateActivePost={updateActivePost}
-                    />
-                ))
-            )
-
+        if (forumPosts.length) {
+            return forumPosts.map(post => (
+                <PostCard
+                    key={post._id}
+                    post={post}
+                    updateActivePost={updateActivePost}
+                />
+            ));
         } else {
-            return ( <Typography variant="h4 ">There appears to be no posts. Get the conversation started by clicking add post above!</Typography>)
+            return (
+                <Typography variant="h4" className={classes.emptyMessage}>
+                    There appears to be no posts. Get the conversation started by clicking
+                    add post above!
+                </Typography>
+            );
         }
-        
-    }
+    };
 
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
@@ -189,9 +193,7 @@ const ForumContent = ({ name, groupId }) => {
                 className={classes.cardContainer}
             >
                 <Grid item className={classes.postCard}>
-                    {
-                    renderForumPosts()
-                    }
+                    {renderForumPosts()}
                 </Grid>
                 {/* View Post Dialog */}
                 <Dialog
