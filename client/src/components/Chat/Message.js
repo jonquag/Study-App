@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         width: 'auto',
         maxWidth: 500,
+        color: '#FFF',
     },
     sent_container: {
         background: '#e6edff',
@@ -29,12 +30,11 @@ const useStyles = makeStyles(theme => ({
         width: 'auto',
         maxWidth: 500,
         justifySelf: 'flex-end',
-        // color: '#2574FF',
+        color: '#2574FF',
     },
     contentText: {
         alignItems: 'center',
         padding: 5,
-        color: '#2574FF',
     },
     avatar: {
         width: 60,
@@ -71,7 +71,7 @@ const Message = ({ msg, isReceived }) => {
                     <Typography
                         className={classes.contentText}
                         variant="h6"
-                        color={isReceived ? 'primary' : 'secondary'}
+                        color={isReceived ? '#FFF' : '#2574FF'}
                     >
                         {msg.text}
                     </Typography>
