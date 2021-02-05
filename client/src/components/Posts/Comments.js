@@ -12,8 +12,9 @@ const useStyles = makeStyles(theme => ({
     commentText: {
         padding: theme.spacing(2),
     },
-    comment: {
-        margin: theme.spacing(1, 0),
+    divider: {
+        margin: theme.spacing(2),
+        width: '100%',
     },
 }));
 
@@ -28,7 +29,7 @@ const Comments = ({ comment }) => {
                     container
                     direction="column"
                     alignItems="center"
-                    justify="flex-start"
+                    justify="center"
                     xs={2}
                 >
                     <Grid item>
@@ -40,7 +41,7 @@ const Comments = ({ comment }) => {
                             />
                         ) : (
                             <Avatar className={classes.avatar}>
-                                <PersonAddIcon />
+                                <PersonAddIcon className={classes.avatar} />
                             </Avatar>
                         )}
                     </Grid>
@@ -53,6 +54,7 @@ const Comments = ({ comment }) => {
                         {comment.text}
                     </Typography>
                 </Grid>
+                {/* <Divider className={classes.divider} /> */}
             </Grid>
         </div>
     );

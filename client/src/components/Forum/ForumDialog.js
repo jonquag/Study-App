@@ -10,7 +10,6 @@ import {
     IconButton,
     Avatar,
     CircularProgress,
-    Container,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ForwardIcon from '@material-ui/icons/Forward';
