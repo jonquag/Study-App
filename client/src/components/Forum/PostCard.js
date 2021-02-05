@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import defaultPostPicture from '../../images/study_group.png';
+import { msToTimeAgo } from '../../utils/convertTimeStamps';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,23 +59,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PostCard = ({ post, updateActivePost }) => {
+    console.log(post);
     const classes = useStyles();
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(false)
+        setIsLoading(false);
+    }, []);
 
-    },[])
-    
-    if(isLoading) {
+    if (isLoading) {
         return (
-            <Grid container direction="column" justify="center" align="center" alignItems="center">
-            <CircularProgress
-            size={100}
-            color="secondary"
-            />
+            <Grid
+                container
+                direction="column"
+                justify="center"
+                align="center"
+                alignItems="center"
+            >
+                <CircularProgress size={100} color="secondary" />
             </Grid>
-        )
+        );
     }
 
     const updatePostId = () => {
@@ -102,7 +106,7 @@ const PostCard = ({ post, updateActivePost }) => {
                         <span className={classes.cardDesc}>
                             Posted {post.postDate} by{' '}
                         </span>
-                        <span className={classes.postedBy}>{post.postedBy}</span>
+                        <span className={classes.postedBy}>{post.name}</span>
                     </div>
                 </CardContent>
             </CardActionArea>
