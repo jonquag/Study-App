@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Conversation = ({messages}) => {
+const Conversation = ({notifications, messages}) => {
     const classes = useStyles();
     const lastRef = useRef(null);
     const { profile } = useGlobalContext();
@@ -50,7 +50,7 @@ const Conversation = ({messages}) => {
 
     useEffect(() => {
         lastRef.current.scrollIntoView();
-    }, [messages]);
+    }, [notifications, messages]);
 
     return (
         <Grid className={classes.list_container}>
@@ -58,7 +58,7 @@ const Conversation = ({messages}) => {
                 <List>
                     {
                         messages.map((message, index) => {
-                            const isReceived = message.user !== user._id;
+                            const isReceived = message.profile.user !== user._id;
                             return (
                                 <ListItem
                                     key={index}

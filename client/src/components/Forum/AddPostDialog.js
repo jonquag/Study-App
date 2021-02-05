@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ForumModal = ({ handleClose }) => {
+const AddPostDialog = ({ handleCloseNewPost }) => {
     const classes = useStyles();
 
     const [title, setTitle] = useState();
@@ -75,7 +75,11 @@ const ForumModal = ({ handleClose }) => {
     return (
         <div>
             <Grid item>
-                <Button onClick={handleClose} color="primary" className={classes.close}>
+                <Button
+                    onClick={handleCloseNewPost}
+                    color="primary"
+                    className={classes.close}
+                >
                     <CloseIcon />
                 </Button>
                 <Typography
@@ -156,4 +160,4 @@ const ForumModal = ({ handleClose }) => {
     );
 };
 
-export default ForumModal;
+export default AddPostDialog;
