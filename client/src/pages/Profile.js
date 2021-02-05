@@ -7,7 +7,6 @@ import { Grid } from '@material-ui/core';
 import Sidebar from '../components/Profile/Sidebar';
 import UserInfo from '../components/Profile/UserInfo';
 import Settings from '../components/Profile/Settings';
-import Notifications from '../components/Profile/Notifications';
 import MyCourses from '../components/Profile/MyCourses';
 import ProfileSidePanel from './ProfileSidePanel';
 
@@ -45,9 +44,6 @@ const Profile = () => {
                         </Route>
                         <Route exact path="/profile/settings">
                             <Settings />
-                        </Route>
-                        <Route exact path="/profile/notifications">
-                            <Notifications />
                         </Route>
                     </Switch>
                 </Grid>

@@ -115,17 +115,6 @@ const ProfileSidePanel = props => {
                 >
                     Settings
                 </NavLink>
-                <NavLink
-                    to="/profile/notifications"
-                    exact
-                    activeStyle={{
-                        opacity: '100%',
-                    }}
-                    className={classes.linkStyles}
-                    onClick={handleDrawerClose}
-                >
-                    Notifications
-                </NavLink>
             </Grid>
             <Grid container item>
                 <Grid item>
