@@ -2,6 +2,10 @@ export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
+    userGroups: {
+        courseGroups: [],
+        groups: [],
+    },
     profile: {},
     userGroups: {groups: [], courseGroups: []},
     isOpen: false,

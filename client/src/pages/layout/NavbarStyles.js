@@ -75,7 +75,7 @@ export const useStyles = makeStyles(theme => ({
     linkStyles: {
         textDecoration: 'none',
         color: 'black',
-        fontSize: 18,
+        fontSize: '1.125rem',
         opacity: '50%',
         marginLeft: 15,
     },

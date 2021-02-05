@@ -27,6 +27,8 @@ import * as actions from '../../context/actions';
 import { useGlobalContext } from '../../context/studyappContext';
 
 const SignupSchema = Yup.object().shape({
+    firstName: Yup.string().min(2, 'First name too short').required('Required'),
+    lastName: Yup.string().min(2, 'Last name too short').required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string().min(6).required('Required'),
     university: Yup.string().required('Please select a school'),
@@ -124,6 +126,8 @@ const Signup = () => {
 
                     <Formik
                         initialValues={{
+                            firstName: '',
+                            lastName: '',
                             email: '',
                             password: '',
                             university: '',
@@ -158,6 +162,20 @@ const Signup = () => {
                     >
                         {({ submitForm, isSubmitting, errors }) => (
                             <Form className={classes.form}>
+                                <FormHelperText>First name</FormHelperText>
+                                <Field
+                                    component={MikTextField}
+                                    name="firstName"
+                                    type="text"
+                                    variant="outlined"
+                                />
+                                <FormHelperText>Last name</FormHelperText>
+                                <Field
+                                    component={MikTextField}
+                                    name="lastName"
+                                    type="text"
+                                    variant="outlined"
+                                />
                                 <FormHelperText>Email address</FormHelperText>
                                 <Field
                                     component={MikTextField}

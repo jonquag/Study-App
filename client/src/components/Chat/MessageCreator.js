@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    Box,
-    Button,
-    Container,
-    IconButton,
-    TextField
-} from '@material-ui/core';
+import { Box, Button, Container, IconButton, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SentimentSatisfiedOutlinedIcon from '@material-ui/icons/SentimentSatisfiedOutlined';
@@ -44,14 +38,14 @@ const useStyles = makeStyles(theme => ({
         },
     },
     buttonContainer: {
-        width: '40%'
+        width: '40%',
     },
     text: {
         height: 100,
         padding: 10,
     },
     iconAdornments: {
-        fontSize: theme.spacing(3)
+        fontSize: '1.5rem',
     },
     sendButton: {
         margin: theme.spacing(0, 3),
@@ -59,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const MessageCreator = ({groupId}) => {
+const MessageCreator = ({ groupId }) => {
     const classes = useStyles();
     const { profile } = useGlobalContext();
     const { conversationManager } = useConversationContext();
@@ -67,56 +61,51 @@ const MessageCreator = ({groupId}) => {
 
     const sendMessage = () => {
         const payload = {
-            profile: profile._id, 
-            text: workingText, 
-            image: profile.imageUrl
-        }
+            profile: profile._id,
+            text: workingText,
+            image: profile.imageUrl,
+        };
         conversationManager.sendMessageToGroup(groupId, payload);
         setWorkingText('');
     };
 
-    const handleChangeText = (ev) => {
+    const handleChangeText = ev => {
         setWorkingText(ev.target.value);
-    }
+    };
 
     return (
         <Container className={classes.container}>
             <Box className={classes.textContainer}>
-            <TextField
-                fullWidth={true}
-                multiline={true}
-                value={workingText}
-                onChange={handleChangeText}
-                placeholder="Type your message here"
-                InputProps={{
-                    classes: {input: classes.text},
-                    disableUnderline: true,
-                }}
-                onKeyUp={(e) => {
-                    if (e.key === 'Enter')
-                        sendMessage();
-                }}
-            />
+                <TextField
+                    fullWidth={true}
+                    multiline={true}
+                    value={workingText}
+                    onChange={handleChangeText}
+                    placeholder="Type your message here"
+                    InputProps={{
+                        classes: { input: classes.text },
+                        disableUnderline: true,
+                    }}
+                    onKeyUp={e => {
+                        if (e.key === 'Enter') sendMessage();
+                    }}
+                />
             </Box>
             <Box
-                display='flex' 
-                justifyContent='flex-end'
+                display="flex"
+                justifyContent="flex-end"
                 className={classes.buttonContainer}
             >
                 <IconButton>
-                    <SentimentSatisfiedOutlinedIcon 
-                        className={classes.iconAdornments}
-                    />
+                    <SentimentSatisfiedOutlinedIcon className={classes.iconAdornments} />
                 </IconButton>
-                <IconButton >
-                    <InsertDriveFileOutlinedIcon
-                        className={classes.iconAdornments}
-                    />
+                <IconButton>
+                    <InsertDriveFileOutlinedIcon className={classes.iconAdornments} />
                 </IconButton>
-                <Button 
-                    className={classes.sendButton} 
-                    variant='outlined' 
-                    color='secondary'
+                <Button
+                    className={classes.sendButton}
+                    variant="outlined"
+                    color="secondary"
                     onClick={() => {
                         sendMessage();
                     }}

@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     },
     icons: {
         color: '#2968ff',
-        fontSize: 22,
+        fontSize: '1.375rem',
     },
     group_list: {
         color: '#2574FF',

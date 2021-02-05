@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     cardDesc: {
-        fontSize: 14,
+        fontSize: '0.875rem',
     },
     postedBy: {
         color: '#2968FF',

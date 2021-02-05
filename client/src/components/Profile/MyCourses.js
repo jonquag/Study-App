@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
         padding: '0 4px 0 8px',
         '& button': {
             padding: 8,
-            fontSize: 18,
+            fontSize: '1.125rem',
         },
     },
     btn_group: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'space-between',
         '& button': {
-            fontSize: 18,
+            fontSize: '1.125rem',
         },
     },
     form: {
@@ -144,7 +144,7 @@ const MyCourses = () => {
                 const res = await axios.delete(`/user/courses/${id}`, {
                     data: { groupsRemoved: groupIds },
                 });
-                
+
                 await actions.fetchUserGroups(res.data.groups)(dispatch);
                 conversationManager.updateRooms(res.data.groups);
                 dispatch({ type: 'updateUserCourses', payload: res.data.courses });
@@ -159,7 +159,7 @@ const MyCourses = () => {
 
     return (
         <Grid item container md={9} className={classes.container}>
-            <Typography variant="h4" className={classes.university}>
+            <Typography variant="h1" className={classes.university}>
                 {school}
             </Typography>
             <Typography variant="h5" className={classes.title}>

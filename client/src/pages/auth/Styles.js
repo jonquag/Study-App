@@ -76,5 +76,6 @@ export const useStyles = makeStyles(theme => ({
     },
     add_course: {
         marginTop: 8,
+        marginBottom: 8,
     },
 }));

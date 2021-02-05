@@ -15,6 +15,7 @@ const { check } = require('express-validator');
 const Profile = require('../models/profile');
 const User = require('../models/user');
 const userController = require('../controllers/user');
+const Group = require('../models/Group');
 
 router.post('/login', validateEntryReq, async function (req, res, next) {
     const { email, password } = req.body;
@@ -43,7 +44,14 @@ router.post('/login', validateEntryReq, async function (req, res, next) {
 });
 
 router.post('/register', validateEntryReq, async function (req, res, next) {
-    const { email, password, courses, university } = req.body;
+    const {
+        firstName,
+        lastName,
+        email,
+        password,
+        courses,
+        university,
+    } = req.body;
 
     const userInfo = { email, password, courses, university };
     if (!university) delete userInfo['university'];
@@ -65,17 +73,36 @@ router.post('/register', validateEntryReq, async function (req, res, next) {
         const token = jwt.sign({ id: userDoc.id }, process.env.SECRET_KEY, {
             expiresIn: '180d',
         });
-        await new Profile({ user: userDoc.id }).save().catch(() => {
-            throw new GeneralError(
-                'Error creating user profile on registration.'
-            );
-        });
+        await new Profile({ user: userDoc.id, firstName, lastName })
+            .save()
+            .catch(() => {
+                throw new GeneralError(
+                    'Error creating user profile on registration.'
+                );
+            });
         res.cookie('token', token, { httpOnly: true });
         res.sendStatus(201);
     } catch (error) {
         next(error);
     }
 });
+
+// Removes a group without any members
+// router.delete('/group/:groupId', auth, async (req, res, next) => {
+//     const { groupId } = req.params;
+//     try {
+//         const group = await Group.findById(groupId);
+//         if (!groupId) throw new NotFound('Group not found');
+
+//         const groupRes = await group.remove();
+//         if (!groupRes) throw new GeneralError('Error removing group');
+
+//         res.status(200).json({ message: 'Group removed' });
+//     } catch (err) {
+//         console.log(err.message);
+//         next(err);
+//     }
+// });
 
 router.delete('/logout', function (req, res) {
     res.clearCookie('token');
