@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
-import PanoramaIcon from '@material-ui/icons/Panorama';
+import defaultPostPicture from '../../images/upload_placeholder.png';
 import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles(theme => ({
@@ -49,12 +49,12 @@ const useStyles = makeStyles(theme => ({
 const AddPostDialog = ({ handleCloseNewPost }) => {
     const classes = useStyles();
 
-    const [title, setTitle] = useState();
-    const [description, setDescription] = useState();
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const [uploading, setUploading] = useState(false);
     const { forumId } = useGlobalContext();
-    console.log(forumId);
+
     // const hardCodedForumId = '6012462f4f758023244df285';
 
     const onDrop = useCallback(async droppedFiles => {
@@ -68,7 +68,6 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                 .catch(err => console.log(err));
             if (res && res.data) {
                 setImageUrl(res.data.imageUrl);
-                console.log(res.data.imageUrl);
                 setUploading(false);
             }
         }
@@ -85,7 +84,6 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                 title: title,
                 postAvatar: imageUrl,
             });
-            console.log('new post response: ' + res.data);
             setTitle('');
             setDescription('');
             setImageUrl('');
@@ -174,7 +172,7 @@ const AddPostDialog = ({ handleCloseNewPost }) => {
                             >
                                 <Box {...getRootProps({ style })}>
                                     <img
-                                        src={imageUrl ? imageUrl : <PanoramaIcon />}
+                                        src={imageUrl ? imageUrl : defaultPostPicture}
                                         className={classes.large}
                                         alt="Post"
                                     />

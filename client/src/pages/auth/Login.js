@@ -97,7 +97,6 @@ const Login = props => {
                                             autoHideDuration: '5000',
                                         });
                                     } else {
-                                        console.log(res);
                                         setTimeout(() => {
                                             setSubmitting(false);
                                         }, 500);

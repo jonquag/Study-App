@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import defaultPostPicture from '../../images/study_group.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -77,7 +78,7 @@ const PostCard = ({ post, updateActivePost }) => {
     }
 
     const updatePostId = () => {
-        updateActivePost(post.id);
+        updateActivePost(post._id);
     };
 
     return (
@@ -87,7 +88,7 @@ const PostCard = ({ post, updateActivePost }) => {
                     component="img"
                     alt="alt img"
                     height="140"
-                    image={post.postAvatar}
+                    image={post.postAvatar ? post.postAvatar : defaultPostPicture}
                     title={post.title}
                     className={classes.cardImage}
                 />

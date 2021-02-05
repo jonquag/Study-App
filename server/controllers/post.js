@@ -7,7 +7,6 @@ const Forum = require('../models/Forum');
 
 exports.creatForumPost = async (req, res, next) => {
     const errors = validationResult(req);
-    console.log(req.body);
     if (!errors.isEmpty())
         return res.status(400).json({
             error: errors.array(),
@@ -30,6 +29,7 @@ exports.creatForumPost = async (req, res, next) => {
             text,
             postAvatar,
             name: `${profile.firstName} ${profile.lastName}`,
+            userAvatar: `${profile.imageUrl}`
         });
 
         const response = await post.save();

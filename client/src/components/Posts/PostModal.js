@@ -67,7 +67,6 @@ const PostModal = ({ handleClose }) => {
 
     const toggleVote = () => {
         setUpvoted(!upvoted);
-        console.log('upvoted?: ' + upvoted);
     };
 
     return (

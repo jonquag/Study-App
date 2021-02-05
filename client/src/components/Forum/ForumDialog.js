@@ -16,6 +16,7 @@ import ForwardIcon from '@material-ui/icons/Forward';
 import ForwardOutlinedIcon from '@material-ui/icons/ForwardOutlined';
 import Comments from '../Posts/Comments';
 import axios from 'axios';
+import defaultPostPicture from '../../images/study_group.png';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -59,10 +60,10 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [avatarUrl, setAvatarUrl] = useState();
+    const [userAvatar, setUserAvatar] = useState();
     const [title, setTitle] = useState();
     const [postText, setPostText] = useState();
     const [upvoted, setUpvoted] = React.useState(false);
-    const hardCodedId = '6019c1367ec9c86d68a8176d';
 
     const toggleVote = () => {
         setUpvoted(!upvoted);
@@ -70,26 +71,26 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
 
     const getPostData = async hardCodedId => {
         try {
-            const res = await axios.get(`/forum/post/${hardCodedId}`);
-            console.log(res.data.post);
+            const res = await axios.get(`/forum/post/${activePostId}`);
             setTitle(res.data.post.title);
             setPostText(res.data.post.text);
             setAvatarUrl(res.data.post.postAvatar);
+            setUserAvatar(res.data.post.userAvatar)
             setComments(res.data.post.comments);
         } catch (err) {
             console.log(err);
         }
     };
-
     useEffect(() => {
-        getPostData(hardCodedId);
-    }, [hardCodedId]);
+        //getPostData(hardCodedId);
+        
+        getPostData();
+    }, [activePostId]);
 
     const addComment = async () => {
-        const res = await axios.post(`forum/post/comment/${hardCodedId}`, {
+        const res = await axios.post(`forum/post/comment/${activePostId}`, {
             text: newComment,
         });
-        console.log(res);
         const updatedComments = [...comments, res.data.comment];
         setComments(updatedComments);
         setNewComment('');
@@ -147,7 +148,7 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
                     {/* Image container */}
                     <Grid item container xs={12} justify="center">
                         <Grid item>
-                            <img src={avatarUrl} alt="Post" />
+                            <img src={avatarUrl ? avatarUrl : defaultPostPicture} alt="Post" />
                         </Grid>
                     </Grid>
                     <Box className={classes.imageContainer}></Box>
@@ -156,7 +157,7 @@ const PostDialog = ({ handleClosePost, activePostId }) => {
                     {/* Post text body */}
                     <Grid item container xs={12} alignItems="center">
                         <Grid item xs={1}>
-                            <Avatar className={classes.avatar} src={avatarUrl}></Avatar>
+                            <Avatar className={classes.avatar} src={userAvatar}></Avatar>
                         </Grid>
                         <Grid item xs={10}>
                             <Typography className={classes.postText}>

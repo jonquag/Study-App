@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import PostCard from './PostCard';
 import axios from 'axios';
-import { useGlobalContext } from '../../context/studyappContext';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import AddIcon from '@material-ui/icons/Add';
@@ -87,8 +86,8 @@ const ForumContent = ({ name, groupId }) => {
     };
     // Calling will close new post dialog
     const handleCloseNewPost = newPost => {
-        if (newPost) {
-            setForumPosts([...forumPosts, newPost]);
+        if (newPost._id) {
+            setForumPosts([newPost, ...forumPosts]);
         }
         setOpenNewPost(false);
     };
@@ -107,33 +106,31 @@ const ForumContent = ({ name, groupId }) => {
     };
 
     const [forumPosts, setForumPosts] = useState([]);
-    const [forumName, setForumName] = useState('');
+    //const [forumName, setForumName] = useState(name);
     // const { forumId } = useGlobalContext();
 
-    const getGroupForum = async groupId => {
+    const getGroupForum = useCallback(async () => {
         try {
             const response = await axios.get(`/forum/${groupId}`);
-            // console.log(response.data);
             setForumPosts(response.data.posts);
-            setForumName(name);
         } catch (err) {
             console.log(err);
         }
-    };
+    }, [groupId]);
 
     useEffect(() => {
         getGroupForum(groupId);
-    }, [groupId]);
+    }, [getGroupForum, groupId]);
 
-    const renderPosts = () => {
-        return (
-            <Grid item className={classes.postCard}>
-                {forumPosts.map(post => (
-                    <PostCard key={post._id} post={post} />
-                ))}
-            </Grid>
-        );
-    };
+    // const renderPosts = () => {
+    //     return (
+    //         <Grid item className={classes.postCard}>
+    //             {forumPosts.map(post => (
+    //                 <PostCard key={post._id} post={post} />
+    //             ))}
+    //         </Grid>
+    //     );
+    // };
 
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
@@ -146,7 +143,7 @@ const ForumContent = ({ name, groupId }) => {
             >
                 <Grid item>
                     <Typography variant="h1" className={classes.headerText}>
-                        {forumName}
+                        {name}
                     </Typography>
                 </Grid>
 
