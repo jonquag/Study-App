@@ -106,8 +106,6 @@ const ForumContent = ({ name, groupId }) => {
     };
 
     const [forumPosts, setForumPosts] = useState([]);
-    //const [forumName, setForumName] = useState(name);
-    // const { forumId } = useGlobalContext();
 
     const getGroupForum = useCallback(async () => {
         try {
@@ -122,15 +120,23 @@ const ForumContent = ({ name, groupId }) => {
         getGroupForum(groupId);
     }, [getGroupForum, groupId]);
 
-    // const renderPosts = () => {
-    //     return (
-    //         <Grid item className={classes.postCard}>
-    //             {forumPosts.map(post => (
-    //                 <PostCard key={post._id} post={post} />
-    //             ))}
-    //         </Grid>
-    //     );
-    // };
+    const renderForumPosts = () => {
+        if (forumPosts.length){
+            return (
+                forumPosts.map(post => (
+                    <PostCard
+                        key={post._id}
+                        post={post}
+                        updateActivePost={updateActivePost}
+                    />
+                ))
+            )
+
+        } else {
+            return ( <Typography variant="h4 ">There appears to be no posts. Get the conversation started by clicking add post above!</Typography>)
+        }
+        
+    }
 
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
@@ -183,13 +189,9 @@ const ForumContent = ({ name, groupId }) => {
                 className={classes.cardContainer}
             >
                 <Grid item className={classes.postCard}>
-                    {forumPosts.map(post => (
-                        <PostCard
-                            key={post._id}
-                            post={post}
-                            updateActivePost={updateActivePost}
-                        />
-                    ))}
+                    {
+                    renderForumPosts()
+                    }
                 </Grid>
                 {/* View Post Dialog */}
                 <Dialog

@@ -86,11 +86,16 @@ const ForumSidePanel = ({ onGroupUpdate }) => {
                 }
             });
             setCourseList(newCourseList);
-            //if (firstUpdate.current) {
-            //    onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
-             //   firstUpdate.current = false;
-             //   return;
-           // }
+   
+            if (firstUpdate.current) {
+                dispatch({
+                    type: 'FORUM_ID',
+                    payload: res.data[0].groups[0].forum,
+                });
+                onGroupUpdate(res.data[0].groups[0].name, res.data[0].groups[0]._id);
+                firstUpdate.current = false;
+                return;
+            }
         } catch (err) {
             console.log(err);
         }
