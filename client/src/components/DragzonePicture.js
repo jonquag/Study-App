@@ -21,19 +21,9 @@ const ProfilePic = () => {
         async droppedFiles => {
             if (droppedFiles.length) {
                 setUploading(true);
-
-                const form = new FormData();
-                form.append('image', droppedFiles[0]);
-                const res = await axios
-                    .post('/upload', form)
-                    .catch(err => console.log(err));
-
-                if (res && res.data) {
-                    dispatch({ type: 'updateProfile', payload: res.data });
-                }
+                updateProfilePicture(droppedFiles[0])
             }
-        },
-        [dispatch]
+        }
     );
 
     useEffect(() => {
@@ -56,9 +46,32 @@ const ProfilePic = () => {
         [isDragActive, isDragReject, isDragAccept]
     );
 
+    const onChangeFile = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setUploading(true);
+        const file = event.target.files[0];
+        if(file) {
+            updateProfilePicture(file)
+        }
+    }
+
+    const updateProfilePicture = async (file) => {
+        const form = new FormData();
+        form.append('image', file);
+        const res = await axios
+            .post('/upload', form)
+            .catch(err => console.log(err));
+
+        if (res && res.data) {
+            dispatch({ type: 'updateProfile', payload: res.data });
+        }
+    }
+
     return (
-        <Box className={classes.container}>
-            <Tooltip title="Drag and drop profile picture" arrow placement="right">
+        <Box className={classes.container} >
+            <label htmlFor="fileUpload">           
+            <Tooltip title="Drag and drop profile picture or click to upload" arrow placement="right">
                 <Box {...getRootProps({ style })}>
                     {profile.imageUrl ? (
                         <Avatar
@@ -73,6 +86,8 @@ const ProfilePic = () => {
                     )}
                 </Box>
             </Tooltip>
+            </label>
+            <input hidden type="file" accept="image/*" multiple={false} id="fileUpload" onChange={onChangeFile} />
         </Box>
     );
 };

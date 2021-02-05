@@ -3,6 +3,7 @@ export const initialState = {
     isAuth: false,
     userCourse: {},
     profile: {},
+    userGroups: {groups: [], courseGroups: []},
     isOpen: false,
     forumId: null
 };

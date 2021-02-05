@@ -63,6 +63,15 @@ const useStyles = makeStyles(theme => ({
             background: theme.palette.primary.gradient,
         },
     },
+    small_badge: {
+        color: theme.palette.common.white,
+        '& span': {
+            width: 30,
+            height: 24,
+            fontSize: '0.7rem',
+            background: theme.palette.primary.gradient,
+        },
+    },
     chat_list: {
         height: 100,
         flexWrap: 'nowrap',
@@ -102,12 +111,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
+const ChatSidePanel = ({groups, selectedGroupChat, updateSelectedChat, notifications}) => {
     const classes = useStyles();
     const { dispatch } = useGlobalContext();
 
-    const handleChatList = (index) => {
-        setChatIndex(index)
+    const handleChatList = (id) => {
+        updateSelectedChat(id)
         dispatch({ type: 'CLOSE_DRAWER' });
     };
 
@@ -116,37 +125,40 @@ const ChatSidePanel = ({chatList, chatIndex, setChatIndex}) => {
             <Grid container className={classes.list_container}>
                 <Grid item className={classes.chat_head}>
                     <Typography>All Chats</Typography>
-                    <Badge badgeContent={12} className={classes.badge} />
+                    <Badge badgeContent={Object.values(notifications).reduce((a, b) => a + b, 0)} className={classes.badge} />
                 </Grid>
                 <Divider className={classes.divider} />
-                {chatList.map((cg, index) => {
+                {groups.map((g, index) => {
                     return (
-                        <React.Fragment key={cg.id}>
+                        <React.Fragment key={g._id}>
                             <Grid
                                 item
                                 container
                                 className={
-                                    index === chatIndex
+                                    g._id === selectedGroupChat
                                         ? classes.chat_list_active
                                         : classes.chat_list
                                 }
-                                onClick={() => handleChatList(index)}
+                                onClick={() => handleChatList(g._id)}
                             >
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar
                                         alt="chat_group_img"
-                                        src={cg.imgUrl}
+                                        src={g.image}
                                         variant="rounded"
                                         className={classes.avatar}
                                     />
                                 </Grid>
                                 <Grid item container className={classes.group_member}>
                                     <Typography className={classes.group_name}>
-                                        {cg.chatGroup}
+                                        {g.name}
                                     </Typography>
                                     <Typography variant="subtitle1" color="textSecondary">
-                                        {cg.members} members
+                                        {g.members.length} members
                                     </Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Badge badgeContent={notifications[g._id]} className={classes.small_badge} />
                                 </Grid>
                             </Grid>
                             <Divider className={classes.divider} />

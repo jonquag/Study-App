@@ -60,14 +60,13 @@ const useStyles = makeStyles(theme => ({
 
 const Message = ({msg, isReceived}) => {
     const classes = useStyles();
-
     return (
         <Box 
             display='flex' 
             flexDirection='row' 
             className={classes.container}
         >
-            {isReceived && <Avatar className={classes.avatar} src={msg.profileImg}/>}
+            {isReceived && <Avatar className={classes.avatar} src={msg.profile.imageUrl}/>}
             <Box display='flex' flexDirection='column'>
                 <Container 
                     className={
@@ -81,7 +80,7 @@ const Message = ({msg, isReceived}) => {
                         variant='h6' 
                         color={isReceived ? 'primary' : 'secondary'}
                     >
-                        {msg.content}
+                        {msg.text}
                     </Typography>
                 </Container>
                 <Typography 

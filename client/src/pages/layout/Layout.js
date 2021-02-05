@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react';
 
 import * as actions from '../../context/actions';
-import { useSocketContext, useGlobalContext } from '../../context/studyappContext';
+import { useConversationContext, useGlobalContext } from '../../context/studyappContext';
 
 const Layout = ({ children }) => {
-    const { dispatch, isLoading,  isAuth } = useGlobalContext();
-    const { SocketManager } = useSocketContext();
+    const { dispatch, isLoading } = useGlobalContext();
+    const { conversationManager } = useConversationContext();
+    
     useEffect(() => {
-        if (isLoading) 
+        if (isLoading)
             actions.fetchProfile()(dispatch).then((userGroups) => {
-                actions.fetchUserGroups(userGroups)(dispatch)
+                const groupNames = userGroups.map(group => group._id);
+                conversationManager.startSocket(groupNames);
+                actions.fetchUserGroups(userGroups)(dispatch);
             });
-    }, [isLoading, dispatch]);
+    }, [isLoading, dispatch, conversationManager]);
 
+    //cleanup socket
     useEffect(() => {
-        SocketManager.closeSocket();
-    }, [SocketManager])
-
-    if (isAuth) SocketManager.startSocket();
+        return () => conversationManager.closeSocket();
+    }, [conversationManager])
 
     return (
         <>
