@@ -8,6 +8,7 @@ import {
 from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalContext } from '../../context/studyappContext';
+import groupPicture from '../../images/study_group.png';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -144,7 +145,7 @@ const ChatSidePanel = ({groups, selectedGroupChat, updateSelectedChat, notificat
                                 <Grid item className={classes.avatar_container}>
                                     <Avatar
                                         alt="chat_group_img"
-                                        src={g.image}
+                                        src={g.image ? g.image : groupPicture}
                                         variant="rounded"
                                         className={classes.avatar}
                                     />

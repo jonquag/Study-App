@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     },
     mobile_container: {
         backgroundColor: theme.palette.common.white,
-        height: 100,
     },
     menu_icon: {
         fontSize: '1.5rem',

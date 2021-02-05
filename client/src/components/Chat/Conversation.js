@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
     list_container: {
         display: 'block',
         height: 'calc(100vh - 343px)',
+        [theme.breakpoints.down('sm')]: {
+          height: 'calc(100vh - 443px)',
+        },
         overflowY: 'auto',
         backgroundColor: theme.palette.common.white,
         '&::-webkit-scrollbar': {
