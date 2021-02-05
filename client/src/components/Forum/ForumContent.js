@@ -1,14 +1,14 @@
-import React from 'react';
-import { Button, Grid, Typography, Divider } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Button, Grid, Typography, Divider, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { posts } from '../../data/mockData';
 import PostCard from './PostCard';
-
+import axios from 'axios';
+import { useGlobalContext } from '../../context/studyappContext';
+import Comments from '../Posts/Comments';
+import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-
 import AddIcon from '@material-ui/icons/Add';
-
 import AddPostDialog from './AddPostDialog';
 import ForumDialog from './ForumDialog';
 
@@ -64,9 +64,20 @@ const useStyles = makeStyles(theme => ({
         maxWidth: 500,
         maxHeight: 500,
     },
+    close: {
+        height: 2.5,
+    },
+    upvote: {
+        transform: 'rotate(-90deg)',
+        height: '2rem',
+        width: '2rem',
+    },
+    input: {
+        margin: theme.spacing(2, 0),
+    },
 }));
 
-const ForumContent = () => {
+const ForumContent = ({ name, groupId }) => {
     const classes = useStyles();
     const [openPost, setOpenPost] = React.useState(false);
     const [openNewPost, setOpenNewPost] = React.useState(false);
@@ -94,6 +105,34 @@ const ForumContent = () => {
         handleOpenPost();
     };
 
+    const [forumPosts, setForumPosts] = useState([]);
+    const [forumName, setForumName] = useState('');
+    const { forumId } = useGlobalContext();
+
+    const getGroupForum = async groupId => {
+        try {
+            const response = await axios.get(`/forum/${groupId}`);
+            setForumPosts(response.data.posts);
+            setForumName(name);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        getGroupForum(groupId);
+    }, [groupId]);
+
+    const renderPosts = () => {
+        return (
+            <Grid item className={classes.postCard}>
+                {forumPosts.map(post => (
+                    <PostCard key={post._id} post={post} />
+                ))}
+            </Grid>
+        );
+    };
+
     return (
         <Grid container direction="column" alignContent="center" item sm={12}>
             <Grid
@@ -105,7 +144,7 @@ const ForumContent = () => {
             >
                 <Grid item>
                     <Typography variant="h1" className={classes.headerText}>
-                        Forum
+                        {forumName}
                     </Typography>
                 </Grid>
 
@@ -145,7 +184,7 @@ const ForumContent = () => {
                 className={classes.cardContainer}
             >
                 <Grid item className={classes.postCard}>
-                    {posts.map(post => (
+                    {forumPosts.map(post => (
                         <PostCard
                             key={post.id}
                             post={post}
