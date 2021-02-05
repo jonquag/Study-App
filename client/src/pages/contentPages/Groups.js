@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
     Grid,
     Typography,
@@ -292,13 +292,13 @@ const Groups = () => {
 
             updatedCourseGroups[index] = res.data;
 
-            if (updatedCourseGroups[index].members.length === 0) {
-                const groupId = updatedCourseGroups[index]._id;
-                const groupRes = await axios.delete(`/auth/group/${groupId}`);
-                if (groupRes.status === 200) {
-                    actions.fetchUserGroups(myGroups)(dispatch);
-                }
-            }
+            // if (updatedCourseGroups[index].members.length === 0) {
+            //     const groupId = updatedCourseGroups[index]._id;
+            //     const groupRes = await axios.delete(`/auth/group/${groupId}`);
+            //     if (groupRes.status === 200) {
+            //         actions.fetchUserGroups(myGroups)(dispatch);
+            //     }
+            // }
 
             const newUserGroups = { courseGroups: updatedCourseGroups, groups: myGroups };
 

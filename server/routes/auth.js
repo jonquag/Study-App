@@ -88,21 +88,21 @@ router.post('/register', validateEntryReq, async function (req, res, next) {
 });
 
 // Removes a group without any members
-router.delete('/group/:groupId', auth, async (req, res, next) => {
-    const { groupId } = req.params;
-    try {
-        const group = await Group.findById(groupId);
-        if (!groupId) throw new NotFound('Group not found');
+// router.delete('/group/:groupId', auth, async (req, res, next) => {
+//     const { groupId } = req.params;
+//     try {
+//         const group = await Group.findById(groupId);
+//         if (!groupId) throw new NotFound('Group not found');
 
-        const groupRes = await group.remove();
-        if (!groupRes) throw new GeneralError('Error removing group');
+//         const groupRes = await group.remove();
+//         if (!groupRes) throw new GeneralError('Error removing group');
 
-        res.status(200).json({ message: 'Group removed' });
-    } catch (err) {
-        console.log(err.message);
-        next(err);
-    }
-});
+//         res.status(200).json({ message: 'Group removed' });
+//     } catch (err) {
+//         console.log(err.message);
+//         next(err);
+//     }
+// });
 
 router.delete('/logout', function (req, res) {
     res.clearCookie('token');
